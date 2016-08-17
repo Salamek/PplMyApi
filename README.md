@@ -13,7 +13,7 @@ Professional Parcel Logistic MyApi client in PHP
 
 Install salamek/PplMyApi using  [Composer](http://getcomposer.org/)
 ```sh
-$ composer require salamek/PplMyApi:dev-master
+$ composer require salamek/ppl-my-api:dev-master
 ```
 
 
