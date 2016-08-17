@@ -5,6 +5,8 @@
 
 
 use Salamek\PplMyApi\Tools;
+use Salamek\PplMyApi\Model\Package;
+use Salamek\PplMyApi\Enum\LabelDecomposition;
 
 final class PublicTest extends BaseTest
 {
@@ -53,8 +55,88 @@ final class PublicTest extends BaseTest
     /**
      * @test
      */
-    public function testgetSprintRoutes()
+    public function testGetSprintRoutes()
     {
         $this->assertNotEmpty($this->pplMyApi->getSprintRoutes());
+    }
+
+    /**
+     * @test
+     */
+    public function testGeneratePdfFullSinglePackage()
+    {
+        $raw = $this->pplMyApi->getLabels([$this->package], LabelDecomposition::FULL);
+
+        $this->assertNotEmpty($raw);
+
+        $filePath = __DIR__.'/../tmp/'.$this->package->getPackageNumber().'-full.pdf';
+
+        file_put_contents($filePath, $raw);
+
+        $this->assertFileExists($filePath);
+    }
+
+    /**
+     * @test
+     */
+    public function testGeneratePdfFullMultiplePackages()
+    {
+        $raw = $this->pplMyApi->getLabels($this->packages, LabelDecomposition::FULL);
+
+        $this->assertNotEmpty($raw);
+
+        $packageNumbers = [];
+
+        /** @var Package $package */
+        foreach($this->packages AS $package)
+        {
+            $packageNumbers[] = $package->getPackageNumber();
+        }
+
+        $filePath = __DIR__.'/../tmp/'.implode('-', $packageNumbers).'-full.pdf';
+
+        file_put_contents($filePath, $raw);
+
+        $this->assertFileExists($filePath);
+    }
+
+    /**
+     * @test
+     */
+    public function testGeneratePdfQuarterSinglePackage()
+    {
+        $raw = $this->pplMyApi->getLabels([$this->package], LabelDecomposition::QUARTER);
+
+        $this->assertNotEmpty($raw);
+
+        $filePath = __DIR__.'/../tmp/'.$this->package->getPackageNumber().'-quarter.pdf';
+
+        file_put_contents($filePath, $raw);
+
+        $this->assertFileExists($filePath);
+    }
+
+    /**
+     * @test
+     */
+    public function testGeneratePdfQuarterMultiplePackages()
+    {
+        $raw = $this->pplMyApi->getLabels($this->packages, LabelDecomposition::QUARTER);
+
+        $this->assertNotEmpty($raw);
+
+        $packageNumbers = [];
+
+        /** @var Package $package */
+        foreach($this->packages AS $package)
+        {
+            $packageNumbers[] = $package->getPackageNumber();
+        }
+
+        $filePath = __DIR__.'/../tmp/'.implode('-', $packageNumbers).'-quarter.pdf';
+
+        file_put_contents($filePath, $raw);
+
+        $this->assertFileExists($filePath);
     }
 }
