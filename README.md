@@ -25,11 +25,11 @@ $ composer require salamek/PplMyApi:dev-master
 $pplMyApi = new Salamek\PplMyApi\Api();
 if ($pplMyApi->isHealthy())
 {
-    echo 'Healthly';
+    echo 'Healthly' . PHP_EOL;
 }
 else
 {
-    echo 'Dead :(';
+    echo 'Dead :(' . PHP_EOL;
 }
 ```
 
@@ -37,7 +37,7 @@ else
 
 ```php
 $pplMyApi = new Salamek\PplMyApi\Api();
-echo $pplMyApi->getVersion();
+echo $pplMyApi->getVersion() . PHP_EOL;
 ```
 
 ### Get parcel shops
@@ -79,7 +79,7 @@ try
 }
 catch (\Exception $e)
 {
-    echo $e->getMessage();
+    echo $e->getMessage() . PHP_EOL;
 }
 
 ```
@@ -103,7 +103,7 @@ try
 }
 catch (\Exception $e)
 {
-    echo $e->getMessage();
+    echo $e->getMessage() . PHP_EOL;
 }
 
 ```
@@ -126,7 +126,7 @@ try
 }
 catch (\Exception $e)
 {
-    echo $e->getMessage();
+    echo $e->getMessage() . PHP_EOL;
 }
 
 ```
