@@ -133,7 +133,7 @@ class Api
             throw new \Exception('Failed to build soap client');
         }
 
-        if (!$this->isHealtly())
+        if (!$this->isHealthy())
         {
             throw new \Exception('PPL MyAPI is offline');
         }
