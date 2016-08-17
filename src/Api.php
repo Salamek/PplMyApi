@@ -6,6 +6,7 @@
 namespace Salamek\PplMyApi;
 
 use Salamek\PplMyApi\Enum\Country;
+use Salamek\PplMyApi\Enum\LabelDecomposition;
 use Salamek\PplMyApi\Model\Order;
 use Salamek\PplMyApi\Model\Package;
 use Salamek\PplMyApi\Model\PickUpOrder;
@@ -478,5 +479,17 @@ class Api
 
 
         return $result->LoginResult->AuthToken;
+    }
+
+    /**
+     * @param array $packages
+     * @param int $decomposition
+     * @return string
+     * @throws \Exception
+     */
+    public function getLabels(array $packages, $decomposition = LabelDecomposition::QUARTER)
+    {
+        $label = new Label();
+        return $label->generateLabels($packages, $decomposition);
     }
 }
