@@ -47,7 +47,7 @@ class Package
 
     /**
      * Package constructor.
-     * @param integer $seriesNumberId
+     * @param null|integer $seriesNumberId
      * @param int $packageProductType
      * @param float $weight
      * @param string $note
@@ -75,7 +75,11 @@ class Package
         $this->setSpecialDelivery($specialDelivery);
         $this->setPaymentInfo($paymentInfo);
         $this->setExternalNumbers($externalNumbers);
-        $this->setSeriesNumberId($seriesNumberId);
+
+        if (!is_null($seriesNumberId))
+        {
+            $this->setSeriesNumberId($seriesNumberId);
+        }
     }
 
     /**
