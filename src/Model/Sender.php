@@ -68,7 +68,7 @@ class Sender
 
     /**
      * @param $city string
-     * @throws \Exception
+     * @throws WrongDataException
      */
     public function setCity($city)
     {
@@ -80,7 +80,7 @@ class Sender
 
     /**
      * @param $contact string
-     * @throws \Exception
+     * @throws WrongDataException
      */
     public function setContact($contact)
     {
@@ -92,7 +92,7 @@ class Sender
 
     /**
      * @param $country string
-     * @throws \Exception
+     * @throws WrongDataException
      */
     public function setCountry($country)
     {
@@ -104,7 +104,7 @@ class Sender
 
     /**
      * @param $email string
-     * @throws \Exception
+     * @throws WrongDataException
      */
     public function setEmail($email)
     {
@@ -121,7 +121,7 @@ class Sender
 
     /**
      * @param $name string
-     * @throws \Exception
+     * @throws WrongDataException
      */
     public function setName($name)
     {
@@ -133,7 +133,7 @@ class Sender
 
     /**
      * @param $name2 string
-     * @throws \Exception
+     * @throws WrongDataException
      */
     public function setName2($name2)
     {
@@ -145,7 +145,7 @@ class Sender
 
     /**
      * @param $phone string
-     * @throws \Exception
+     * @throws WrongDataException
      */
     public function setPhone($phone)
     {
@@ -157,7 +157,7 @@ class Sender
 
     /**
      * @param $street string
-     * @throws \Exception
+     * @throws WrongDataException
      */
     public function setStreet($street)
     {
@@ -169,7 +169,7 @@ class Sender
 
     /**
      * @param $zipCode string
-     * @throws \Exception
+     * @throws WrongDataException
      */
     public function setZipCode($zipCode)
     {

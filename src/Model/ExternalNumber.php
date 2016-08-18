@@ -38,7 +38,7 @@ class ExternalNumber
 
     /**
      * @param string $externalNumber
-     * @throws \Exception
+     * @throws WrongDataException
      */
     public function setExternalNumber($externalNumber)
     {

@@ -86,7 +86,7 @@ class Order
 
     /**
      * @param $countPackages
-     * @throws \Exception
+     * @throws WrongDataException
      */
     public function setCountPackages($countPackages)
     {
@@ -99,7 +99,7 @@ class Order
 
     /**
      * @param null|string $customerReference
-     * @throws \Exception
+     * @throws WrongDataException
      */
     public function setCustomerReference($customerReference = null)
     {
@@ -112,7 +112,7 @@ class Order
 
     /**
      * @param null|string $email
-     * @throws \Exception
+     * @throws WrongDataException
      */
     public function setEmail($email = null)
     {
@@ -129,7 +129,7 @@ class Order
 
     /**
      * @param null|string $note
-     * @throws \Exception
+     * @throws WrongDataException
      */
     public function setNote($note = null)
     {
@@ -142,7 +142,7 @@ class Order
 
     /**
      * @param $orderReferenceId
-     * @throws \Exception
+     * @throws WrongDataException
      */
     public function setOrderReferenceId($orderReferenceId)
     {
@@ -155,7 +155,7 @@ class Order
 
     /**
      * @param $packageProductType
-     * @throws \Exception
+     * @throws WrongDataException
      */
     public function setPackageProductType($packageProductType)
     {

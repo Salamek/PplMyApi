@@ -82,7 +82,7 @@ class Package
      * @param null|WeightedPackageInfo $weightedPackageInfo
      * @param integer $packageCount
      * @param integer $packagePosition
-     * @throws \Exception
+     * @throws WrongDataException
      */
     public function __construct(
         $seriesNumberId,
@@ -130,7 +130,7 @@ class Package
 
     /**
      * @param $seriesNumberId
-     * @throws \Exception
+     * @throws WrongDataException
      */
     public function setSeriesNumberId($seriesNumberId)
     {
@@ -144,7 +144,7 @@ class Package
 
     /**
      * @param null|string $note
-     * @throws \Exception
+     * @throws WrongDataException
      */
     public function setNote($note = null)
     {
@@ -157,7 +157,7 @@ class Package
 
     /**
      * @param $packageProductType
-     * @throws \Exception
+     * @throws WrongDataException
      */
     public function setPackageProductType($packageProductType)
     {
@@ -185,7 +185,7 @@ class Package
 
     /**
      * @param string $depoCode
-     * @throws \Exception
+     * @throws WrongDataException
      */
     public function setDepoCode($depoCode)
     {

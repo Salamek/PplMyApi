@@ -98,7 +98,7 @@ class PaymentInfo
 
     /**
      * @param null|string $cashOnDeliveryCurrency
-     * @throws \Exception
+     * @throws WrongDataException
      */
     public function setCashOnDeliveryCurrency($cashOnDeliveryCurrency)
     {
@@ -135,7 +135,7 @@ class PaymentInfo
 
     /**
      * @param null|string $insuranceCurrency
-     * @throws \Exception
+     * @throws WrongDataException
      */
     public function setInsuranceCurrency($insuranceCurrency)
     {

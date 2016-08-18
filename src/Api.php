@@ -99,6 +99,8 @@ class Api
      * @param null|string $password
      * @param null|integer $customerId
      * @throws \Exception
+     * @throws OfflineException
+     * @throws SecurityException
      */
     public function __construct($username = null, $password = null, $customerId = null)
     {
@@ -186,6 +188,7 @@ class Api
      * @param string $countryCode
      * @return mixed
      * @throws \Exception
+     * @throws WrongDataException
      */
     public function getParcelShops($code = null, $countryCode = Country::CZ)
     {
@@ -209,6 +212,7 @@ class Api
      * @param null $zipCode
      * @return mixed
      * @throws \Exception
+     * @throws WrongDataException
      */
     public function getCitiesRouting($countryCode = Country::CZ, \DateTimeInterface $dateFrom = null, $zipCode = null)
     {
@@ -236,6 +240,7 @@ class Api
      * @param \DateTimeInterface|null $dateTo
      * @param array $packageNumbers
      * @throws \Exception
+     * @throws WrongDataException
      * @return mixed
      */
     public function getPackages($customRefs = null, \DateTimeInterface $dateFrom = null, \DateTimeInterface $dateTo = null, array $packageNumbers = [])

@@ -65,7 +65,7 @@ class PickUpOrder
 
     /**
      * @param string $orderReferenceId
-     * @throws \Exception
+     * @throws WrongDataException
      */
     public function setOrderReferenceId($orderReferenceId)
     {
@@ -78,7 +78,7 @@ class PickUpOrder
 
     /**
      * @param null|string $customerReference
-     * @throws \Exception
+     * @throws WrongDataException
      */
     public function setCustomerReference($customerReference)
     {
@@ -99,7 +99,7 @@ class PickUpOrder
 
     /**
      * @param null|string $note
-     * @throws \Exception
+     * @throws WrongDataException
      */
     public function setNote($note)
     {
@@ -112,7 +112,7 @@ class PickUpOrder
 
     /**
      * @param null|string $email
-     * @throws \Exception
+     * @throws WrongDataException
      */
     public function setEmail($email)
     {
