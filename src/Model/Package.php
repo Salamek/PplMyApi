@@ -46,6 +46,12 @@ class Package
     /** @var null|ExternalNumbers */
     private $externalNumbers = null;
 
+    /** @var int */
+    private $packageCount = 1;
+
+    /** @var int */
+    private $packagePosition = 1;
+
     /**
      * Package constructor.
      * @param null|integer $seriesNumberId
@@ -58,9 +64,11 @@ class Package
      * @param null|SpecialDelivery $specialDelivery
      * @param null|PaymentInfo $paymentInfo
      * @param null|ExternalNumbers $externalNumbers
+     * @param integer $packageCount
+     * @param integer $packagePosition
      * @throws \Exception
      */
-    public function __construct($seriesNumberId, $packageProductType, $weight, $note, $depoCode, Sender $sender, Recipient $recipient, SpecialDelivery $specialDelivery = null, PaymentInfo $paymentInfo = null, ExternalNumbers $externalNumbers = null)
+    public function __construct($seriesNumberId, $packageProductType, $weight, $note, $depoCode, Sender $sender, Recipient $recipient, SpecialDelivery $specialDelivery = null, PaymentInfo $paymentInfo = null, ExternalNumbers $externalNumbers = null, $packageCount = 1, $packagePosition = 1)
     {
         if (in_array($packageProductType, Product::$cashOnDelivery) && is_null($paymentInfo))
         {
@@ -76,6 +84,8 @@ class Package
         $this->setSpecialDelivery($specialDelivery);
         $this->setPaymentInfo($paymentInfo);
         $this->setExternalNumbers($externalNumbers);
+        $this->setPackageCount($packageCount);
+        $this->setPackagePosition($packagePosition);
 
         if (!is_null($seriesNumberId))
         {
@@ -195,6 +205,22 @@ class Package
     }
 
     /**
+     * @param int $packageCount
+     */
+    public function setPackageCount($packageCount)
+    {
+        $this->packageCount = $packageCount;
+    }
+
+    /**
+     * @param int $packagePosition
+     */
+    public function setPackagePosition($packagePosition)
+    {
+        $this->packagePosition = $packagePosition;
+    }
+
+    /**
      * @return string
      */
     public function getPackageNumber()
@@ -280,5 +306,21 @@ class Package
     public function getSeriesNumberId()
     {
         return $this->seriesNumberId;
+    }
+
+    /**
+     * @return int
+     */
+    public function getPackageCount()
+    {
+        return $this->packageCount;
+    }
+
+    /**
+     * @return int
+     */
+    public function getPackagePosition()
+    {
+        return $this->packagePosition;
     }
 }

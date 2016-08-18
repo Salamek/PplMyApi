@@ -49,8 +49,11 @@ abstract class BaseTest extends PHPUnit_Framework_TestCase
         $this->package = new Package(115, Product::PPL_PARCEL_CZ_PRIVATE, 10, 'Testpvaci balik', Depo::CODE_09, $sender, $recipient);
 
         $this->packages[] = new Package(116, Product::PPL_PARCEL_CZ_PRIVATE, 1, 'Testpvaci balik 1', Depo::CODE_01, $sender, $recipient);
-        $this->packages[] = new Package(117, Product::PPL_PARCEL_CZ_PRIVATE_COD, 2, 'Testpvaci balik 2', Depo::CODE_02, $sender, $recipient, null, $paymentInfo);
-        $this->packages[] = new Package(118, Product::PPL_PARCEL_CZ_PRIVATE, 3, 'Testpvaci balik 3', Depo::CODE_03, $sender, $recipient);
+
+        //These two are together
+        $this->packages[] = new Package(117, Product::PPL_PARCEL_CZ_PRIVATE_COD, 2, 'Testpvaci balik 2', Depo::CODE_02, $sender, $recipient, null, $paymentInfo, null, 2, 1);
+        $this->packages[] = new Package(118, Product::PPL_PARCEL_CZ_PRIVATE, 3, 'Testpvaci balik 3', Depo::CODE_02, $sender, $recipient, null, null, null, 2, 2);
+
         $this->packages[] = new Package(119, Product::PPL_PARCEL_CZ_PRIVATE, 4, 'Testpvaci balik 4', Depo::CODE_04, $sender, $recipient);
         $this->packages[] = new Package(120, Product::PPL_PARCEL_CZ_PRIVATE, 5, 'Testpvaci balik 5', Depo::CODE_05, $sender, $recipient);
     }

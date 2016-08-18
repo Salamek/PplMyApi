@@ -117,9 +117,9 @@ class Label
         // Stop Transformation
         $pdf->StopTransform();
 
-        // One of One
+        // PackagePosition of PackageCount
         $pdf->SetFont($pdf->getFontFamily(), 'B', 27);
-        $pdf->MultiCell(40, 0, '1/1', ['LTRB' => ['width' => 1]], 'C', 0, 0, 244, 175, true, 0, false, true, 0);
+        $pdf->MultiCell(40, 0, sprintf('%s/%s', $package->getPackagePosition(), $package->getPackageCount()), ['LTRB' => ['width' => 1]], 'C', 0, 0, 244, 175, true, 0, false, true, 0);
 
         // Dobirka
         if (in_array($package->getPackageProductType(), Product::$cashOnDelivery))
@@ -252,9 +252,9 @@ class Label
         // Stop Transformation
         $pdf->StopTransform();
 
-        // One of One
+        // PackagePosition of PackageCount
         $pdf->SetFont($pdf->getFontFamily(), 'B', 13);
-        $pdf->MultiCell(20, 0, '1/1', ['LTRB' => ['width' => 0.7]], 'C', 0, 0, 116 + $xPositionOffset, 85 + $yPositionOffset, true, 0, false, true, 0);
+        $pdf->MultiCell(20, 0, sprintf('%s/%s', $package->getPackagePosition(), $package->getPackageCount()), ['LTRB' => ['width' => 0.7]], 'C', 0, 0, 116 + $xPositionOffset, 85 + $yPositionOffset, true, 0, false, true, 0);
 
         // Dobirka
         if (in_array($package->getPackageProductType(), Product::$cashOnDelivery))
