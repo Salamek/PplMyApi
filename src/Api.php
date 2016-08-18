@@ -66,6 +66,9 @@ use Salamek\PplMyApi\Model\PickUpOrder;
  * Ciselna rada, rozsahy, jejich vycerpani, nutnost implementovat do API
  *
  * createPackages nekontroluje duplicitu PackNumber, co se stane kdyz poslu vicekrat se stejnym PackNumber ? prepisou se data ? Nemelo by toto byt nejak uvedeno v DOC ?
+ * WrapCode PLASTIC_BOX = 50 VS BOX
+ * Z dokumentace neni jasne co je pole vice polozek a co je pole v poli
+ * Chybi ciselnik smeru Route.$routeCode
  */
 class Api
 {
@@ -328,6 +331,12 @@ class Api
         return $result;
     }
 
+    /**
+     * @param Package[] $packages
+     * @param null $customerUniqueImportId
+     * @return mixed
+     * @throws WrongDataException
+     */
     public function createPackages(array $packages, $customerUniqueImportId = null)
     {
         $packagesProcessed = [];
@@ -335,6 +344,76 @@ class Api
         foreach ($packages AS $package) {
             if (!$package instanceof Package) {
                 throw new WrongDataException('$packages must contain only instances of Package class');
+            }
+
+            $packagesExtNums = [];
+            foreach ($package->getExternalNumbers() AS $externalNumber)
+            {
+                $packagesExtNums[]['MyApiPackageExtNum'] = [
+                    'Code' => $externalNumber->getCode(),
+                    'ExtNumber' => $externalNumber->getExternalNumber()
+                ];
+            }
+
+            $packageServices = [];
+            foreach ($package->getPackageServices() AS $service)
+            {
+                $packageServices[]['MyApiPackageInServices'] = [
+                    'SvcCode' => $service->getSvcCode()
+                ];
+            }
+
+
+            $flags = [];
+            foreach ($package->getFlags() AS $flag)
+            {
+                $flags[]['MyApiFlag'] = [
+                    'Code' => $flag->getCode(),
+                    'Value' => $flag->isValue()
+                ];
+            }
+
+            $palletInfo = null;
+            if ($package->getPalletInfo())
+            {
+                $collies = [];
+                foreach ($package->getPalletInfo()->getCollies() AS $colli)
+                {
+                    $collies[]['MyApiPackageInColli'] = [
+                        'ColliNumber' => $colli->getColliNumber(),
+                        'Height' => $colli->getHeight(),
+                        'Length' => $colli->getLength(),
+                        'Weight' => $colli->getWeight(),
+                        'Width' => $colli->getWidth(),
+                        'WrapCode' => $colli->getWrapCode()
+                    ];
+                }
+
+                $palletInfo = [];
+                $palletInfo['Collies'] = $collies;
+                $palletInfo['ManipulationType'] = $package->getPalletInfo()->getManipulationType();
+                $palletInfo['PEURCount'] = $package->getPalletInfo()->getPalletEurCount();
+                $palletInfo['PackDesc'] = $package->getPalletInfo()->getPackDescription();
+                $palletInfo['PickUpCargoTypeCode'] = $package->getPalletInfo()->getPickUpCargoTypeCode();
+                $palletInfo['Volume'] = $package->getPalletInfo()->getVolume();
+            }
+
+
+            $weightedPackageInfo = null;
+            if ($package->getWeightedPackageInfo())
+            {
+                $routes = [];
+                foreach ($package->getWeightedPackageInfo()->getRoutes() AS $route)
+                {
+                    $routes[]['Route'] = [
+                        'RouteType' => $route->getRouteType(),
+                        'RouteCode' => $route->getRouteCode()
+                    ];
+                }
+
+                $weightedPackageInfo = [];
+                $weightedPackageInfo['Weight'] = $package->getWeightedPackageInfo()->getWeight();
+                $weightedPackageInfo['Routes'] = $routes;
             }
 
             $packagesProcessed[] = [
@@ -386,15 +465,13 @@ class Api
                     'SpecSymbol' => $package->getPaymentInfo()->getSpecificSymbol(),
                     'Swift' => $package->getPaymentInfo()->getSwift(),
                 ] : null),
-                'PackagesExtNums' => ($package->getExternalNumbers() ? [
-                    'MyApiPackageExtNum' => [
-                        'Code' => $package->getExternalNumbers()->getCode(),
-                        'ExtNumber' => $package->getExternalNumbers()->getExternalNumber(),
-                    ]
-                ] : null)
+                'PackagesExtNums' => $packagesExtNums,
+                'PackageServices' => $packageServices,
+                'Flags' => $flags,
+                'PalletInfo' => $palletInfo,
+                'WeightedPackageInfoIn' => $weightedPackageInfo
             ];
         }
-
 
         $result = $this->soap->CreatePackages([
             'Auth' => [

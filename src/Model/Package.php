@@ -43,8 +43,20 @@ class Package
     /** @var null|PaymentInfo */
     private $paymentInfo = null;
 
-    /** @var null|ExternalNumbers */
-    private $externalNumbers = null;
+    /** @var null|ExternalNumber */
+    private $externalNumbers = [];
+
+    /** @var PackageService[] */
+    private $packageServices = [];
+
+    /** @var Flag[] */
+    private $flags = [];
+
+    /** @var null|PalletInfo */
+    private $palletInfo = null;
+
+    /** @var null|WeightedPackageInfo */
+    private $weightedPackageInfo = null;
 
     /** @var int */
     private $packageCount = 1;
@@ -63,12 +75,16 @@ class Package
      * @param Recipient $recipient
      * @param null|SpecialDelivery $specialDelivery
      * @param null|PaymentInfo $paymentInfo
-     * @param null|ExternalNumbers $externalNumbers
+     * @param ExternalNumber[] $externalNumbers
+     * @param PackageService[] $packageServices
+     * @param Flag[] $flags
+     * @param null|PalletInfo $palletInfo
+     * @param null|WeightedPackageInfo $weightedPackageInfo
      * @param integer $packageCount
      * @param integer $packagePosition
      * @throws \Exception
      */
-    public function __construct($seriesNumberId, $packageProductType, $weight, $note, $depoCode, Sender $sender, Recipient $recipient, SpecialDelivery $specialDelivery = null, PaymentInfo $paymentInfo = null, ExternalNumbers $externalNumbers = null, $packageCount = 1, $packagePosition = 1)
+    public function __construct($seriesNumberId, $packageProductType, $weight, $note, $depoCode, Sender $sender, Recipient $recipient, SpecialDelivery $specialDelivery = null, PaymentInfo $paymentInfo = null, array $externalNumbers = [], array $packageServices = [], array $flags = [], PalletInfo $palletInfo = null, WeightedPackageInfo $weightedPackageInfo = null, $packageCount = 1, $packagePosition = 1)
     {
         if (in_array($packageProductType, Product::$cashOnDelivery) && is_null($paymentInfo))
         {
@@ -84,8 +100,13 @@ class Package
         $this->setSpecialDelivery($specialDelivery);
         $this->setPaymentInfo($paymentInfo);
         $this->setExternalNumbers($externalNumbers);
+        $this->setPackageServices($packageServices);
+        $this->setFlags($flags);
+        $this->setPalletInfo($palletInfo);
+        $this->setWeightedPackageInfo($weightedPackageInfo);
         $this->setPackageCount($packageCount);
         $this->setPackagePosition($packagePosition);
+
 
         if (!is_null($seriesNumberId))
         {
@@ -197,11 +218,43 @@ class Package
     }
 
     /**
-     * @param null|ExternalNumbers $externalNumbers
+     * @param ExternalNumber[] $externalNumbers
      */
-    public function setExternalNumbers(ExternalNumbers $externalNumbers = null)
+    public function setExternalNumbers(array $externalNumbers)
     {
         $this->externalNumbers = $externalNumbers;
+    }
+
+    /**
+     * @param PackageService[] $packageServices
+     */
+    public function setPackageServices(array $packageServices)
+    {
+        $this->packageServices = $packageServices;
+    }
+
+    /**
+     * @param Flag[] $flags
+     */
+    public function setFlags(array $flags)
+    {
+        $this->flags = $flags;
+    }
+
+    /**
+     * @param PalletInfo $palletInfo
+     */
+    public function setPalletInfo(PalletInfo $palletInfo)
+    {
+        $this->palletInfo = $palletInfo;
+    }
+
+    /**
+     * @param null|WeightedPackageInfo $weightedPackageInfo
+     */
+    public function setWeightedPackageInfo($weightedPackageInfo)
+    {
+        $this->weightedPackageInfo = $weightedPackageInfo;
     }
 
     /**
@@ -293,11 +346,43 @@ class Package
     }
 
     /**
-     * @return null|ExternalNumbers
+     * @return ExternalNumber[]
      */
     public function getExternalNumbers()
     {
         return $this->externalNumbers;
+    }
+
+    /**
+     * @return PackageService[]
+     */
+    public function getPackageServices()
+    {
+        return $this->packageServices;
+    }
+
+    /**
+     * @return Flag[]
+     */
+    public function getFlags()
+    {
+        return $this->flags;
+    }
+
+    /**
+     * @return PalletInfo
+     */
+    public function getPalletInfo()
+    {
+        return $this->palletInfo;
+    }
+
+    /**
+     * @return null|WeightedPackageInfo
+     */
+    public function getWeightedPackageInfo()
+    {
+        return $this->weightedPackageInfo;
     }
 
     /**
