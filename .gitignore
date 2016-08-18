@@ -2,3 +2,4 @@
 /test/config.json
 /vendor
 /composer.lock
+/test/config.json.old
