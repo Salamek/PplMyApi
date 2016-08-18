@@ -6,6 +6,7 @@
 namespace Salamek\PplMyApi;
 
 use Salamek\PplMyApi\Enum\Product;
+use Salamek\PplMyApi\Exception\WrongDataException;
 use Salamek\PplMyApi\Model\Package;
 
 
@@ -20,7 +21,7 @@ class Tools
     {
         if (!$package->getSeriesNumberId())
         {
-            throw new \Exception('Package has no Series number ID!');
+            throw new WrongDataException('Package has no Series number ID!');
         }
 
         switch($package->getPackageProductType())

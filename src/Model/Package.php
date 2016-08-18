@@ -8,6 +8,7 @@ namespace Salamek\PplMyApi\Model;
 
 use Salamek\PplMyApi\Enum\Depo;
 use Salamek\PplMyApi\Enum\Product;
+use Salamek\PplMyApi\Exception\WrongDataException;
 use Salamek\PplMyApi\Tools;
 
 class Package
@@ -63,7 +64,7 @@ class Package
     {
         if (in_array($packageProductType, Product::$cashOnDelivery) && is_null($paymentInfo))
         {
-            throw new \Exception('$paymentInfo must be set if product type is CoD');
+            throw new WrongDataException('$paymentInfo must be set if product type is CoD');
         }
 
         $this->setPackageProductType($packageProductType);
@@ -90,19 +91,11 @@ class Package
     {
         if (!is_numeric($seriesNumberId))
         {
-            throw new \Exception('$seriesNumberId has wrong format');
+            throw new WrongDataException('$seriesNumberId has wrong format');
         }
 
         $this->seriesNumberId = $seriesNumberId;
         $this->setPackageNumber(Tools::generatePackageNumber($this));
-    }
-
-    /**
-     * @param $orderId
-     */
-    public function setOrderId($orderId)
-    {
-        $this->orderId = $orderId;
     }
 
     /**
@@ -113,7 +106,7 @@ class Package
     {
         if (strlen($note) > 100)
         {
-            throw new \Exception('$note is longer then 300 characters');
+            throw new WrongDataException('$note is longer then 300 characters');
         }
 
         $this->note = $note;
@@ -127,7 +120,7 @@ class Package
     {
         if (!in_array($packageProductType, Product::$list))
         {
-            throw new \Exception(sprintf('$packageProductType has wrong value, only %s are allowed', implode(', ', Product::$list)));
+            throw new WrongDataException(sprintf('$packageProductType has wrong value, only %s are allowed', implode(', ', Product::$list)));
         }
         $this->packageProductType = $packageProductType;
     }
@@ -156,7 +149,7 @@ class Package
     {
         if (!in_array($depoCode, Depo::$list))
         {
-            throw new \Exception(sprintf('$depoCode has wrong value, only %s are allowed', implode(', ', Depo::$list)));
+            throw new WrongDataException(sprintf('$depoCode has wrong value, only %s are allowed', implode(', ', Depo::$list)));
         }
         $this->depoCode = $depoCode;
     }

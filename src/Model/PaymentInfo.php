@@ -7,6 +7,7 @@ namespace Salamek\PplMyApi\Model;
 
 
 use Salamek\PplMyApi\Enum\Currency;
+use Salamek\PplMyApi\Exception\WrongDataException;
 
 class PaymentInfo
 {
@@ -103,7 +104,7 @@ class PaymentInfo
     {
         if (!in_array($cashOnDeliveryCurrency, Currency::$list))
         {
-            throw new \Exception(sprintf('Currency Code %s is not supported, use one of %s', $cashOnDeliveryCurrency, implode(', ', Currency::$list)));
+            throw new WrongDataException(sprintf('Currency Code %s is not supported, use one of %s', $cashOnDeliveryCurrency, implode(', ', Currency::$list)));
         }
 
         $this->cashOnDeliveryCurrency = $cashOnDeliveryCurrency;
@@ -141,7 +142,7 @@ class PaymentInfo
     {
         if (!in_array($insuranceCurrency, Currency::$list))
         {
-            throw new \Exception(sprintf('Currency Code %s is not supported, use one of %s', $insuranceCurrency, implode(', ', Currency::$list)));
+            throw new WrongDataException(sprintf('Currency Code %s is not supported, use one of %s', $insuranceCurrency, implode(', ', Currency::$list)));
         }
         $this->insuranceCurrency = $insuranceCurrency;
     }

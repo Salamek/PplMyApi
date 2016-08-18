@@ -6,6 +6,8 @@
 namespace Salamek\PplMyApi\Model;
 
 
+use Salamek\PplMyApi\Exception\WrongDataException;
+
 class PickUpOrder
 {
     /** @var string */
@@ -69,7 +71,7 @@ class PickUpOrder
     {
         if (strlen($orderReferenceId) > 100)
         {
-            throw new \Exception('$orderReferenceId is longer then 100 characters');
+            throw new WrongDataException('$orderReferenceId is longer then 100 characters');
         }
 
         $this->orderReferenceId = $orderReferenceId;
@@ -83,7 +85,7 @@ class PickUpOrder
     {
         if (strlen($customerReference) > 40)
         {
-            throw new \Exception('$customerReference is longer then 40 characters');
+            throw new WrongDataException('$customerReference is longer then 40 characters');
         }
 
         $this->customerReference = $customerReference;
@@ -105,7 +107,7 @@ class PickUpOrder
     {
         if (strlen($note) > 300)
         {
-            throw new \Exception('$note is longer then 300 characters');
+            throw new WrongDataException('$note is longer then 300 characters');
         }
 
         $this->note = $note;
@@ -119,12 +121,12 @@ class PickUpOrder
     {
         if (strlen($email) > 100)
         {
-            throw new \Exception('$email is longer then 100 characters');
+            throw new WrongDataException('$email is longer then 100 characters');
         }
 
         if (!filter_var($email, FILTER_VALIDATE_EMAIL))
         {
-            throw new \Exception('$email have invalid value');
+            throw new WrongDataException('$email have invalid value');
         }
 
         $this->email = $email;

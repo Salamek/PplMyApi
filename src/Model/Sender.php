@@ -6,6 +6,7 @@
 namespace Salamek\PplMyApi\Model;
 
 use Salamek\PplMyApi\Enum\Country;
+use Salamek\PplMyApi\Exception\WrongDataException;
 
 /**
  * Class Sender
@@ -73,7 +74,7 @@ class Sender
     {
         if (strlen($city) > 50)
         {
-            throw new \Exception('$city is longer then 50 characters');
+            throw new WrongDataException('$city is longer then 50 characters');
         }
         $this->city = $city;
     }
@@ -86,7 +87,7 @@ class Sender
     {
         if (strlen($contact) > 30)
         {
-            throw new \Exception('$contact is longer then 30 characters');
+            throw new WrongDataException('$contact is longer then 30 characters');
         }
         $this->contact = $contact;
     }
@@ -99,7 +100,7 @@ class Sender
     {
         if (!in_array($country, Country::$list))
         {
-            throw new \Exception(sprintf('Country Code %s is not supported, use one of %s', $country, implode(', ', Country::$list)));
+            throw new WrongDataException(sprintf('Country Code %s is not supported, use one of %s', $country, implode(', ', Country::$list)));
         }
         $this->country = $country;
     }
@@ -112,12 +113,12 @@ class Sender
     {
         if (strlen($email) > 100)
         {
-            throw new \Exception('$email is longer then 100 characters');
+            throw new WrongDataException('$email is longer then 100 characters');
         }
 
         if (!filter_var($email, FILTER_VALIDATE_EMAIL))
         {
-            throw new \Exception('$email have invalid value');
+            throw new WrongDataException('$email have invalid value');
         }
 
         $this->email = $email;
@@ -131,7 +132,7 @@ class Sender
     {
         if (strlen($name) > 250)
         {
-            throw new \Exception('$name is longer then 250 characters');
+            throw new WrongDataException('$name is longer then 250 characters');
         }
         $this->name = $name;
     }
@@ -144,7 +145,7 @@ class Sender
     {
         if (strlen($name2) > 250)
         {
-            throw new \Exception('$name2 is longer then 250 characters');
+            throw new WrongDataException('$name2 is longer then 250 characters');
         }
         $this->name2 = $name2;
     }
@@ -157,7 +158,7 @@ class Sender
     {
         if (strlen($phone) > 30)
         {
-            throw new \Exception('$phone is longer then 30 characters');
+            throw new WrongDataException('$phone is longer then 30 characters');
         }
         $this->phone = $phone;
     }
@@ -170,7 +171,7 @@ class Sender
     {
         if (strlen($street) > 30)
         {
-            throw new \Exception('$street is longer then 30 characters');
+            throw new WrongDataException('$street is longer then 30 characters');
         }
         $this->street = $street;
     }
@@ -183,7 +184,7 @@ class Sender
     {
         if (strlen($zipCode) > 10)
         {
-            throw new \Exception('$zipCode is longer then 10 characters');
+            throw new WrongDataException('$zipCode is longer then 10 characters');
         }
         $this->zipCode = $zipCode;
     }
