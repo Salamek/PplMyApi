@@ -22,7 +22,7 @@ class Product
     const PRIVATE_PALETTE = 19;
     const PRIVATE_PALETTE_COD = 20;
 
-    /** @var array  */
+    /** @var array */
     public static $list = [
         self::PPL_PARCEL_CZ_BUSINESS,
         self::PPL_PARCEL_CZ_BUSINESS_COD,

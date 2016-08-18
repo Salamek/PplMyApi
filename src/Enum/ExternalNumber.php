@@ -19,7 +19,7 @@ class ExternalNumber
     const PL_NUMBER = 'PLCE';
     const JJD_PARCEL_CONNECT = 'PJJD';
 
-    /** @var array  */
+    /** @var array */
     public static $list = [
         self::EXTERNAL,
         self::CUSTOMER,

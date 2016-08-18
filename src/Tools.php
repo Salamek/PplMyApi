@@ -19,13 +19,11 @@ class Tools
      */
     public static function generatePackageNumber(Package $package)
     {
-        if (!$package->getSeriesNumberId())
-        {
+        if (!$package->getSeriesNumberId()) {
             throw new WrongDataException('Package has no Series number ID!');
         }
 
-        switch($package->getPackageProductType())
-        {
+        switch ($package->getPackageProductType()) {
             case Product::PRIVATE_PALETTE:
             case Product::PRIVATE_PALETTE_COD:
                 $packageIdentifierPackageProductType = 5;
@@ -64,7 +62,7 @@ class Tools
         $list = [
             $packageIdentifierPackageProductType,
             $package->getDepoCode(),
-            (in_array($package->getPackageProductType(), Product::$cashOnDelivery) ? '9': '5'),
+            (in_array($package->getPackageProductType(), Product::$cashOnDelivery) ? '9' : '5'),
             0,
             str_pad($package->getSeriesNumberId(), 6, '0', STR_PAD_LEFT)
         ];

@@ -6,8 +6,8 @@
 namespace Salamek\PplMyApi\Model;
 
 
-use Salamek\PplMyApi\Exception\WrongDataException;
 use Salamek\PplMyApi\Enum\PackageService as PackageServiceEnum;
+use Salamek\PplMyApi\Exception\WrongDataException;
 
 class PackageService
 {
@@ -29,8 +29,7 @@ class PackageService
      */
     public function setSvcCode($svcCode)
     {
-        if (!in_array($svcCode, PackageServiceEnum::$list))
-        {
+        if (!in_array($svcCode, PackageServiceEnum::$list)) {
             throw new WrongDataException(sprintf('$svcCode has wrong value, only %s are allowed', implode(', ', PackageServiceEnum::$list)));
         }
 

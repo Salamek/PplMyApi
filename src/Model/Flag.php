@@ -6,8 +6,8 @@
 namespace Salamek\PplMyApi\Model;
 
 
-use Salamek\PplMyApi\Exception\WrongDataException;
 use Salamek\PplMyApi\Enum\Flag as FlagEnum;
+use Salamek\PplMyApi\Exception\WrongDataException;
 
 class Flag
 {
@@ -34,8 +34,7 @@ class Flag
      */
     public function setCode($code)
     {
-        if (!in_array($code, FlagEnum::$list))
-        {
+        if (!in_array($code, FlagEnum::$list)) {
             throw new WrongDataException(sprintf('$code has wrong value, only %s are allowed', implode(', ', FlagEnum::$list)));
         }
         $this->code = $code;
@@ -47,8 +46,7 @@ class Flag
      */
     public function setValue($value)
     {
-        if (!is_bool($value))
-        {
+        if (!is_bool($value)) {
             throw new WrongDataException('$value has wrong value');
         }
         $this->value = $value;

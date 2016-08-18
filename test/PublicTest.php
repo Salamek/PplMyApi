@@ -4,9 +4,9 @@
  */
 
 
-use Salamek\PplMyApi\Tools;
-use Salamek\PplMyApi\Model\Package;
 use Salamek\PplMyApi\Enum\LabelDecomposition;
+use Salamek\PplMyApi\Model\Package;
+use Salamek\PplMyApi\Tools;
 
 final class PublicTest extends BaseTest
 {
@@ -69,7 +69,7 @@ final class PublicTest extends BaseTest
 
         $this->assertNotEmpty($raw);
 
-        $filePath = __DIR__.'/../tmp/'.$this->package->getPackageNumber().'-full.pdf';
+        $filePath = __DIR__ . '/../tmp/' . $this->package->getPackageNumber() . '-full.pdf';
 
         file_put_contents($filePath, $raw);
 
@@ -88,12 +88,11 @@ final class PublicTest extends BaseTest
         $packageNumbers = [];
 
         /** @var Package $package */
-        foreach($this->packages AS $package)
-        {
+        foreach ($this->packages AS $package) {
             $packageNumbers[] = $package->getPackageNumber();
         }
 
-        $filePath = __DIR__.'/../tmp/'.implode('-', $packageNumbers).'-full.pdf';
+        $filePath = __DIR__ . '/../tmp/' . implode('-', $packageNumbers) . '-full.pdf';
 
         file_put_contents($filePath, $raw);
 
@@ -109,7 +108,7 @@ final class PublicTest extends BaseTest
 
         $this->assertNotEmpty($raw);
 
-        $filePath = __DIR__.'/../tmp/'.$this->package->getPackageNumber().'-quarter.pdf';
+        $filePath = __DIR__ . '/../tmp/' . $this->package->getPackageNumber() . '-quarter.pdf';
 
         file_put_contents($filePath, $raw);
 
@@ -128,12 +127,11 @@ final class PublicTest extends BaseTest
         $packageNumbers = [];
 
         /** @var Package $package */
-        foreach($this->packages AS $package)
-        {
+        foreach ($this->packages AS $package) {
             $packageNumbers[] = $package->getPackageNumber();
         }
 
-        $filePath = __DIR__.'/../tmp/'.implode('-', $packageNumbers).'-quarter.pdf';
+        $filePath = __DIR__ . '/../tmp/' . implode('-', $packageNumbers) . '-quarter.pdf';
 
         file_put_contents($filePath, $raw);
 

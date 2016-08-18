@@ -72,8 +72,7 @@ class Sender
      */
     public function setCity($city)
     {
-        if (strlen($city) > 50)
-        {
+        if (strlen($city) > 50) {
             throw new WrongDataException('$city is longer then 50 characters');
         }
         $this->city = $city;
@@ -85,8 +84,7 @@ class Sender
      */
     public function setContact($contact)
     {
-        if (strlen($contact) > 30)
-        {
+        if (strlen($contact) > 30) {
             throw new WrongDataException('$contact is longer then 30 characters');
         }
         $this->contact = $contact;
@@ -98,8 +96,7 @@ class Sender
      */
     public function setCountry($country)
     {
-        if (!in_array($country, Country::$list))
-        {
+        if (!in_array($country, Country::$list)) {
             throw new WrongDataException(sprintf('Country Code %s is not supported, use one of %s', $country, implode(', ', Country::$list)));
         }
         $this->country = $country;
@@ -111,13 +108,11 @@ class Sender
      */
     public function setEmail($email)
     {
-        if (strlen($email) > 100)
-        {
+        if (strlen($email) > 100) {
             throw new WrongDataException('$email is longer then 100 characters');
         }
 
-        if (!filter_var($email, FILTER_VALIDATE_EMAIL))
-        {
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             throw new WrongDataException('$email have invalid value');
         }
 
@@ -130,8 +125,7 @@ class Sender
      */
     public function setName($name)
     {
-        if (strlen($name) > 250)
-        {
+        if (strlen($name) > 250) {
             throw new WrongDataException('$name is longer then 250 characters');
         }
         $this->name = $name;
@@ -143,8 +137,7 @@ class Sender
      */
     public function setName2($name2)
     {
-        if (strlen($name2) > 250)
-        {
+        if (strlen($name2) > 250) {
             throw new WrongDataException('$name2 is longer then 250 characters');
         }
         $this->name2 = $name2;
@@ -156,8 +149,7 @@ class Sender
      */
     public function setPhone($phone)
     {
-        if (strlen($phone) > 30)
-        {
+        if (strlen($phone) > 30) {
             throw new WrongDataException('$phone is longer then 30 characters');
         }
         $this->phone = $phone;
@@ -169,8 +161,7 @@ class Sender
      */
     public function setStreet($street)
     {
-        if (strlen($street) > 30)
-        {
+        if (strlen($street) > 30) {
             throw new WrongDataException('$street is longer then 30 characters');
         }
         $this->street = $street;
@@ -182,8 +173,7 @@ class Sender
      */
     public function setZipCode($zipCode)
     {
-        if (strlen($zipCode) > 10)
-        {
+        if (strlen($zipCode) > 10) {
             throw new WrongDataException('$zipCode is longer then 10 characters');
         }
         $this->zipCode = $zipCode;

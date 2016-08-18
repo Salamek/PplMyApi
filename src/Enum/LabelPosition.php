@@ -13,7 +13,7 @@ class LabelPosition
     const BOTTOM_LEFT = 3;
     const BOTTOM_RIGHT = 4;
 
-    /** @var array  */
+    /** @var array */
     public static $list = [
         self::TOP_LEFT,
         self::TOP_RIGHT,

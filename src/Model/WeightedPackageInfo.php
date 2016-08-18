@@ -34,8 +34,7 @@ class WeightedPackageInfo
      */
     public function setWeight($weight)
     {
-        if (!is_numeric($weight))
-        {
+        if (!is_numeric($weight)) {
             throw new WrongDataException('$weight has wrong value');
         }
         $this->weight = $weight;

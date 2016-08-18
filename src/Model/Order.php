@@ -28,16 +28,16 @@ class Order
 
     /** @var integer */
     private $packageProductType;
-    
+
     /** @var  \DateTimeInterface */
     private $sendDate;
-    
+
     /** @var  null|\DateTimeInterface */
     private $sendTimeFrom = null;
-    
+
     /** @var null|\DateTimeInterface */
     private $sendTimeTo = null;
-    
+
     /** @var Sender */
     private $sender;
 
@@ -58,8 +58,19 @@ class Order
      * @param \DateTimeInterface|null $sendTimeFrom
      * @param \DateTimeInterface|null $sendTimeTo
      */
-    public function __construct($countPack, $orderReferenceId, $packProductType, \DateTimeInterface $sendDate, Sender $sender, Recipient $recipient, $customerReference = null, $email = null, $note = null, \DateTimeInterface $sendTimeFrom = null, \DateTimeInterface $sendTimeTo = null)
-    {
+    public function __construct(
+        $countPack,
+        $orderReferenceId,
+        $packProductType,
+        \DateTimeInterface $sendDate,
+        Sender $sender,
+        Recipient $recipient,
+        $customerReference = null,
+        $email = null,
+        $note = null,
+        \DateTimeInterface $sendTimeFrom = null,
+        \DateTimeInterface $sendTimeTo = null
+    ) {
         $this->setCountPackages($countPack);
         $this->setOrderReferenceId($orderReferenceId);
         $this->setPackageProductType($packProductType);
@@ -79,8 +90,7 @@ class Order
      */
     public function setCountPackages($countPackages)
     {
-        if ($countPackages < 1)
-        {
+        if ($countPackages < 1) {
             throw new WrongDataException('$countPack must be bigger then 0');
         }
 
@@ -93,8 +103,7 @@ class Order
      */
     public function setCustomerReference($customerReference = null)
     {
-        if (strlen($customerReference) > 40)
-        {
+        if (strlen($customerReference) > 40) {
             throw new WrongDataException('$customerReference is longer then 40 characters');
         }
 
@@ -107,13 +116,11 @@ class Order
      */
     public function setEmail($email = null)
     {
-        if (strlen($email) > 100)
-        {
+        if (strlen($email) > 100) {
             throw new WrongDataException('$email is longer then 100 characters');
         }
 
-        if (!filter_var($email, FILTER_VALIDATE_EMAIL))
-        {
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             throw new WrongDataException('$email have invalid value');
         }
 
@@ -126,8 +133,7 @@ class Order
      */
     public function setNote($note = null)
     {
-        if (strlen($note) > 100)
-        {
+        if (strlen($note) > 100) {
             throw new WrongDataException('$note is longer then 300 characters');
         }
 
@@ -140,8 +146,7 @@ class Order
      */
     public function setOrderReferenceId($orderReferenceId)
     {
-        if (strlen($orderReferenceId) > 100)
-        {
+        if (strlen($orderReferenceId) > 100) {
             throw new WrongDataException('$orderReferenceId is longer then 300 characters');
         }
 
@@ -154,8 +159,7 @@ class Order
      */
     public function setPackageProductType($packageProductType)
     {
-        if (!in_array($packageProductType, Product::$list))
-        {
+        if (!in_array($packageProductType, Product::$list)) {
             throw new WrongDataException(sprintf('$packProductType has wrong value, only %s are allowed', implode(', ', Product::$list)));
         }
         $this->packageProductType = $packageProductType;

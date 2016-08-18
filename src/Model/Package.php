@@ -84,10 +84,25 @@ class Package
      * @param integer $packagePosition
      * @throws \Exception
      */
-    public function __construct($seriesNumberId, $packageProductType, $weight, $note, $depoCode, Sender $sender, Recipient $recipient, SpecialDelivery $specialDelivery = null, PaymentInfo $paymentInfo = null, array $externalNumbers = [], array $packageServices = [], array $flags = [], PalletInfo $palletInfo = null, WeightedPackageInfo $weightedPackageInfo = null, $packageCount = 1, $packagePosition = 1)
-    {
-        if (in_array($packageProductType, Product::$cashOnDelivery) && is_null($paymentInfo))
-        {
+    public function __construct(
+        $seriesNumberId,
+        $packageProductType,
+        $weight,
+        $note,
+        $depoCode,
+        Sender $sender,
+        Recipient $recipient,
+        SpecialDelivery $specialDelivery = null,
+        PaymentInfo $paymentInfo = null,
+        array $externalNumbers = [],
+        array $packageServices = [],
+        array $flags = [],
+        PalletInfo $palletInfo = null,
+        WeightedPackageInfo $weightedPackageInfo = null,
+        $packageCount = 1,
+        $packagePosition = 1
+    ) {
+        if (in_array($packageProductType, Product::$cashOnDelivery) && is_null($paymentInfo)) {
             throw new WrongDataException('$paymentInfo must be set if product type is CoD');
         }
 
@@ -108,8 +123,7 @@ class Package
         $this->setPackagePosition($packagePosition);
 
 
-        if (!is_null($seriesNumberId))
-        {
+        if (!is_null($seriesNumberId)) {
             $this->setSeriesNumberId($seriesNumberId);
         }
     }
@@ -120,8 +134,7 @@ class Package
      */
     public function setSeriesNumberId($seriesNumberId)
     {
-        if (!is_numeric($seriesNumberId))
-        {
+        if (!is_numeric($seriesNumberId)) {
             throw new WrongDataException('$seriesNumberId has wrong format');
         }
 
@@ -135,8 +148,7 @@ class Package
      */
     public function setNote($note = null)
     {
-        if (strlen($note) > 100)
-        {
+        if (strlen($note) > 100) {
             throw new WrongDataException('$note is longer then 300 characters');
         }
 
@@ -149,8 +161,7 @@ class Package
      */
     public function setPackageProductType($packageProductType)
     {
-        if (!in_array($packageProductType, Product::$list))
-        {
+        if (!in_array($packageProductType, Product::$list)) {
             throw new WrongDataException(sprintf('$packageProductType has wrong value, only %s are allowed', implode(', ', Product::$list)));
         }
         $this->packageProductType = $packageProductType;
@@ -178,8 +189,7 @@ class Package
      */
     public function setDepoCode($depoCode)
     {
-        if (!in_array($depoCode, Depo::$list))
-        {
+        if (!in_array($depoCode, Depo::$list)) {
             throw new WrongDataException(sprintf('$depoCode has wrong value, only %s are allowed', implode(', ', Depo::$list)));
         }
         $this->depoCode = $depoCode;

@@ -1,9 +1,8 @@
 <?php
+
 /**
  * Copyright (C) 2016 Adam Schubert <adam.schubert@sg1-game.net>.
  */
-
-
 final class PrivateTest extends BaseTest
 {
     /**
@@ -12,8 +11,7 @@ final class PrivateTest extends BaseTest
      */
     public function testGetPackages()
     {
-        if ($this->anonymous)
-        {
+        if ($this->anonymous) {
             $this->markTestSkipped('No login credentials has been set.');
         }
 
@@ -29,8 +27,7 @@ final class PrivateTest extends BaseTest
      */
     public function testGetCitiesRouting()
     {
-        if ($this->anonymous)
-        {
+        if ($this->anonymous) {
             $this->markTestSkipped('No login credentials has been set.');
         }
 
@@ -42,8 +39,7 @@ final class PrivateTest extends BaseTest
      */
     public function testCreateOrders()
     {
-        if ($this->anonymous)
-        {
+        if ($this->anonymous) {
             $this->markTestSkipped('No login credentials has been set.');
         }
 
@@ -57,8 +53,7 @@ final class PrivateTest extends BaseTest
      */
     public function testCreatePackages()
     {
-        if ($this->anonymous)
-        {
+        if ($this->anonymous) {
             $this->markTestSkipped('No login credentials has been set.');
         }
 
@@ -72,8 +67,7 @@ final class PrivateTest extends BaseTest
      */
     public function testCreatePickupOrders()
     {
-        if ($this->anonymous)
-        {
+        if ($this->anonymous) {
             $this->markTestSkipped('No login credentials has been set.');
         }
 

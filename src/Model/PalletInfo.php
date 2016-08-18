@@ -64,8 +64,7 @@ class PalletInfo
      */
     public function setManipulationType($manipulationType)
     {
-        if (!in_array($manipulationType, ManipulationType::$list))
-        {
+        if (!in_array($manipulationType, ManipulationType::$list)) {
             throw new WrongDataException(sprintf('$manipulationType has wrong value, only %s are allowed', implode(', ', ManipulationType::$list)));
         }
 
@@ -78,8 +77,7 @@ class PalletInfo
      */
     public function setPalletEurCount($palletEurCount)
     {
-        if (!is_numeric($palletEurCount))
-        {
+        if (!is_numeric($palletEurCount)) {
             throw new WrongDataException('$paletteEurCount have wrong value');
         }
         $this->palletEurCount = $palletEurCount;
@@ -91,8 +89,7 @@ class PalletInfo
      */
     public function setPackDescription($packDescription)
     {
-        if (strlen($packDescription) > 512)
-        {
+        if (strlen($packDescription) > 512) {
             throw new WrongDataException('$packDescription is longer than 512');
         }
         $this->packDescription = $packDescription;
@@ -104,8 +101,7 @@ class PalletInfo
      */
     public function setPickUpCargoTypeCode($pickUpCargoTypeCode)
     {
-        if (!in_array($pickUpCargoTypeCode, ManipulationType::$list))
-        {
+        if (!in_array($pickUpCargoTypeCode, ManipulationType::$list)) {
             throw new WrongDataException(sprintf('$pickUpCargoTypeCode has wrong value, only %s are allowed', implode(', ', ManipulationType::$list)));
         }
         $this->pickUpCargoTypeCode = $pickUpCargoTypeCode;
@@ -117,8 +113,7 @@ class PalletInfo
      */
     public function setVolume($volume)
     {
-        if (!is_numeric($volume))
-        {
+        if (!is_numeric($volume)) {
             throw new WrongDataException('$volume has wrong value');
         }
         $this->volume = $volume;

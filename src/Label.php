@@ -8,6 +8,7 @@ namespace Salamek\PplMyApi;
 
 use Salamek\PplMyApi\Enum\LabelDecomposition;
 use Salamek\PplMyApi\Enum\LabelPosition;
+use Salamek\PplMyApi\Enum\PackageService;
 use Salamek\PplMyApi\Enum\Product;
 use Salamek\PplMyApi\Exception\WrongDataException;
 use Salamek\PplMyApi\Model\Package;
@@ -22,16 +23,14 @@ class Label
      */
     public function generateLabels(array $packages, $decomposition = LabelDecomposition::FULL)
     {
-        if (!in_array($decomposition, LabelDecomposition::$list))
-        {
+        if (!in_array($decomposition, LabelDecomposition::$list)) {
             throw new WrongDataException(sprintf('unknown $decomposition ony %s are allowed', implode(', ', LabelDecomposition::$list)));
         }
 
         $packageNumbers = [];
 
         /** @var Package $package */
-        foreach ($packages AS $package)
-        {
+        foreach ($packages AS $package) {
             $packageNumbers[] = $package->getPackageNumber();
         }
 
@@ -49,23 +48,19 @@ class Label
 
         $quarterPosition = LabelPosition::TOP_LEFT;
         /** @var Package $package */
-        foreach ($packages AS $package)
-        {
-            switch ($decomposition)
-            {
+        foreach ($packages AS $package) {
+            switch ($decomposition) {
                 case LabelDecomposition::FULL:
                     $pdf->AddPage();
                     $pdf = $this->generateLabelFull($pdf, $package);
                     break;
 
                 case LabelDecomposition::QUARTER:
-                    if ($quarterPosition > LabelPosition::BOTTOM_RIGHT)
-                    {
+                    if ($quarterPosition > LabelPosition::BOTTOM_RIGHT) {
                         $quarterPosition = LabelPosition::TOP_LEFT;
                     }
 
-                    if ($quarterPosition == LabelPosition::TOP_LEFT)
-                    {
+                    if ($quarterPosition == LabelPosition::TOP_LEFT) {
                         $pdf->AddPage();
                     }
 
@@ -86,7 +81,7 @@ class Label
     public function generateLabelFull(\TCPDF $pdf, Package $package)
     {
         $x = 17;
-        $pdf->Image(__DIR__.'/../assets/logo.png', $x, 10, 66, '', 'PNG');
+        $pdf->Image(__DIR__ . '/../assets/logo.png', $x, 10, 66, '', 'PNG');
 
         //Contact info
         $contactInfoY = 45;
@@ -122,13 +117,13 @@ class Label
         $pdf->MultiCell(40, 0, sprintf('%s/%s', $package->getPackagePosition(), $package->getPackageCount()), ['LTRB' => ['width' => 1]], 'C', 0, 0, 244, 175, true, 0, false, true, 0);
 
         // Dobirka
-        if (in_array($package->getPackageProductType(), Product::$cashOnDelivery))
-        {
+        if (in_array($package->getPackageProductType(), Product::$cashOnDelivery)) {
             $pdf->SetFont($pdf->getFontFamily(), 'B', 27);
             $pdf->SetTextColor(255, 255, 255);
             $pdf->SetFillColor(0, 0, 0);
             $pdf->MultiCell(30, 0, 'DOB.:', ['LTRB' => ['width' => 0.7]], 'L', true, 0, 19, 175, true, 0, false, true, 0);
-            $pdf->MultiCell(60, 0, sprintf('%s %s', $package->getPaymentInfo()->getCashOnDeliveryPrice(), $package->getPaymentInfo()->getCashOnDeliveryCurrency()), ['LTRB' => ['width' => 0.7]], 'R', true, 0, 45, 175, true, 0, false, true, 0);
+            $pdf->MultiCell(60, 0, sprintf('%s %s', $package->getPaymentInfo()->getCashOnDeliveryPrice(), $package->getPaymentInfo()->getCashOnDeliveryCurrency()), ['LTRB' => ['width' => 0.7]], 'R',
+                true, 0, 45, 175, true, 0, false, true, 0);
             $pdf->SetTextColor(0, 0, 0);
             $pdf->SetFillColor(255, 255, 255);
         }
@@ -141,8 +136,7 @@ class Label
 
         $x = 120;
         $y = 25;
-        if ($package->getRecipient()->getName())
-        {
+        if ($package->getRecipient()->getName()) {
             $pdf->Text($x, $y, $package->getRecipient()->getName());
         }
 
@@ -154,13 +148,14 @@ class Label
         $pdf->Text($x, $y + 40, $package->getRecipient()->getZipCode());
 
         $pdf->SetFont($pdf->getFontFamily(), '', 25);
-        $pdf->Text($x, $y + 63, sprintf('Tel.: %s',$package->getRecipient()->getPhone()));
+        $pdf->Text($x, $y + 63, sprintf('Tel.: %s', $package->getRecipient()->getPhone()));
 
         $pdf->MultiCell(173, 80, '', ['LTRB' => ['width' => 1]], 'L', 0, 0, 112, 21, true, 0, false, true, 0);
         $pdf->SetFont($pdf->getFontFamily(), 'B', 60);
         $pdf->SetTextColor(255, 255, 255);
         $pdf->SetFillColor(0, 0, 0);
-        $pdf->MultiCell(60, 15, 'Den', ['LTRB' => ['width' => 1]], 'C', true, 0, 224, 73, true, 0, false, true, 0);
+        $pdf->MultiCell(60, 15, (in_array(PackageService::EVENING_DELIVERY, $this->packageServicesToArray($package)) ? 'Večer' : 'Den'), ['LTRB' => ['width' => 1]], 'C', true, 0, 224, 73, true, 0,
+            false, true, 0);
         $pdf->SetTextColor(0, 0, 0);
         $pdf->SetFillColor(255, 255, 255);
 
@@ -192,13 +187,11 @@ class Label
      */
     public function generateLabelQuarter(\TCPDF $pdf, Package $package, $position = LabelPosition::TOP_LEFT)
     {
-        if (!in_array($position, [1, 2, 3, 4]))
-        {
+        if (!in_array($position, [1, 2, 3, 4])) {
             throw new \Exception('Unknow position');
         }
-        
-        switch ($position)
-        {
+
+        switch ($position) {
             default:
             case LabelPosition::TOP_LEFT:
                 $xPositionOffset = 0;
@@ -222,7 +215,7 @@ class Label
         }
 
         //Logo
-        $pdf->Image(__DIR__.'/../assets/logo.png', 3 + $xPositionOffset, 3 + $yPositionOffset, 34, '', 'PNG');
+        $pdf->Image(__DIR__ . '/../assets/logo.png', 3 + $xPositionOffset, 3 + $yPositionOffset, 34, '', 'PNG');
 
         //Contact info
         $pdf->SetFont($pdf->getFontFamily(), '', 9);
@@ -254,16 +247,17 @@ class Label
 
         // PackagePosition of PackageCount
         $pdf->SetFont($pdf->getFontFamily(), 'B', 13);
-        $pdf->MultiCell(20, 0, sprintf('%s/%s', $package->getPackagePosition(), $package->getPackageCount()), ['LTRB' => ['width' => 0.7]], 'C', 0, 0, 116 + $xPositionOffset, 85 + $yPositionOffset, true, 0, false, true, 0);
+        $pdf->MultiCell(20, 0, sprintf('%s/%s', $package->getPackagePosition(), $package->getPackageCount()), ['LTRB' => ['width' => 0.7]], 'C', 0, 0, 116 + $xPositionOffset, 85 + $yPositionOffset,
+            true, 0, false, true, 0);
 
         // Dobirka
-        if (in_array($package->getPackageProductType(), Product::$cashOnDelivery))
-        {
+        if (in_array($package->getPackageProductType(), Product::$cashOnDelivery)) {
             $pdf->SetFont($pdf->getFontFamily(), 'B', 13);
             $pdf->SetTextColor(255, 255, 255);
             $pdf->SetFillColor(0, 0, 0);
             $pdf->MultiCell(15, 0, 'DOB.:', ['LTRB' => ['width' => 0.7]], 'L', true, 0, 4 + $xPositionOffset, 85 + $yPositionOffset, true, 0, false, true, 0);
-            $pdf->MultiCell(28, 0, sprintf('%s %s', $package->getPaymentInfo()->getCashOnDeliveryPrice(), $package->getPaymentInfo()->getCashOnDeliveryCurrency()), ['LTRB' => ['width' => 0.7]], 'R', true, 0, 19 + $xPositionOffset, 85 + $yPositionOffset, true, 0, false, true, 0);
+            $pdf->MultiCell(28, 0, sprintf('%s %s', $package->getPaymentInfo()->getCashOnDeliveryPrice(), $package->getPaymentInfo()->getCashOnDeliveryCurrency()), ['LTRB' => ['width' => 0.7]], 'R',
+                true, 0, 19 + $xPositionOffset, 85 + $yPositionOffset, true, 0, false, true, 0);
             $pdf->SetTextColor(0, 0, 0);
             $pdf->SetFillColor(255, 255, 255);
         }
@@ -274,26 +268,26 @@ class Label
 
         $x = 53 + $xPositionOffset;
         $y = 10 + $yPositionOffset;
-        if ($package->getRecipient()->getName())
-        {
+        if ($package->getRecipient()->getName()) {
             $pdf->Text($x, $y, $package->getRecipient()->getName());
         }
 
         $pdf->Text($x, $y + 5, $package->getRecipient()->getContact());
         $pdf->Text($x, $y + 10, $package->getRecipient()->getStreet());
-        $pdf->Text($x, $y + 15, sprintf('%s, %s',$package->getRecipient()->getCity(), $package->getRecipient()->getCountry()));
+        $pdf->Text($x, $y + 15, sprintf('%s, %s', $package->getRecipient()->getCity(), $package->getRecipient()->getCountry()));
 
         $pdf->SetFont($pdf->getFontFamily(), 'B', 27);
         $pdf->Text($x, $y + 20, $package->getRecipient()->getZipCode());
 
         $pdf->SetFont($pdf->getFontFamily(), '', 10);
-        $pdf->Text($x, $y + 33, sprintf('Tel.: %s',$package->getRecipient()->getPhone()));
+        $pdf->Text($x, $y + 33, sprintf('Tel.: %s', $package->getRecipient()->getPhone()));
 
         $pdf->MultiCell(85, 40, '', ['LTRB' => ['width' => 0.7]], 'L', 0, 0, 51 + $xPositionOffset, 9 + $yPositionOffset, true, 0, false, true, 0);
         $pdf->SetFont($pdf->getFontFamily(), 'B', 30);
         $pdf->SetTextColor(255, 255, 255);
         $pdf->SetFillColor(0, 0, 0);
-        $pdf->MultiCell(30, 15, 'Den', ['LTRB' => ['width' => 0.7]], 'C', true, 0, 106 + $xPositionOffset, 34 + $yPositionOffset, true, 0, false, true, 0);
+        $pdf->MultiCell(30, 15, (in_array(PackageService::EVENING_DELIVERY, $this->packageServicesToArray($package)) ? 'Večer' : 'Den'), ['LTRB' => ['width' => 0.7]], 'C', true, 0,
+            106 + $xPositionOffset, 34 + $yPositionOffset, true, 0, false, true, 0);
         $pdf->SetTextColor(0, 0, 0);
         $pdf->SetFillColor(255, 255, 255);
 
@@ -320,4 +314,15 @@ class Label
 
         return $pdf;
     }
+
+    private function packageServicesToArray(Package $package)
+    {
+        $return = [];
+        foreach ($package->getPackageServices() AS $packageService) {
+            $return[] = $packageService->getSvcCode();
+        }
+
+        return $return;
+    }
+
 }

@@ -42,8 +42,7 @@ class ExternalNumber
      */
     public function setExternalNumber($externalNumber)
     {
-        if (!in_array($externalNumber, ExternalNumberEnum::$list))
-        {
+        if (!in_array($externalNumber, ExternalNumberEnum::$list)) {
             throw new WrongDataException(sprintf('$externalNumber has wrong value, only %s are allowed', implode(', ', ExternalNumberEnum::$list)));
         }
 

@@ -102,13 +102,11 @@ class Api
      */
     public function __construct($username = null, $password = null, $customerId = null)
     {
-        if (strlen($username) > 32)
-        {
+        if (strlen($username) > 32) {
             throw new SecurityException('$username is longer then 32 characters');
         }
 
-        if (strlen($password) > 32)
-        {
+        if (strlen($password) > 32) {
             throw new SecurityException('$password is longer then 32 characters');
         }
 
@@ -116,7 +114,7 @@ class Api
         $this->password = $password;
         $this->customerId = $customerId;
 
-        $this->securedStorage = sys_get_temp_dir().'/'.__CLASS__;
+        $this->securedStorage = sys_get_temp_dir() . '/' . __CLASS__;
 
 
         try {
@@ -140,8 +138,7 @@ class Api
             throw new \Exception('Failed to build soap client');
         }
 
-        if (!$this->isHealthy())
-        {
+        if (!$this->isHealthy()) {
             throw new OfflineException('PPL MyAPI is offline');
         }
     }
@@ -151,13 +148,11 @@ class Api
      */
     private function getAuthToken()
     {
-        if (file_exists($this->securedStorage))
-        {
-            $modified = new \DateTime('@'.filemtime($this->securedStorage));
+        if (file_exists($this->securedStorage)) {
+            $modified = new \DateTime('@' . filemtime($this->securedStorage));
             $modified->modify($this->tokenLifespan);
 
-            if ($modified > new \DateTime())
-            {
+            if ($modified > new \DateTime()) {
                 return trim(file_get_contents($this->securedStorage));
             }
         }
@@ -176,7 +171,7 @@ class Api
         try {
             $response = $this->soap->isHealtly();
             return $response->IsHealtlyResult == 'Healthy';
-        } catch(\Exception $e){
+        } catch (\Exception $e) {
             return false;
         }
     }
@@ -194,8 +189,7 @@ class Api
      */
     public function getParcelShops($code = null, $countryCode = Country::CZ)
     {
-        if (!in_array($countryCode, Country::$list))
-        {
+        if (!in_array($countryCode, Country::$list)) {
             throw new WrongDataException(sprintf('Country Code %s is not supported, use one of %s', $countryCode, implode(', ', Country::$list)));
         }
 
@@ -218,8 +212,7 @@ class Api
      */
     public function getCitiesRouting($countryCode = Country::CZ, \DateTimeInterface $dateFrom = null, $zipCode = null)
     {
-        if (!in_array($countryCode, Country::$list))
-        {
+        if (!in_array($countryCode, Country::$list)) {
             throw new WrongDataException(sprintf('Country Code %s is not supported, use one of %s', $countryCode, implode(', ', Country::$list)));
         }
 
@@ -247,8 +240,7 @@ class Api
      */
     public function getPackages($customRefs = null, \DateTimeInterface $dateFrom = null, \DateTimeInterface $dateTo = null, array $packageNumbers = [])
     {
-        if (is_null($customRefs) && is_null($dateFrom) && is_null($dateTo) && empty($packageNumbers))
-        {
+        if (is_null($customRefs) && is_null($dateFrom) && is_null($dateTo) && empty($packageNumbers)) {
             throw new WrongDataException('At least one parameter must be specified!');
         }
 
@@ -277,10 +269,8 @@ class Api
         $ordersProcessed = [];
 
         /** @var Order $order */
-        foreach ($orders AS $order)
-        {
-            if (!$order instanceof Order)
-            {
+        foreach ($orders AS $order) {
+            if (!$order instanceof Order) {
                 throw new WrongDataException('$orders must contain only instances of Order class');
             }
 
@@ -347,8 +337,7 @@ class Api
             }
 
             $packagesExtNums = [];
-            foreach ($package->getExternalNumbers() AS $externalNumber)
-            {
+            foreach ($package->getExternalNumbers() AS $externalNumber) {
                 $packagesExtNums[]['MyApiPackageExtNum'] = [
                     'Code' => $externalNumber->getCode(),
                     'ExtNumber' => $externalNumber->getExternalNumber()
@@ -356,8 +345,7 @@ class Api
             }
 
             $packageServices = [];
-            foreach ($package->getPackageServices() AS $service)
-            {
+            foreach ($package->getPackageServices() AS $service) {
                 $packageServices[]['MyApiPackageInServices'] = [
                     'SvcCode' => $service->getSvcCode()
                 ];
@@ -365,8 +353,7 @@ class Api
 
 
             $flags = [];
-            foreach ($package->getFlags() AS $flag)
-            {
+            foreach ($package->getFlags() AS $flag) {
                 $flags[]['MyApiFlag'] = [
                     'Code' => $flag->getCode(),
                     'Value' => $flag->isValue()
@@ -374,11 +361,9 @@ class Api
             }
 
             $palletInfo = null;
-            if ($package->getPalletInfo())
-            {
+            if ($package->getPalletInfo()) {
                 $collies = [];
-                foreach ($package->getPalletInfo()->getCollies() AS $colli)
-                {
+                foreach ($package->getPalletInfo()->getCollies() AS $colli) {
                     $collies[]['MyApiPackageInColli'] = [
                         'ColliNumber' => $colli->getColliNumber(),
                         'Height' => $colli->getHeight(),
@@ -400,11 +385,9 @@ class Api
 
 
             $weightedPackageInfo = null;
-            if ($package->getWeightedPackageInfo())
-            {
+            if ($package->getWeightedPackageInfo()) {
                 $routes = [];
-                foreach ($package->getWeightedPackageInfo()->getRoutes() AS $route)
-                {
+                foreach ($package->getWeightedPackageInfo()->getRoutes() AS $route) {
                     $routes[]['Route'] = [
                         'RouteType' => $route->getRouteType(),
                         'RouteCode' => $route->getRouteCode()
@@ -550,8 +533,7 @@ class Api
      */
     public function login()
     {
-        try
-        {
+        try {
             $result = $this->soap->Login([
                 'Auth' => [
                     'CustId' => $this->customerId,
@@ -560,12 +542,9 @@ class Api
                 ]
             ]);
             return $result->LoginResult->AuthToken;
-        }
-        catch (\Exception $e)
-        {
+        } catch (\Exception $e) {
             throw new SecurityException($e->getMessage());
         }
-
 
 
     }

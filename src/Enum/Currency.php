@@ -12,7 +12,7 @@ class Currency
     const EUR = 'EUR';
     const PLN = 'PLN';
 
-    /** @var array  */
+    /** @var array */
     public static $list = [
         self::CZK,
         self::EUR,

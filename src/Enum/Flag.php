@@ -10,6 +10,7 @@ class Flag
 {
     const SATURDAY_DELIVERY = 'SD';
 
+    /** @var array */
     public static $list = [
         self::SATURDAY_DELIVERY
     ];

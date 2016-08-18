@@ -5,7 +5,7 @@
 
 namespace Salamek\PplMyApi\Exception;
 
-use \Exception;
+use Exception;
 
 class OfflineException extends Exception
 {

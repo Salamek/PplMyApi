@@ -42,8 +42,15 @@ class SpecialDelivery
      * @param \DateTimeInterface|null $takeTimeFrom
      * @param \DateTimeInterface|null $takeTimeTo
      */
-    public function __construct($parcelShopCode, \DateTimeInterface $deliveryDate = null, \DateTimeInterface $deliveryTimeFrom = null, \DateTimeInterface $deliveryTimeTo = null, \DateTimeInterface $takeDate = null, \DateTimeInterface $takeTimeFrom = null, \DateTimeInterface $takeTimeTo = null)
-    {
+    public function __construct(
+        $parcelShopCode,
+        \DateTimeInterface $deliveryDate = null,
+        \DateTimeInterface $deliveryTimeFrom = null,
+        \DateTimeInterface $deliveryTimeTo = null,
+        \DateTimeInterface $takeDate = null,
+        \DateTimeInterface $takeTimeFrom = null,
+        \DateTimeInterface $takeTimeTo = null
+    ) {
         $this->parcelShopCode = $parcelShopCode;
         $this->deliveryDate = $deliveryDate;
         $this->deliveryTimeFrom = $deliveryTimeFrom;
@@ -52,7 +59,7 @@ class SpecialDelivery
         $this->takeTimeFrom = $takeTimeFrom;
         $this->takeTimeTo = $takeTimeTo;
     }
-    
+
     /**
      * @param $parcelShopCode
      */

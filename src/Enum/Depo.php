@@ -22,7 +22,7 @@ class Depo
     const CODE_12 = '12';
     const CODE_14 = '14';
 
-
+    /** @var array */
     public static $list = [
         self::CODE_01,
         self::CODE_02,

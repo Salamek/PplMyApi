@@ -54,8 +54,7 @@ class Colli
      */
     public function setColliNumber($colliNumber)
     {
-        if (strlen($colliNumber) > 50)
-        {
+        if (strlen($colliNumber) > 50) {
             throw new WrongDataException('$colliNumber is longer than 50');
         }
         $this->colliNumber = $colliNumber;
@@ -67,8 +66,7 @@ class Colli
      */
     public function setWidth($width)
     {
-        if (!is_null($width) && !is_numeric($width))
-        {
+        if (!is_null($width) && !is_numeric($width)) {
             throw new WrongDataException('$width has wrong value');
         }
         $this->width = $width;
@@ -80,8 +78,7 @@ class Colli
      */
     public function setHeight($height)
     {
-        if (!is_null($height) && !is_numeric($height))
-        {
+        if (!is_null($height) && !is_numeric($height)) {
             throw new WrongDataException('$height has wrong value');
         }
         $this->height = $height;
@@ -93,8 +90,7 @@ class Colli
      */
     public function setLength($length)
     {
-        if (!is_null($length) && !is_numeric($length))
-        {
+        if (!is_null($length) && !is_numeric($length)) {
             throw new WrongDataException('$length has wrong value');
         }
         $this->length = $length;
@@ -106,8 +102,7 @@ class Colli
      */
     public function setWeight($weight)
     {
-        if (!is_numeric($weight))
-        {
+        if (!is_numeric($weight)) {
             throw new WrongDataException('$weight has wrong value');
         }
         $this->weight = $weight;
@@ -119,8 +114,7 @@ class Colli
      */
     public function setWrapCode($wrapCode)
     {
-        if (!in_array($wrapCode, WrapCode::$list))
-        {
+        if (!in_array($wrapCode, WrapCode::$list)) {
             throw new WrongDataException(sprintf('$wrapCode has wrong value, only %s are allowed', implode(', ', WrapCode::$list)));
         }
         $this->wrapCode = $wrapCode;

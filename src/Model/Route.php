@@ -34,8 +34,7 @@ class Route
      */
     public function setRouteType($routeType)
     {
-        if (!in_array($routeType, RouteType::$list))
-        {
+        if (!in_array($routeType, RouteType::$list)) {
             throw new WrongDataException(sprintf('$routeType has wrong value, only %s are allowed', implode(', ', RouteType::$list)));
         }
         $this->routeType = $routeType;

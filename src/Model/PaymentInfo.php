@@ -102,8 +102,7 @@ class PaymentInfo
      */
     public function setCashOnDeliveryCurrency($cashOnDeliveryCurrency)
     {
-        if (!in_array($cashOnDeliveryCurrency, Currency::$list))
-        {
+        if (!in_array($cashOnDeliveryCurrency, Currency::$list)) {
             throw new WrongDataException(sprintf('Currency Code %s is not supported, use one of %s', $cashOnDeliveryCurrency, implode(', ', Currency::$list)));
         }
 
@@ -140,8 +139,7 @@ class PaymentInfo
      */
     public function setInsuranceCurrency($insuranceCurrency)
     {
-        if (!in_array($insuranceCurrency, Currency::$list))
-        {
+        if (!in_array($insuranceCurrency, Currency::$list)) {
             throw new WrongDataException(sprintf('Currency Code %s is not supported, use one of %s', $insuranceCurrency, implode(', ', Currency::$list)));
         }
         $this->insuranceCurrency = $insuranceCurrency;
@@ -250,6 +248,6 @@ class PaymentInfo
     {
         return $this->swift;
     }
-    
-    
+
+
 }
