@@ -242,9 +242,9 @@ class Package
     }
 
     /**
-     * @param PalletInfo $palletInfo
+     * @param null|PalletInfo $palletInfo
      */
-    public function setPalletInfo(PalletInfo $palletInfo)
+    public function setPalletInfo(PalletInfo $palletInfo = null)
     {
         $this->palletInfo = $palletInfo;
     }

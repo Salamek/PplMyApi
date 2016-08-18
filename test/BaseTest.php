@@ -46,13 +46,25 @@ abstract class BaseTest extends PHPUnit_Framework_TestCase
         $recipient = new Recipient('Olomouc', 'Adam Schubert', 'Na tabulovem vrchu 7', '77900', 'adam.schubert@example.com', '+420123456789', 'http://www.salamek.cz', Country::CZ, 'My Compamy a.s.');
         $paymentInfo = new PaymentInfo(4000, Currency::CZK, '123456');
 
+        //$seriesNumberId, $packageProductType, $weight, $note, $depoCode, Sender $sender, Recipient $recipient, SpecialDelivery $specialDelivery = null, PaymentInfo $paymentInfo = null, array $externalNumbers = [], array $packageServices = [], array $flags = [], PalletInfo $palletInfo = null, WeightedPackageInfo $weightedPackageInfo = null, $packageCount = 1, $packagePosition = 1
+
         $this->package = new Package(115, Product::PPL_PARCEL_CZ_PRIVATE, 10, 'Testpvaci balik', Depo::CODE_09, $sender, $recipient);
 
         $this->packages[] = new Package(116, Product::PPL_PARCEL_CZ_PRIVATE, 1, 'Testpvaci balik 1', Depo::CODE_01, $sender, $recipient);
 
-        //These two are together
-        $this->packages[] = new Package(117, Product::PPL_PARCEL_CZ_PRIVATE_COD, 2, 'Testpvaci balik 2', Depo::CODE_02, $sender, $recipient, null, $paymentInfo, null, 2, 1);
-        $this->packages[] = new Package(118, Product::PPL_PARCEL_CZ_PRIVATE, 3, 'Testpvaci balik 3', Depo::CODE_02, $sender, $recipient, null, null, null, 2, 2);
+
+        //These two are together and first one is with POD
+        $packageFirst = new Package(117, Product::PPL_PARCEL_CZ_PRIVATE_COD, 2, 'Testpvaci balik 2', Depo::CODE_02, $sender, $recipient, null, $paymentInfo);
+        $packageFirst->setPackageCount(2);
+        $packageFirst->setPackagePosition(1);
+
+        $packageSecond = new Package(118, Product::PPL_PARCEL_CZ_PRIVATE, 3, 'Testpvaci balik 3', Depo::CODE_02, $sender, $recipient);
+        $packageSecond->setPackageCount(2);
+        $packageSecond->setPackagePosition(2);
+
+        $this->packages[] = $packageFirst;
+        $this->packages[] = $packageSecond;
+
 
         $this->packages[] = new Package(119, Product::PPL_PARCEL_CZ_PRIVATE, 4, 'Testpvaci balik 4', Depo::CODE_04, $sender, $recipient);
         $this->packages[] = new Package(120, Product::PPL_PARCEL_CZ_PRIVATE, 5, 'Testpvaci balik 5', Depo::CODE_05, $sender, $recipient);
