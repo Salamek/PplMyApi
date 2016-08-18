@@ -7,6 +7,9 @@ namespace Salamek\PplMyApi;
 
 use Salamek\PplMyApi\Enum\Country;
 use Salamek\PplMyApi\Enum\LabelDecomposition;
+use Salamek\PplMyApi\Exception\OfflineException;
+use Salamek\PplMyApi\Exception\SecurityException;
+use Salamek\PplMyApi\Exception\WrongDataException;
 use Salamek\PplMyApi\Model\Order;
 use Salamek\PplMyApi\Model\Package;
 use Salamek\PplMyApi\Model\PickUpOrder;
@@ -98,12 +101,12 @@ class Api
     {
         if (strlen($username) > 32)
         {
-            throw new \Exception('$username is longer then 32 characters');
+            throw new SecurityException('$username is longer then 32 characters');
         }
 
         if (strlen($password) > 32)
         {
-            throw new \Exception('$password is longer then 32 characters');
+            throw new SecurityException('$password is longer then 32 characters');
         }
 
         $this->username = $username;
@@ -136,7 +139,7 @@ class Api
 
         if (!$this->isHealthy())
         {
-            throw new \Exception('PPL MyAPI is offline');
+            throw new OfflineException('PPL MyAPI is offline');
         }
     }
 
@@ -190,7 +193,7 @@ class Api
     {
         if (!in_array($countryCode, Country::$list))
         {
-            throw new \Exception(sprintf('Country Code %s is not supported, use one of %s', $countryCode, implode(', ', Country::$list)));
+            throw new WrongDataException(sprintf('Country Code %s is not supported, use one of %s', $countryCode, implode(', ', Country::$list)));
         }
 
         $result = $this->soap->GetParcelShops([
@@ -214,7 +217,7 @@ class Api
     {
         if (!in_array($countryCode, Country::$list))
         {
-            throw new \Exception(sprintf('Country Code %s is not supported, use one of %s', $countryCode, implode(', ', Country::$list)));
+            throw new WrongDataException(sprintf('Country Code %s is not supported, use one of %s', $countryCode, implode(', ', Country::$list)));
         }
 
         $result = $this->soap->GetCitiesRouting([
@@ -243,7 +246,7 @@ class Api
     {
         if (is_null($customRefs) && is_null($dateFrom) && is_null($dateTo) && empty($packageNumbers))
         {
-            throw new \Exception('At least one parameter must be specified!');
+            throw new WrongDataException('At least one parameter must be specified!');
         }
 
         $result = $this->soap->GetPackages([
@@ -275,7 +278,7 @@ class Api
         {
             if (!$order instanceof Order)
             {
-                throw new \Exception('$orders must contain only instances of Order class');
+                throw new WrongDataException('$orders must contain only instances of Order class');
             }
 
             $ordersProcessed[] = [
@@ -331,7 +334,7 @@ class Api
         /** @var Order $order */
         foreach ($packages AS $package) {
             if (!$package instanceof Package) {
-                throw new \Exception('$packages must contain only instances of Package class');
+                throw new WrongDataException('$packages must contain only instances of Package class');
             }
 
             $packagesProcessed[] = [
@@ -417,7 +420,7 @@ class Api
         /** @var Order $order */
         foreach ($pickupOrders AS $pickupOrder) {
             if (!$pickupOrder instanceof PickUpOrder) {
-                throw new \Exception('$pickupOrders must contain only instances of PickUpOrder class');
+                throw new WrongDataException('$pickupOrders must contain only instances of PickUpOrder class');
             }
 
             $pickupOrdersProcessed[] = [
@@ -466,19 +469,28 @@ class Api
 
     /**
      * @return mixed
+     * @throws SecurityException
      */
     public function login()
     {
-        $result = $this->soap->Login([
-            'Auth' => [
-                'CustId' => $this->customerId,
-                'UserName' => $this->username,
-                'Password' => $this->password
-            ]
-        ]);
+        try
+        {
+            $result = $this->soap->Login([
+                'Auth' => [
+                    'CustId' => $this->customerId,
+                    'UserName' => $this->username,
+                    'Password' => $this->password
+                ]
+            ]);
+            return $result->LoginResult->AuthToken;
+        }
+        catch (\Exception $e)
+        {
+            throw new SecurityException($e->getMessage());
+        }
 
 
-        return $result->LoginResult->AuthToken;
+
     }
 
     /**

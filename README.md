@@ -27,11 +27,11 @@ Check if PPL MyApi is in working shape
 $pplMyApi = new Salamek\PplMyApi\Api();
 if ($pplMyApi->isHealthy())
 {
-    echo 'Healthly' . PHP_EOL;
+    echo 'Healthly :)' . PHP_EOL;
 }
 else
 {
-    echo 'Dead :(' . PHP_EOL;
+    echo 'Ill :(' . PHP_EOL;
 }
 ```
 

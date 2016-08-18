@@ -7,6 +7,7 @@ namespace Salamek\PplMyApi\Model;
 
 
 use Salamek\PplMyApi\Enum\ExternalNumber;
+use Salamek\PplMyApi\Exception\WrongDataException;
 
 class ExternalNumbers
 {
@@ -43,7 +44,7 @@ class ExternalNumbers
     {
         if (!in_array($externalNumber, ExternalNumber::$list))
         {
-            throw new \Exception(sprintf('$externalNumber has wrong value, only %s are allowed', implode(', ', ExternalNumber::$list)));
+            throw new WrongDataException(sprintf('$externalNumber has wrong value, only %s are allowed', implode(', ', ExternalNumber::$list)));
         }
 
         $this->externalNumber = $externalNumber;

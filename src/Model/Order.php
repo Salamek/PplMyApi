@@ -7,6 +7,7 @@ namespace Salamek\PplMyApi\Model;
 
 
 use Salamek\PplMyApi\Enum\Product;
+use Salamek\PplMyApi\Exception\WrongDataException;
 
 class Order
 {
@@ -80,7 +81,7 @@ class Order
     {
         if ($countPackages < 1)
         {
-            throw new \Exception('$countPack must be bigger then 0');
+            throw new WrongDataException('$countPack must be bigger then 0');
         }
 
         $this->countPackages = $countPackages;
@@ -94,7 +95,7 @@ class Order
     {
         if (strlen($customerReference) > 40)
         {
-            throw new \Exception('$customerReference is longer then 40 characters');
+            throw new WrongDataException('$customerReference is longer then 40 characters');
         }
 
         $this->customerReference = $customerReference;
@@ -108,12 +109,12 @@ class Order
     {
         if (strlen($email) > 100)
         {
-            throw new \Exception('$email is longer then 100 characters');
+            throw new WrongDataException('$email is longer then 100 characters');
         }
 
         if (!filter_var($email, FILTER_VALIDATE_EMAIL))
         {
-            throw new \Exception('$email have invalid value');
+            throw new WrongDataException('$email have invalid value');
         }
 
         $this->email = $email;
@@ -127,7 +128,7 @@ class Order
     {
         if (strlen($note) > 100)
         {
-            throw new \Exception('$note is longer then 300 characters');
+            throw new WrongDataException('$note is longer then 300 characters');
         }
 
         $this->note = $note;
@@ -141,7 +142,7 @@ class Order
     {
         if (strlen($orderReferenceId) > 100)
         {
-            throw new \Exception('$orderReferenceId is longer then 300 characters');
+            throw new WrongDataException('$orderReferenceId is longer then 300 characters');
         }
 
         $this->orderReferenceId = $orderReferenceId;
@@ -155,7 +156,7 @@ class Order
     {
         if (!in_array($packageProductType, Product::$list))
         {
-            throw new \Exception(sprintf('$packProductType has wrong value, only %s are allowed', implode(', ', Product::$list)));
+            throw new WrongDataException(sprintf('$packProductType has wrong value, only %s are allowed', implode(', ', Product::$list)));
         }
         $this->packageProductType = $packageProductType;
     }

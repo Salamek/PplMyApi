@@ -9,6 +9,7 @@ namespace Salamek\PplMyApi;
 use Salamek\PplMyApi\Enum\LabelDecomposition;
 use Salamek\PplMyApi\Enum\LabelPosition;
 use Salamek\PplMyApi\Enum\Product;
+use Salamek\PplMyApi\Exception\WrongDataException;
 use Salamek\PplMyApi\Model\Package;
 
 class Label
@@ -23,7 +24,7 @@ class Label
     {
         if (!in_array($decomposition, LabelDecomposition::$list))
         {
-            throw new \Exception(sprintf('unknown $decomposition ony %s are allowed', implode(', ', LabelDecomposition::$list)));
+            throw new WrongDataException(sprintf('unknown $decomposition ony %s are allowed', implode(', ', LabelDecomposition::$list)));
         }
 
         $packageNumbers = [];
@@ -198,6 +199,7 @@ class Label
         
         switch ($position)
         {
+            default:
             case LabelPosition::TOP_LEFT:
                 $xPositionOffset = 0;
                 $yPositionOffset = 0;
