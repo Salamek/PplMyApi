@@ -7,6 +7,7 @@
 use Salamek\PplMyApi\Enum\LabelDecomposition;
 use Salamek\PplMyApi\Model\Package;
 use Salamek\PplMyApi\Tools;
+use Salamek\PplMyApi\Label;
 
 final class PublicTest extends BaseTest
 {
@@ -23,7 +24,7 @@ final class PublicTest extends BaseTest
      */
     public function testGetVersion()
     {
-        $this->assertRegExp('/^\d\.\d\.\d\.\d$/', $this->pplMyApi->getVersion());
+        $this->assertRegExp('/^\d{1,2}\.\d{1,2}\.\d{1,2}\.\d{1,2}$/', $this->pplMyApi->getVersion());
     }
 
     /**
@@ -65,7 +66,7 @@ final class PublicTest extends BaseTest
      */
     public function testGeneratePdfFullSinglePackage()
     {
-        $raw = $this->pplMyApi->getLabels([$this->package], LabelDecomposition::FULL);
+        $raw = Label::generateLabels([$this->package], LabelDecomposition::FULL);
 
         $this->assertNotEmpty($raw);
 
@@ -81,7 +82,7 @@ final class PublicTest extends BaseTest
      */
     public function testGeneratePdfFullMultiplePackages()
     {
-        $raw = $this->pplMyApi->getLabels($this->packages, LabelDecomposition::FULL);
+        $raw = Label::generateLabels($this->packages, LabelDecomposition::FULL);
 
         $this->assertNotEmpty($raw);
 
@@ -104,7 +105,7 @@ final class PublicTest extends BaseTest
      */
     public function testGeneratePdfQuarterSinglePackage()
     {
-        $raw = $this->pplMyApi->getLabels([$this->package], LabelDecomposition::QUARTER);
+        $raw = Label::generateLabels([$this->package], LabelDecomposition::QUARTER);
 
         $this->assertNotEmpty($raw);
 
@@ -120,7 +121,7 @@ final class PublicTest extends BaseTest
      */
     public function testGeneratePdfQuarterMultiplePackages()
     {
-        $raw = $this->pplMyApi->getLabels($this->packages, LabelDecomposition::QUARTER);
+        $raw = Label::generateLabels($this->packages, LabelDecomposition::QUARTER);
 
         $this->assertNotEmpty($raw);
 

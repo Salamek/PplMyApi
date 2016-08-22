@@ -21,7 +21,7 @@ class Label
      * @return string
      * @throws \Exception
      */
-    public function generateLabels(array $packages, $decomposition = LabelDecomposition::FULL)
+    public static function generateLabels(array $packages, $decomposition = LabelDecomposition::FULL)
     {
         if (!in_array($decomposition, LabelDecomposition::$list)) {
             throw new WrongDataException(sprintf('unknown $decomposition ony %s are allowed', implode(', ', LabelDecomposition::$list)));
@@ -52,7 +52,7 @@ class Label
             switch ($decomposition) {
                 case LabelDecomposition::FULL:
                     $pdf->AddPage();
-                    $pdf = $this->generateLabelFull($pdf, $package);
+                    $pdf = self::generateLabelFull($pdf, $package);
                     break;
 
                 case LabelDecomposition::QUARTER:
@@ -64,7 +64,7 @@ class Label
                         $pdf->AddPage();
                     }
 
-                    $pdf = $this->generateLabelQuarter($pdf, $package, $quarterPosition);
+                    $pdf = self::generateLabelQuarter($pdf, $package, $quarterPosition);
                     $quarterPosition++;
                     break;
             }
@@ -78,7 +78,7 @@ class Label
      * @param Package $package
      * @return \TCPDF
      */
-    public function generateLabelFull(\TCPDF $pdf, Package $package)
+    public static function generateLabelFull(\TCPDF $pdf, Package $package)
     {
         $x = 17;
         $pdf->Image(__DIR__ . '/../assets/logo.png', $x, 10, 66, '', 'PNG');
@@ -154,7 +154,7 @@ class Label
         $pdf->SetFont($pdf->getFontFamily(), 'B', 60);
         $pdf->SetTextColor(255, 255, 255);
         $pdf->SetFillColor(0, 0, 0);
-        $pdf->MultiCell(60, 15, (in_array(PackageService::EVENING_DELIVERY, $this->packageServicesToArray($package)) ? 'Večer' : 'Den'), ['LTRB' => ['width' => 1]], 'C', true, 0, 224, 73, true, 0,
+        $pdf->MultiCell(60, 15, (in_array(PackageService::EVENING_DELIVERY, self::packageServicesToArray($package)) ? 'Večer' : 'Den'), ['LTRB' => ['width' => 1]], 'C', true, 0, 224, 73, true, 0,
             false, true, 0);
         $pdf->SetTextColor(0, 0, 0);
         $pdf->SetFillColor(255, 255, 255);
@@ -185,7 +185,7 @@ class Label
      * @return \TCPDF
      * @throws \Exception
      */
-    public function generateLabelQuarter(\TCPDF $pdf, Package $package, $position = LabelPosition::TOP_LEFT)
+    public static function generateLabelQuarter(\TCPDF $pdf, Package $package, $position = LabelPosition::TOP_LEFT)
     {
         if (!in_array($position, [1, 2, 3, 4])) {
             throw new \Exception('Unknow position');
@@ -286,7 +286,7 @@ class Label
         $pdf->SetFont($pdf->getFontFamily(), 'B', 30);
         $pdf->SetTextColor(255, 255, 255);
         $pdf->SetFillColor(0, 0, 0);
-        $pdf->MultiCell(30, 15, (in_array(PackageService::EVENING_DELIVERY, $this->packageServicesToArray($package)) ? 'Večer' : 'Den'), ['LTRB' => ['width' => 0.7]], 'C', true, 0,
+        $pdf->MultiCell(30, 15, (in_array(PackageService::EVENING_DELIVERY, self::packageServicesToArray($package)) ? 'Večer' : 'Den'), ['LTRB' => ['width' => 0.7]], 'C', true, 0,
             106 + $xPositionOffset, 34 + $yPositionOffset, true, 0, false, true, 0);
         $pdf->SetTextColor(0, 0, 0);
         $pdf->SetFillColor(255, 255, 255);
@@ -315,7 +315,11 @@ class Label
         return $pdf;
     }
 
-    private function packageServicesToArray(Package $package)
+    /**
+     * @param Package $package
+     * @return array
+     */
+    private static function packageServicesToArray(Package $package)
     {
         $return = [];
         foreach ($package->getPackageServices() AS $packageService) {
@@ -324,5 +328,4 @@ class Label
 
         return $return;
     }
-
 }
