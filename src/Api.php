@@ -69,6 +69,10 @@ use Salamek\PplMyApi\Model\PickUpOrder;
  * WrapCode PLASTIC_BOX = 50 VS BOX
  * Z dokumentace neni jasne co je pole vice polozek a co je pole v poli
  * Chybi ciselnik smeru Route.$routeCode
+ *
+ * V dokumentaci mi zaslane chybi validni ukazky predavacich protokolu
+ *
+ * V dokumentaci chybi podminky, jake je splnit k uspesnemu zprovozneni MyAPI a povoleni na strane PPL
  */
 class Api
 {
@@ -134,6 +138,7 @@ class Api
                     ]
                 )
             ];
+
             $this->soap = new \SoapClient($this->wsdl, $options);
 
         } catch (\Exception $e) {

@@ -24,7 +24,7 @@ class Label
     public static function generateLabels(array $packages, $decomposition = LabelDecomposition::FULL)
     {
         if (!in_array($decomposition, LabelDecomposition::$list)) {
-            throw new WrongDataException(sprintf('unknown $decomposition ony %s are allowed', implode(', ', LabelDecomposition::$list)));
+            throw new WrongDataException(sprintf('unknown $decomposition only %s are allowed', implode(', ', LabelDecomposition::$list)));
         }
 
         $packageNumbers = [];
