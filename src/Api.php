@@ -334,7 +334,7 @@ class Api
     /**
      * @param Package[] $packages
      * @param null $customerUniqueImportId
-     * @return mixed
+     * @return array
      * @throws WrongDataException
      */
     public function createPackages(array $packages, $customerUniqueImportId = null)
@@ -475,8 +475,8 @@ class Api
                 'MyApiPackageIn' => $packagesProcessed
             ]
         ]);
-
-        return $result;
+        
+        return $result->CreatePackagesResult->ResultData->ItemResult;
     }
 
     /**
