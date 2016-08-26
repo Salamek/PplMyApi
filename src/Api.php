@@ -281,7 +281,7 @@ class Api
         /** @var Order $order */
         foreach ($orders AS $order) {
             if (!$order instanceof Order) {
-                throw new WrongDataException('$orders must contain only instances of Order class');
+                throw new \Exception('$orders must contain only instances of Order class');
             }
 
             $ordersProcessed[] = [
@@ -335,15 +335,21 @@ class Api
      * @param Package[] $packages
      * @param null $customerUniqueImportId
      * @return array
-     * @throws WrongDataException
+     * @throws \Exception
      */
     public function createPackages(array $packages, $customerUniqueImportId = null)
     {
         $packagesProcessed = [];
+
+        if (empty($packages))
+        {
+            throw new \Exception('$packages cannot be empty');
+        }
+
         /** @var Order $order */
         foreach ($packages AS $package) {
             if (!$package instanceof Package) {
-                throw new WrongDataException('$packages must contain only instances of Package class');
+                throw new \Exception('$packages must contain only instances of Package class');
             }
 
             $packagesExtNums = [];
@@ -475,8 +481,13 @@ class Api
                 'MyApiPackageIn' => $packagesProcessed
             ]
         ]);
-        
-        return $result->CreatePackagesResult->ResultData->ItemResult;
+
+        if (isset($result->CreatePackagesResult->ResultData->ItemResult))
+        {
+            return $result->CreatePackagesResult->ResultData->ItemResult;
+        }
+
+        return [];
     }
 
     /**
@@ -490,7 +501,7 @@ class Api
         /** @var Order $order */
         foreach ($pickupOrders AS $pickupOrder) {
             if (!$pickupOrder instanceof PickUpOrder) {
-                throw new WrongDataException('$pickupOrders must contain only instances of PickUpOrder class');
+                throw new \Exception('$pickupOrders must contain only instances of PickUpOrder class');
             }
 
             $pickupOrdersProcessed[] = [
