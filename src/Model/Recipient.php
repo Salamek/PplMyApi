@@ -84,9 +84,12 @@ class Recipient
      */
     public function setContact($contact)
     {
-        if (strlen($contact) > 300) {
-            throw new WrongDataException('$contact is longer then 30 characters');
+        if (!is_null($contact)) {
+            if (strlen($contact) > 300) {
+                throw new WrongDataException('$contact is longer then 30 characters');
+            }
         }
+
         $this->contact = $contact;
     }
 
@@ -108,12 +111,14 @@ class Recipient
      */
     public function setEmail($email)
     {
-        if (strlen($email) > 50) {
-            throw new WrongDataException('$email is longer then 100 characters');
-        }
+        if (!is_null($email)) {
+            if (strlen($email) > 50) {
+                throw new WrongDataException('$email is longer then 100 characters');
+            }
 
-        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            throw new WrongDataException('$email have invalid value');
+            if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                throw new WrongDataException('$email have invalid value');
+            }
         }
 
         $this->email = $email;
@@ -137,8 +142,10 @@ class Recipient
      */
     public function setName2($name2)
     {
-        if (strlen($name2) > 50) {
-            throw new WrongDataException('$name2 is longer then 250 characters');
+        if (!is_null($name2)) {
+            if (strlen($name2) > 50) {
+                throw new WrongDataException('$name2 is longer then 250 characters');
+            }
         }
         $this->name2 = $name2;
     }
@@ -149,9 +156,12 @@ class Recipient
      */
     public function setPhone($phone)
     {
-        if (strlen($phone) > 50) {
-            throw new WrongDataException('$phone is longer then 30 characters');
+        if (!is_null($phone)) {
+            if (strlen($phone) > 50) {
+                throw new WrongDataException('$phone is longer then 30 characters');
+            }
         }
+
         $this->phone = $phone;
     }
 
