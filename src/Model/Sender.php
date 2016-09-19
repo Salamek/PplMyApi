@@ -43,17 +43,17 @@ class Sender
 
     /**
      * Sender constructor.
-     * @param $city
-     * @param $name
-     * @param $street
-     * @param $zipCode
-     * @param null $email
-     * @param null $phone
-     * @param null $contact
-     * @param null $country
-     * @param null $name2
+     * @param string $city
+     * @param string $name
+     * @param string $street
+     * @param string $zipCode
+     * @param string|null $email
+     * @param string|null $phone
+     * @param string|null $contact
+     * @param string $country
+     * @param string|null $name2
      */
-    public function __construct($city, $name, $street, $zipCode, $email = null, $phone = null, $contact = null, $country = null, $name2 = null)
+    public function __construct($city, $name, $street, $zipCode, $email = null, $phone = null, $contact = null, $country = Country::CZ, $name2 = null)
     {
         $this->setCity($city);
         $this->setName($name);
@@ -84,9 +84,12 @@ class Sender
      */
     public function setContact($contact)
     {
-        if (strlen($contact) > 30) {
-            throw new WrongDataException('$contact is longer then 30 characters');
+        if (!is_null($contact)) {
+            if (strlen($contact) > 30) {
+                throw new WrongDataException('$contact is longer then 30 characters');
+            }
         }
+
         $this->contact = $contact;
     }
 
@@ -108,13 +111,16 @@ class Sender
      */
     public function setEmail($email)
     {
-        if (strlen($email) > 100) {
-            throw new WrongDataException('$email is longer then 100 characters');
+        if (!is_null($email)) {
+            if (strlen($email) > 100) {
+                throw new WrongDataException('$email is longer then 100 characters');
+            }
+
+            if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                throw new WrongDataException('$email have invalid value');
+            }
         }
 
-        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            throw new WrongDataException('$email have invalid value');
-        }
 
         $this->email = $email;
     }
@@ -137,9 +143,12 @@ class Sender
      */
     public function setName2($name2)
     {
-        if (strlen($name2) > 250) {
-            throw new WrongDataException('$name2 is longer then 250 characters');
+        if (!is_null($name2)) {
+            if (strlen($name2) > 250) {
+                throw new WrongDataException('$name2 is longer then 250 characters');
+            }
         }
+
         $this->name2 = $name2;
     }
 
@@ -149,9 +158,12 @@ class Sender
      */
     public function setPhone($phone)
     {
-        if (strlen($phone) > 30) {
-            throw new WrongDataException('$phone is longer then 30 characters');
+        if (!is_null($phone)) {
+            if (strlen($phone) > 30) {
+                throw new WrongDataException('$phone is longer then 30 characters');
+            }
         }
+
         $this->phone = $phone;
     }
 
