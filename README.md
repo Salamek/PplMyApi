@@ -1,6 +1,7 @@
 # Professional Parcel Logistic MyApi client in PHP
 
 [![Build Status](https://travis-ci.org/Salamek/PplMyApi.svg?branch=master)](https://travis-ci.org/Salamek/PplMyApi)
+[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=D8LQ4XTBLV3C4&lc=CZ&item_number=SalamekPplMyApi&currency_code=EUR)
 
 Professional Parcel Logistic MyApi client in PHP
 
