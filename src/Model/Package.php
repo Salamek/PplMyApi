@@ -148,8 +148,9 @@ class Package
      */
     public function setNote($note = null)
     {
-        if (mb_strlen($note) > 300) {
-            throw new WrongDataException('$note is longer then 300 characters');
+        $noteLen = mb_strlen($note);
+        if ($noteLen > 300) {
+            throw new WrongDataException(sprintf('$note is longer then 300 characters (%s)', $noteLen));
         }
 
         $this->note = $note;
