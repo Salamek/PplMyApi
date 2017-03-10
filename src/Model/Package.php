@@ -148,7 +148,7 @@ class Package
      */
     public function setNote($note = null)
     {
-        if (strlen($note) > 300) {
+        if (mb_strlen($note) > 300) {
             throw new WrongDataException('$note is longer then 300 characters');
         }
 
