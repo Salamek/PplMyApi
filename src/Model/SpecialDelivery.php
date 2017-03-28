@@ -12,25 +12,25 @@ namespace Salamek\PplMyApi\Model;
 class SpecialDelivery
 {
     /** @var null|string */
-    private $parcelShopCode = null;
+    protected $parcelShopCode = null;
 
     /** @var null|\DateTimeInterface */
-    private $deliveryDate = null;
+    protected $deliveryDate = null;
 
     /** @var null|\DateTimeInterface */
-    private $deliveryTimeFrom = null;
+    protected $deliveryTimeFrom = null;
 
     /** @var null|\DateTimeInterface */
-    private $deliveryTimeTo = null;
+    protected $deliveryTimeTo = null;
 
     /** @var \DateTimeInterface */
-    private $takeDate;
+    protected $takeDate;
 
     /** @var null|\DateTimeInterface */
-    private $takeTimeFrom = null;
+    protected $takeTimeFrom = null;
 
     /** @var null|\DateTimeInterface */
-    private $takeTimeTo = null;
+    protected $takeTimeTo = null;
 
     /**
      * SpecialDelivery constructor.

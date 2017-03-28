@@ -11,10 +11,10 @@ use Salamek\PplMyApi\Exception\WrongDataException;
 class WeightedPackageInfo
 {
     /** @var float */
-    private $weight;
+    protected $weight;
 
     /** @var Route[] */
-    private $routes = [];
+    protected $routes = [];
 
     /**
      * WeightedPackageInfo constructor.

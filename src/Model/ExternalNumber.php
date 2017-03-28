@@ -12,10 +12,10 @@ use Salamek\PplMyApi\Exception\WrongDataException;
 class ExternalNumber
 {
     /** @var string */
-    private $code;
+    protected $code;
 
     /** @var string */
-    private $externalNumber;
+    protected $externalNumber;
 
     /**
      * PackageExternalNumbers constructor.

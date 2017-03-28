@@ -12,22 +12,22 @@ use Salamek\PplMyApi\Exception\WrongDataException;
 class Colli
 {
     /** @var string */
-    private $colliNumber;
+    protected $colliNumber;
 
     /** @var integer */
-    private $width = null;
+    protected $width = null;
 
     /** @var integer */
-    private $height = null;
+    protected $height = null;
 
     /** @var integer */
-    private $length = null;
+    protected $length = null;
 
     /** @var float */
-    private $weight;
+    protected $weight;
 
     /** @var string */
-    private $wrapCode;
+    protected $wrapCode;
 
     /**
      * PackageInColli constructor.

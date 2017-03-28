@@ -77,25 +77,25 @@ use Salamek\PplMyApi\Model\PickUpOrder;
 class Api
 {
     /** @var null|\SoapClient */
-    private $soap = null;
+    protected $soap = null;
 
     /** @var string */
-    private $wsdl = 'https://myapi.ppl.cz/MyApi.svc?singleWsdl';
+    protected $wsdl = 'https://myapi.ppl.cz/MyApi.svc?singleWsdl';
 
     /** @var null|string */
-    private $username;
+    protected $username;
 
     /** @var null|string */
-    private $password;
+    protected $password;
 
     /** @var null|integer */
-    private $customerId = null;
+    protected $customerId = null;
 
     /** @var null|string */
-    private $securedStorage = null;
+    protected $securedStorage = null;
 
     /** @var string */
-    private $tokenLifespan = '+30 minutes'; //DateTime::modify() format
+    protected $tokenLifespan = '+30 minutes'; //DateTime::modify() format
 
     /**
      * MyApi constructor.

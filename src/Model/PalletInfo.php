@@ -12,22 +12,22 @@ use Salamek\PplMyApi\Exception\WrongDataException;
 class PalletInfo
 {
     /** @var Colli[] */
-    private $collies = [];
+    protected $collies = [];
 
     /** @var null|integer */
-    private $manipulationType = null;
+    protected $manipulationType = null;
 
     /** @var null|integer */
-    private $palletEurCount = null;
+    protected $palletEurCount = null;
 
     /** @var null|string */
-    private $packDescription = null;
+    protected $packDescription = null;
 
     /** @var null|integer */
-    private $pickUpCargoTypeCode = null;
+    protected $pickUpCargoTypeCode = null;
 
     /** @var null|float */
-    private $volume = null;
+    protected $volume = null;
 
     /**
      * PalletInfo constructor.

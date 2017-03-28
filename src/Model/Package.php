@@ -14,55 +14,55 @@ use Salamek\PplMyApi\Tools;
 class Package
 {
     /** @var integer */
-    private $seriesNumberId;
+    protected $seriesNumberId;
 
     /** @var string */
-    private $packageNumber;
+    protected $packageNumber;
 
     /** @var integer */
-    private $packageProductType;
+    protected $packageProductType;
 
     /** @var float */
-    private $weight;
+    protected $weight;
 
     /** @var string */
-    private $note;
+    protected $note;
 
     /** @var string */
-    private $depoCode;
+    protected $depoCode;
 
     /** @var Sender */
-    private $sender;
+    protected $sender;
 
     /** @var Recipient */
-    private $recipient;
+    protected $recipient;
 
     /** @var null|SpecialDelivery */
-    private $specialDelivery = null;
+    protected $specialDelivery = null;
 
     /** @var null|PaymentInfo */
-    private $paymentInfo = null;
+    protected $paymentInfo = null;
 
     /** @var null|ExternalNumber */
-    private $externalNumbers = [];
+    protected $externalNumbers = [];
 
     /** @var PackageService[] */
-    private $packageServices = [];
+    protected $packageServices = [];
 
     /** @var Flag[] */
-    private $flags = [];
+    protected $flags = [];
 
     /** @var null|PalletInfo */
-    private $palletInfo = null;
+    protected $palletInfo = null;
 
     /** @var null|WeightedPackageInfo */
-    private $weightedPackageInfo = null;
+    protected $weightedPackageInfo = null;
 
     /** @var int */
-    private $packageCount = 1;
+    protected $packageCount = 1;
 
     /** @var int */
-    private $packagePosition = 1;
+    protected $packagePosition = 1;
 
     /**
      * Package constructor.
