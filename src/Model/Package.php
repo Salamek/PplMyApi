@@ -102,7 +102,7 @@ class Package
         $packageCount = 1,
         $packagePosition = 1
     ) {
-        if (in_array($packageProductType, Product::$cashOnDelivery) && is_null($paymentInfo)) {
+        if ($this->isCashOnDelivery($packageProductType) && is_null($paymentInfo)) {
             throw new WrongDataException('$paymentInfo must be set if product type is CoD');
         }
 
@@ -418,5 +418,18 @@ class Package
     public function getPackagePosition()
     {
         return $this->packagePosition;
+    }
+
+    /**
+     * @param int
+     * @return bool
+     */
+    public function isCashOnDelivery($packageProductType = null)
+    {
+        if (is_null($packageProductType)) {
+            $packageProductType = $this->getPackageProductType();
+        }
+
+        return in_array($packageProductType, Product::$cashOnDelivery);
     }
 }

@@ -62,7 +62,7 @@ class Tools
         $list = [
             $packageIdentifierPackageProductType,
             $package->getDepoCode(),
-            (in_array($package->getPackageProductType(), Product::$cashOnDelivery) ? '9' : '5'),
+            ($package->isCashOnDelivery() ? '9' : '5'),
             0,
             str_pad($package->getSeriesNumberId(), 6, '0', STR_PAD_LEFT)
         ];

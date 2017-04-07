@@ -15,6 +15,9 @@ use Salamek\PplMyApi\Model\Package;
 
 class Label
 {
+    /** @var boolean */
+    protected static $dayNightLabel = true;
+
     /**
      * @param array $packages
      * @param int $decomposition
@@ -52,7 +55,7 @@ class Label
             switch ($decomposition) {
                 case LabelDecomposition::FULL:
                     $pdf->AddPage();
-                    $pdf = self::generateLabelFull($pdf, $package);
+                    $pdf = static::generateLabelFull($pdf, $package);
                     break;
 
                 case LabelDecomposition::QUARTER:
@@ -64,7 +67,7 @@ class Label
                         $pdf->AddPage();
                     }
 
-                    $pdf = self::generateLabelQuarter($pdf, $package, $quarterPosition);
+                    $pdf = static::generateLabelQuarter($pdf, $package, $quarterPosition);
                     $quarterPosition++;
                     break;
             }
@@ -80,16 +83,19 @@ class Label
      */
     public static function generateLabelFull(\TCPDF $pdf, Package $package)
     {
+        $contact = static::parcelContact();
+
         $x = 17;
-        $pdf->Image(__DIR__ . '/../assets/logo.png', $x, 10, 66, '', 'PNG');
+        if ($contact['logo']) {
+            $pdf->Image($contact['logo'], $x, 10, 66, '', 'PNG');
+        }
 
         //Contact info
         $contactInfoY = 45;
         $pdf->SetFont($pdf->getFontFamily(), '', 20);
-        $pdf->Text($x, $contactInfoY, 'Modrá linka: 844 775 775');
-        $pdf->Text($x, $contactInfoY + 10, 'E-mail: info@ppl.cz');
-        $pdf->Text($x, $contactInfoY + 20, 'https://www.ppl.cz');
-
+        $pdf->Text($x, $contactInfoY, $contact['phone']);
+        $pdf->Text($x, $contactInfoY + 10, $contact['email']);
+        $pdf->Text($x, $contactInfoY + 20, $contact['web']);
 
         //Barcode
         $pdf->StartTransform();
@@ -117,7 +123,7 @@ class Label
         $pdf->MultiCell(40, 0, sprintf('%s/%s', $package->getPackagePosition(), $package->getPackageCount()), ['LTRB' => ['width' => 1]], 'C', 0, 0, 244, 175, true, 0, false, true, 0);
 
         // Dobirka
-        if (in_array($package->getPackageProductType(), Product::$cashOnDelivery)) {
+        if ($package->isCashOnDelivery()) {
             $pdf->SetFont($pdf->getFontFamily(), 'B', 27);
             $pdf->SetTextColor(255, 255, 255);
             $pdf->SetFillColor(0, 0, 0);
@@ -151,13 +157,15 @@ class Label
         $pdf->Text($x, $y + 63, sprintf('Tel.: %s', $package->getRecipient()->getPhone()));
 
         $pdf->MultiCell(173, 80, '', ['LTRB' => ['width' => 1]], 'L', 0, 0, 112, 21, true, 0, false, true, 0);
-        $pdf->SetFont($pdf->getFontFamily(), 'B', 60);
-        $pdf->SetTextColor(255, 255, 255);
-        $pdf->SetFillColor(0, 0, 0);
-        $pdf->MultiCell(60, 15, (in_array(PackageService::EVENING_DELIVERY, self::packageServicesToArray($package)) ? 'Večer' : 'Den'), ['LTRB' => ['width' => 1]], 'C', true, 0, 224, 73, true, 0,
-            false, true, 0);
-        $pdf->SetTextColor(0, 0, 0);
-        $pdf->SetFillColor(255, 255, 255);
+
+        if (static::$dayNightLabel) {
+            $pdf->SetFont($pdf->getFontFamily(), 'B', 60);
+            $pdf->SetTextColor(255, 255, 255);
+            $pdf->SetFillColor(0, 0, 0);
+            $pdf->MultiCell(60, 15, (in_array(PackageService::EVENING_DELIVERY, static::packageServicesToArray($package)) ? 'Večer' : 'Den'), ['LTRB' => ['width' => 1]], 'C', true, 0, 224, 73, true, 0, false, true, 0);
+            $pdf->SetTextColor(0, 0, 0);
+            $pdf->SetFillColor(255, 255, 255);
+        }
 
         //Sender
         $pdf->SetFont($pdf->getFontFamily(), '', 25);
@@ -214,15 +222,18 @@ class Label
                 break;
         }
 
+        $contact = static::parcelContact();
+
         //Logo
-        $pdf->Image(__DIR__ . '/../assets/logo.png', 3 + $xPositionOffset, 3 + $yPositionOffset, 34, '', 'PNG');
+        if ($contact['logo']) {
+            $pdf->Image($contact['logo'], 3 + $xPositionOffset, 3 + $yPositionOffset, 34, '', 'PNG');
+        }
 
         //Contact info
         $pdf->SetFont($pdf->getFontFamily(), '', 9);
-        $pdf->Text(3 + $xPositionOffset, 20 + $yPositionOffset, 'Modrá linka: 844 775 775');
-        $pdf->Text(3 + $xPositionOffset, 25 + $yPositionOffset, 'E-mail: info@ppl.cz');
-        $pdf->Text(3 + $xPositionOffset, 30 + $yPositionOffset, 'https://www.ppl.cz');
-
+        $pdf->Text(3 + $xPositionOffset, 20 + $yPositionOffset, $contact['phone']);
+        $pdf->Text(3 + $xPositionOffset, 25 + $yPositionOffset, $contact['email']);
+        $pdf->Text(3 + $xPositionOffset, 30 + $yPositionOffset, $contact['web']);
 
         //Barcode
         $pdf->StartTransform();
@@ -251,7 +262,7 @@ class Label
             true, 0, false, true, 0);
 
         // Dobirka
-        if (in_array($package->getPackageProductType(), Product::$cashOnDelivery)) {
+        if ($package->isCashOnDelivery()) {
             $pdf->SetFont($pdf->getFontFamily(), 'B', 13);
             $pdf->SetTextColor(255, 255, 255);
             $pdf->SetFillColor(0, 0, 0);
@@ -283,13 +294,16 @@ class Label
         $pdf->Text($x, $y + 33, sprintf('Tel.: %s', $package->getRecipient()->getPhone()));
 
         $pdf->MultiCell(85, 40, '', ['LTRB' => ['width' => 0.7]], 'L', 0, 0, 51 + $xPositionOffset, 9 + $yPositionOffset, true, 0, false, true, 0);
-        $pdf->SetFont($pdf->getFontFamily(), 'B', 30);
-        $pdf->SetTextColor(255, 255, 255);
-        $pdf->SetFillColor(0, 0, 0);
-        $pdf->MultiCell(30, 15, (in_array(PackageService::EVENING_DELIVERY, self::packageServicesToArray($package)) ? 'Večer' : 'Den'), ['LTRB' => ['width' => 0.7]], 'C', true, 0,
-            106 + $xPositionOffset, 34 + $yPositionOffset, true, 0, false, true, 0);
-        $pdf->SetTextColor(0, 0, 0);
-        $pdf->SetFillColor(255, 255, 255);
+
+        if (static::$dayNightLabel) {
+            $pdf->SetFont($pdf->getFontFamily(), 'B', 30);
+            $pdf->SetTextColor(255, 255, 255);
+            $pdf->SetFillColor(0, 0, 0);
+            $pdf->MultiCell(30, 15, (in_array(PackageService::EVENING_DELIVERY, static::packageServicesToArray($package)) ? 'Večer' : 'Den'), ['LTRB' => ['width' => 0.7]], 'C', true, 0,
+                106 + $xPositionOffset, 34 + $yPositionOffset, true, 0, false, true, 0);
+            $pdf->SetTextColor(0, 0, 0);
+            $pdf->SetFillColor(255, 255, 255);
+        }
 
         //Sender
         $pdf->SetFont($pdf->getFontFamily(), '', 12);
@@ -313,6 +327,19 @@ class Label
         $pdf->MultiCell(85, 23, '', ['LTRB' => ['width' => 0.7]], 'L', 0, 0, 51 + $xPositionOffset, 57 + $yPositionOffset, true, 0, false, true, 0);
 
         return $pdf;
+    }
+
+    /**
+     * @return array
+     */
+    protected static function parcelContact()
+    {
+        return [
+            'logo' => __DIR__ . '/../assets/logo.png',
+            'phone' => 'Modrá linka: 844 775 775',
+            'email' => 'E-mail: info@ppl.cz',
+            'web' => 'https://www.ppl.cz'
+        ];
     }
 
     /**
