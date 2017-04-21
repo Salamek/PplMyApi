@@ -15,31 +15,31 @@ use Salamek\PplMyApi\Exception\WrongDataException;
 class Recipient
 {
     /** @var string */
-    private $city;
+    protected $city;
 
     /** @var null|string */
-    private $contact = null;
+    protected $contact = null;
 
     /** @var null|string */
-    private $country = null;
+    protected $country = null;
 
     /** @var null|string */
-    private $email = null;
+    protected $email = null;
 
     /** @var string */
-    private $name;
+    protected $name;
 
     /** @var null|string */
-    private $name2 = null;
+    protected $name2 = null;
 
     /** @var null|string */
-    private $phone = null;
+    protected $phone = null;
 
     /** @var string */
-    private $street;
+    protected $street;
 
     /** @var string */
-    private $zipCode;
+    protected $zipCode;
 
     /**
      * Sender constructor.

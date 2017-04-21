@@ -12,37 +12,37 @@ use Salamek\PplMyApi\Exception\WrongDataException;
 class Order
 {
     /** @var integer */
-    private $countPackages;
+    protected $countPackages;
 
     /** @var null|string */
-    private $customerReference = null;
+    protected $customerReference = null;
 
     /** @var null|string */
-    private $email = null;
+    protected $email = null;
 
     /** @var null|string */
-    private $note = null;
+    protected $note = null;
 
     /** @var string */
-    private $orderReferenceId;
+    protected $orderReferenceId;
 
     /** @var integer */
-    private $packageProductType;
+    protected $packageProductType;
 
     /** @var  \DateTimeInterface */
-    private $sendDate;
+    protected $sendDate;
 
     /** @var  null|\DateTimeInterface */
-    private $sendTimeFrom = null;
+    protected $sendTimeFrom = null;
 
     /** @var null|\DateTimeInterface */
-    private $sendTimeTo = null;
+    protected $sendTimeTo = null;
 
     /** @var Sender */
-    private $sender;
+    protected $sender;
 
     /** @var Recipient */
-    private $recipient;
+    protected $recipient;
 
     /**
      * OrderIn constructor.

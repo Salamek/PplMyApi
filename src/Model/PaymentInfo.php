@@ -12,34 +12,34 @@ use Salamek\PplMyApi\Exception\WrongDataException;
 class PaymentInfo
 {
     /** @var null|string */
-    private $bankAccount = null;
+    protected $bankAccount = null;
 
     /** @var null|string */
-    private $bankCode = null;
+    protected $bankCode = null;
 
     /** @var null|string */
-    private $cashOnDeliveryCurrency = null;
+    protected $cashOnDeliveryCurrency = null;
 
     /** @var null|integer */
-    private $cashOnDeliveryPrice = null;
+    protected $cashOnDeliveryPrice = null;
 
     /** @var null|integer */
-    private $cashOnDeliveryVariableSymbol = null;
+    protected $cashOnDeliveryVariableSymbol = null;
 
     /** @var null|string */
-    private $iban = null;
+    protected $iban = null;
 
     /** @var null|string */
-    private $insuranceCurrency = null;
+    protected $insuranceCurrency = null;
 
     /** @var null|integer */
-    private $insurancePrice = null;
+    protected $insurancePrice = null;
 
     /** @var null|string */
-    private $specificSymbol = null;
+    protected $specificSymbol = null;
 
     /** @var null|string */
-    private $swift = null;
+    protected $swift = null;
 
     /**
      * PaymentInfo constructor.

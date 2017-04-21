@@ -12,10 +12,10 @@ use Salamek\PplMyApi\Exception\WrongDataException;
 class Route
 {
     /** @var string */
-    private $routeType;
+    protected $routeType;
 
     /** @var string */
-    private $routeCode;
+    protected $routeCode;
 
     /**
      * Route constructor.

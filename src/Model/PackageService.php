@@ -12,7 +12,7 @@ use Salamek\PplMyApi\Exception\WrongDataException;
 class PackageService
 {
     /** @var string */
-    private $svcCode;
+    protected $svcCode;
 
     /**
      * PackageServices constructor.
