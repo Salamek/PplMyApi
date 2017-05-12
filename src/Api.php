@@ -289,7 +289,7 @@ class Api
                 'CustRef' => $order->getCustomerReference(),
                 'Email' => $order->getEmail(),
                 'Note' => $order->getNote(),
-                'OrdRefID' => $order->getOrderReferenceId(),
+                'OrdRefId' => $order->getOrderReferenceId(),
                 'PackProductType' => $order->getPackageProductType(),
                 'SendDate' => $order->getSendDate()->format(\DateTime::ATOM),
                 'SendTimeFrom' => $order->getSendTimeFrom()->format(\DateTime::ATOM),
