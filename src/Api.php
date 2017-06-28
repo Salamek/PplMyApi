@@ -363,7 +363,7 @@ class Api
             if ($package->getPalletInfo()) {
                 $collies = [];
                 foreach ($package->getPalletInfo()->getCollies() AS $colli) {
-                    $collies[]['MyApiPackageInColli'] = [
+                    $collies[] = [
                         'ColliNumber' => $colli->getColliNumber(),
                         'Height' => $colli->getHeight(),
                         'Length' => $colli->getLength(),
@@ -374,7 +374,7 @@ class Api
                 }
 
                 $palletInfo = [];
-                $palletInfo['Collies'] = $collies;
+                $palletInfo['Collies']['MyApiPackageInColli'] = $collies;
                 $palletInfo['ManipulationType'] = $package->getPalletInfo()->getManipulationType();
                 $palletInfo['PEURCount'] = $package->getPalletInfo()->getPalletEurCount();
                 $palletInfo['PackDesc'] = $package->getPalletInfo()->getPackDescription();
