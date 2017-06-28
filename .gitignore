@@ -4,3 +4,4 @@
 /composer.lock
 /test/config.json.old
 /test/phpunit_report
+.idea/
