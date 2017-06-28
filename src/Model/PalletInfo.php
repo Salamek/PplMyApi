@@ -7,6 +7,7 @@ namespace Salamek\PplMyApi\Model;
 
 
 use Salamek\PplMyApi\Enum\ManipulationType;
+use Salamek\PplMyApi\Enum\CargoType;
 use Salamek\PplMyApi\Exception\WrongDataException;
 
 class PalletInfo
@@ -101,8 +102,8 @@ class PalletInfo
      */
     public function setPickUpCargoTypeCode($pickUpCargoTypeCode)
     {
-        if (!in_array($pickUpCargoTypeCode, ManipulationType::$list)) {
-            throw new WrongDataException(sprintf('$pickUpCargoTypeCode has wrong value, only %s are allowed', implode(', ', ManipulationType::$list)));
+        if (!in_array($pickUpCargoTypeCode, CargoType::$list)) {
+            throw new WrongDataException(sprintf('$pickUpCargoTypeCode has wrong value, only %s are allowed', implode(', ', CargoType::$list)));
         }
         $this->pickUpCargoTypeCode = $pickUpCargoTypeCode;
     }
