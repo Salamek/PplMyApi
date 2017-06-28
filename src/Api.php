@@ -72,7 +72,7 @@ use Salamek\PplMyApi\Model\PickUpOrder;
  *
  * V dokumentaci mi zaslane chybi validni ukazky predavacich protokolu
  *
- * V dokumentaci chybi podminky, jake je splnit k uspesnemu zprovozneni MyAPI a povoleni na strane PPL
+ * V dokumentaci chybi podminky, jake je nutne splnit k uspesnemu zprovozneni MyAPI a povoleni na strane PPL
  */
 class Api
 {
@@ -122,25 +122,8 @@ class Api
 
         $this->securedStorage = sys_get_temp_dir() . '/PplApi';
 
-
         try {
-            //!FIXME ####################### SECURITY ##########################
-            //!FIXME Special options to pass invalid SSL certificate on *.ppl.cz
-            //!FIXME ####################### SECURITY ##########################
-            $options = [
-                "location" => "https://myapi.ppl.cz/MyApi.svc",
-                "trace" => 1,
-                "stream_context" => stream_context_create([
-                        "ssl" => [
-                            "verify_peer" => false,
-                            "allow_self_signed" => false
-                        ]
-                    ]
-                )
-            ];
-
-            $this->soap = new \SoapClient($this->wsdl, $options);
-
+            $this->soap = new \SoapClient($this->wsdl);
         } catch (\Exception $e) {
             throw new \Exception('Failed to build soap client');
         }
@@ -289,7 +272,7 @@ class Api
                 'CustRef' => $order->getCustomerReference(),
                 'Email' => $order->getEmail(),
                 'Note' => $order->getNote(),
-                'OrdRefID' => $order->getOrderReferenceId(),
+                'OrdRefId' => $order->getOrderReferenceId(),
                 'PackProductType' => $order->getPackageProductType(),
                 'SendDate' => $order->getSendDate()->format(\DateTime::ATOM),
                 'SendTimeFrom' => $order->getSendTimeFrom()->format(\DateTime::ATOM),

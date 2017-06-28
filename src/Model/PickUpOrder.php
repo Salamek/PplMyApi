@@ -54,7 +54,7 @@ class PickUpOrder
         $this->setOrderReferenceId($orderReferenceId);
         $this->setCustomerReference($customerReference);
         $this->setCountPackages($countPackages);
-        $this->setMote($note);
+        $this->setNote($note);
         $this->setEmail($email);
         $this->setSendDate($sendDate);
         $this->setSendTimeFrom($sendTimeFrom);

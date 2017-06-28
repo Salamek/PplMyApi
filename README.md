@@ -16,7 +16,9 @@ Install salamek/PplMyApi using  [Composer](http://getcomposer.org/)
 ```sh
 $ composer require salamek/ppl-my-api:dev-master
 ```
+## Credentials
 
+You must request MyAPI credentials from PPL IT, it is not same as klient.ppl.cz credentials!
 
 ## Usage
 
