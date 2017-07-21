@@ -561,7 +561,7 @@ class Api
      */
     public function getLabels(array $packages, $decomposition = LabelDecomposition::QUARTER)
     {
-        user_error("getLabels is deprecated, use Label::generateLabels instead.", E_DEPRECATED);
+        user_error("getLabels is deprecated, use Label::generateLabels instead.", E_USER_DEPRECATED);
         return Label::generateLabels($packages, $decomposition);
     }
 }
