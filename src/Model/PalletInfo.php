@@ -90,7 +90,7 @@ class PalletInfo
      */
     public function setPackDescription($packDescription)
     {
-        if (strlen($packDescription) > 512) {
+        if (mb_strlen($packDescription) > 512) {
             throw new WrongDataException('$packDescription is longer than 512');
         }
         $this->packDescription = $packDescription;

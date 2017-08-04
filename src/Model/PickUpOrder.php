@@ -69,8 +69,8 @@ class PickUpOrder
      */
     public function setOrderReferenceId($orderReferenceId)
     {
-        if (strlen($orderReferenceId) > 100) {
-            throw new WrongDataException('$orderReferenceId is longer then 100 characters');
+        if (mb_strlen($orderReferenceId) > 100) {
+            throw new WrongDataException('$orderReferenceId is longer than 100 characters');
         }
 
         $this->orderReferenceId = $orderReferenceId;
@@ -82,8 +82,8 @@ class PickUpOrder
      */
     public function setCustomerReference($customerReference)
     {
-        if (strlen($customerReference) > 40) {
-            throw new WrongDataException('$customerReference is longer then 40 characters');
+        if (mb_strlen($customerReference) > 40) {
+            throw new WrongDataException('$customerReference is longer than 40 characters');
         }
 
         $this->customerReference = $customerReference;
@@ -103,8 +103,8 @@ class PickUpOrder
      */
     public function setNote($note)
     {
-        if (strlen($note) > 300) {
-            throw new WrongDataException('$note is longer then 300 characters');
+        if (mb_strlen($note) > 300) {
+            throw new WrongDataException('$note is longer than 300 characters');
         }
 
         $this->note = $note;
@@ -116,8 +116,8 @@ class PickUpOrder
      */
     public function setEmail($email)
     {
-        if (strlen($email) > 100) {
-            throw new WrongDataException('$email is longer then 100 characters');
+        if (mb_strlen($email) > 100) {
+            throw new WrongDataException('$email is longer than 100 characters');
         }
 
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
