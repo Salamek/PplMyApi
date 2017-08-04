@@ -54,7 +54,7 @@ class Colli
      */
     public function setColliNumber($colliNumber)
     {
-        if (strlen($colliNumber) > 50) {
+        if (mb_strlen($colliNumber) > 50) {
             throw new WrongDataException('$colliNumber is longer than 50');
         }
         $this->colliNumber = $colliNumber;
