@@ -72,7 +72,7 @@ class Recipient
      */
     public function setCity($city)
     {
-        if (strlen($city) > 50) {
+        if (mb_strlen($city) > 50) {
             throw new WrongDataException('$city is longer then 50 characters');
         }
         $this->city = $city;
@@ -85,7 +85,7 @@ class Recipient
     public function setContact($contact)
     {
         if (!is_null($contact)) {
-            if (strlen($contact) > 300) {
+            if (mb_strlen($contact) > 300) {
                 throw new WrongDataException('$contact is longer then 30 characters');
             }
         }
@@ -112,7 +112,7 @@ class Recipient
     public function setEmail($email)
     {
         if (!is_null($email)) {
-            if (strlen($email) > 50) {
+            if (mb_strlen($email) > 50) {
                 throw new WrongDataException('$email is longer then 100 characters');
             }
 
@@ -130,7 +130,7 @@ class Recipient
      */
     public function setName($name)
     {
-        if (strlen($name) > 50) {
+        if (mb_strlen($name) > 50) {
             throw new WrongDataException('$name is longer then 250 characters');
         }
         $this->name = $name;
@@ -143,7 +143,7 @@ class Recipient
     public function setName2($name2)
     {
         if (!is_null($name2)) {
-            if (strlen($name2) > 50) {
+            if (mb_strlen($name2) > 50) {
                 throw new WrongDataException('$name2 is longer then 250 characters');
             }
         }
@@ -157,7 +157,7 @@ class Recipient
     public function setPhone($phone)
     {
         if (!is_null($phone)) {
-            if (strlen($phone) > 50) {
+            if (mb_strlen($phone) > 50) {
                 throw new WrongDataException('$phone is longer then 30 characters');
             }
         }
@@ -171,7 +171,7 @@ class Recipient
      */
     public function setStreet($street)
     {
-        if (strlen($street) > 50) {
+        if (mb_strlen($street) > 50) {
             throw new WrongDataException('$street is longer then 30 characters');
         }
         $this->street = $street;
@@ -183,7 +183,7 @@ class Recipient
      */
     public function setZipCode($zipCode)
     {
-        if (strlen($zipCode) > 10) {
+        if (mb_strlen($zipCode) > 10) {
             throw new WrongDataException('$zipCode is longer then 10 characters');
         }
         $this->zipCode = $zipCode;
