@@ -72,7 +72,7 @@ use Salamek\PplMyApi\Model\PickUpOrder;
  *
  * V dokumentaci mi zaslane chybi validni ukazky predavacich protokolu
  *
- * V dokumentaci chybi podminky, jake je splnit k uspesnemu zprovozneni MyAPI a povoleni na strane PPL
+ * V dokumentaci chybi podminky, jake je nutne splnit k uspesnemu zprovozneni MyAPI a povoleni na strane PPL
  */
 class Api
 {
@@ -108,12 +108,12 @@ class Api
      */
     public function __construct($username = null, $password = null, $customerId = null)
     {
-        if (strlen($username) > 32) {
-            throw new SecurityException('$username is longer then 32 characters');
+        if (mb_strlen($username) > 32) {
+            throw new SecurityException('$username is longer than 32 characters');
         }
 
-        if (strlen($password) > 32) {
-            throw new SecurityException('$password is longer then 32 characters');
+        if (mb_strlen($password) > 32) {
+            throw new SecurityException('$password is longer than 32 characters');
         }
 
         $this->username = $username;
@@ -122,25 +122,8 @@ class Api
 
         $this->securedStorage = sys_get_temp_dir() . '/PplApi';
 
-
         try {
-            //!FIXME ####################### SECURITY ##########################
-            //!FIXME Special options to pass invalid SSL certificate on *.ppl.cz
-            //!FIXME ####################### SECURITY ##########################
-            $options = [
-                "location" => "https://myapi.ppl.cz/MyApi.svc",
-                "trace" => 1,
-                "stream_context" => stream_context_create([
-                        "ssl" => [
-                            "verify_peer" => false,
-                            "allow_self_signed" => false
-                        ]
-                    ]
-                )
-            ];
-
-            $this->soap = new \SoapClient($this->wsdl, $options);
-
+            $this->soap = new \SoapClient($this->wsdl);
         } catch (\Exception $e) {
             throw new \Exception('Failed to build soap client');
         }
@@ -289,7 +272,7 @@ class Api
                 'CustRef' => $order->getCustomerReference(),
                 'Email' => $order->getEmail(),
                 'Note' => $order->getNote(),
-                'OrdRefID' => $order->getOrderReferenceId(),
+                'OrdRefId' => $order->getOrderReferenceId(),
                 'PackProductType' => $order->getPackageProductType(),
                 'SendDate' => $order->getSendDate()->format(\DateTime::ATOM),
                 'SendTimeFrom' => $order->getSendTimeFrom()->format(\DateTime::ATOM),
@@ -380,7 +363,7 @@ class Api
             if ($package->getPalletInfo()) {
                 $collies = [];
                 foreach ($package->getPalletInfo()->getCollies() AS $colli) {
-                    $collies[]['MyApiPackageInColli'] = [
+                    $collies[] = [
                         'ColliNumber' => $colli->getColliNumber(),
                         'Height' => $colli->getHeight(),
                         'Length' => $colli->getLength(),
@@ -391,7 +374,7 @@ class Api
                 }
 
                 $palletInfo = [];
-                $palletInfo['Collies'] = $collies;
+                $palletInfo['Collies']['MyApiPackageInColli'] = $collies;
                 $palletInfo['ManipulationType'] = $package->getPalletInfo()->getManipulationType();
                 $palletInfo['PEURCount'] = $package->getPalletInfo()->getPalletEurCount();
                 $palletInfo['PackDesc'] = $package->getPalletInfo()->getPackDescription();
@@ -578,7 +561,7 @@ class Api
      */
     public function getLabels(array $packages, $decomposition = LabelDecomposition::QUARTER)
     {
-        user_error("getLabels is deprecated, use Label::generateLabels instead.", E_DEPRECATED);
+        user_error("getLabels is deprecated, use Label::generateLabels instead.", E_USER_DEPRECATED);
         return Label::generateLabels($packages, $decomposition);
     }
 }

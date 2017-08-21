@@ -13,10 +13,20 @@ Professional Parcel Logistic MyApi client in PHP
 ## Installation
 
 Install salamek/PplMyApi using  [Composer](http://getcomposer.org/)
+
+```sh
+$ composer require salamek/ppl-my-api
+```
+
+or if you want master branch code:
+
 ```sh
 $ composer require salamek/ppl-my-api:dev-master
 ```
 
+## Credentials
+
+You must request MyAPI credentials from PPL IT, it is not same as klient.ppl.cz credentials!
 
 ## Usage
 
