@@ -24,7 +24,7 @@ final class PublicTest extends BaseTest
      */
     public function testGetVersion()
     {
-        $this->assertRegExp('/^\d{1,2}\.\d{1,2}\.\d{1,2}\.\d{1,2}$/', $this->pplMyApi->getVersion());
+        $this->assertRegExp('/^\d{1,2}\.\d{1,2}\.\d+\.\d+$/', $this->pplMyApi->getVersion());
     }
 
     /**

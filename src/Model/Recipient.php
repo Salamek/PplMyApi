@@ -86,7 +86,7 @@ class Recipient
     {
         if (!is_null($contact)) {
             if (mb_strlen($contact) > 300) {
-                throw new WrongDataException('$contact is longer than 30 characters');
+                throw new WrongDataException('$contact is longer than 300 characters');
             }
         }
 
@@ -113,7 +113,7 @@ class Recipient
     {
         if (!is_null($email)) {
             if (mb_strlen($email) > 50) {
-                throw new WrongDataException('$email is longer than 100 characters');
+                throw new WrongDataException('$email is longer than 50 characters');
             }
 
             if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
@@ -131,7 +131,7 @@ class Recipient
     public function setName($name)
     {
         if (mb_strlen($name) > 50) {
-            throw new WrongDataException('$name is longer than 250 characters');
+            throw new WrongDataException('$name is longer than 50 characters');
         }
         $this->name = $name;
     }
@@ -144,7 +144,7 @@ class Recipient
     {
         if (!is_null($name2)) {
             if (mb_strlen($name2) > 50) {
-                throw new WrongDataException('$name2 is longer than 250 characters');
+                throw new WrongDataException('$name2 is longer than 50 characters');
             }
         }
         $this->name2 = $name2;
@@ -157,7 +157,7 @@ class Recipient
     public function setPhone($phone)
     {
         if (!is_null($phone)) {
-            if (mb_strlen($phone) > 50) {
+            if (mb_strlen($phone) > 30) {
                 throw new WrongDataException('$phone is longer than 30 characters');
             }
         }
@@ -172,7 +172,7 @@ class Recipient
     public function setStreet($street)
     {
         if (mb_strlen($street) > 50) {
-            throw new WrongDataException('$street is longer than 30 characters');
+            throw new WrongDataException('$street is longer than 50 characters');
         }
         $this->street = $street;
     }
