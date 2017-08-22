@@ -338,7 +338,7 @@ class Label
 
             $pdf->SetXY($x, $y);
             $pdf->SetFont($pdf->getFontFamily(), '', 9);
-            $pdf->MultiCell(60, 20, 'Pozn.: ' . $package->getNote(), '', 'L');
+            $pdf->MultiCell(60, 4, 'Pozn.: ' . $package->getNote(), '', 'L');
         }
 
         return $pdf;
