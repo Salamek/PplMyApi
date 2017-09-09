@@ -189,7 +189,6 @@ print_r($result);
 Returns PDF with label/s for print on paper, two decompositions are supported, LabelDecomposition::FULL (one A4 Label per page) or LabelDecomposition::QUARTER (one label per 1/4 of A4 page)
 
 ```php
-$pplMyApi = new Salamek\PplMyApi\Api();
 
 $sender = new Salamek\PplMyApi\Model\Sender('Olomouc', 'My Compamy s.r.o.', 'My Address', '77900', 'info@example.com', '+420123456789', 'http://www.example.cz', Country::CZ);
 $recipient = new Salamek\PplMyApi\Model\Recipient('Olomouc', 'Adam Schubert', 'My Address', '77900', 'adam@example.com', '+420123456789', 'http://www.salamek.cz', Country::CZ, 'My Compamy a.s.');
@@ -199,6 +198,6 @@ $weight = 3.15;
 $package = new Salamek\PplMyApi\Model\Package($myPackageIdFromNumberSeries, Product::PPL_PARCEL_CZ_PRIVATE, $weight, 'Testpvaci balik', Depo::CODE_09, $sender, $recipient);
 
 
-$rawPdf = $pplMyApi->getLabels([$package]);
+$rawPdf = Label::generateLabels([$package]);
 file_put_contents($package->getPackageNumber() . '.pdf', $rawPdf);
 ```
