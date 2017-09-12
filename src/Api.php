@@ -351,13 +351,15 @@ class Api
             }
 
 
-            $flags = [];
+            $flagList = [];
             foreach ($package->getFlags() AS $flag) {
-                $flags[]['MyApiFlag'] = [
+                $flagList[] = [
                     'Code' => $flag->getCode(),
                     'Value' => $flag->isValue()
                 ];
             }
+
+            $flags = ['MyApiFlag' => $flagList];
 
             $palletInfo = null;
             if ($package->getPalletInfo()) {
