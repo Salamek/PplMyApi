@@ -387,13 +387,15 @@ class Api
 
             $weightedPackageInfo = null;
             if ($package->getWeightedPackageInfo()) {
-                $routes = [];
+				$routeList = [];
                 foreach ($package->getWeightedPackageInfo()->getRoutes() AS $route) {
-                    $routes[]['Route'] = [
+					$routeList[]= [
                         'RouteType' => $route->getRouteType(),
                         'RouteCode' => $route->getRouteCode()
                     ];
                 }
+
+                $routes = ['Route' => $routeList];
 
                 $weightedPackageInfo = [];
                 $weightedPackageInfo['Weight'] = $package->getWeightedPackageInfo()->getWeight();
