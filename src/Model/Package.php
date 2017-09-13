@@ -128,21 +128,9 @@ class Package
             $this->setSeriesNumberId($seriesNumberId);
         }
 
-        if (!$palletInfo) {
-            $testRequired = false;
-
-            /** @var Flag $flag */
-            foreach ($flags as $flag) {
-                if ($flag->getCode() === FlagEnum::SATURDAY_DELIVERY) {
-                    $testRequired = true;
-                    break;
-                }
-            }
-
-            if (!$testRequired) {
-                throw new WrongDataException('Package require flag FlagEnum::SATURDAY_DELIVERY (SD) true or false');
-            }
-        }
+		if (in_array($flags, Product::$deliverySaturday) && is_null($palletInfo)) {
+			throw new WrongDataException('Package require flag FlagEnum::SATURDAY_DELIVERY (SD) true or false');
+		}
     }
 
     /**

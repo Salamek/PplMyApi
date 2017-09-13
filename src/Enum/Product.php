@@ -46,4 +46,15 @@ class Product
         self::COMPANY_PALETTE_COD,
         self::PRIVATE_PALETTE_COD
     ];
+
+    public static $deliverySaturday = [
+		self::PPL_PARCEL_CZ_BUSINESS,
+		self::PPL_PARCEL_CZ_BUSINESS_COD,
+		self::PPL_PARCEL_CZ_PRIVATE,
+		self::PPL_PARCEL_CZ_PRIVATE_COD,
+		self::PPL_PARCEL_CZ_AFTERNOON_PACKAGE,
+		self::PPL_PARCEL_CZ_AFTERNOON_PACKAGE_COD,
+		self::EXPORT_PACKAGE,
+		self::EXPORT_PACKAGE_COD
+	];
 }
