@@ -253,7 +253,7 @@ class Api
             ]
         ]);
 
-        return $result->GetPackagesResult->ResultData->MyApiPackageOut;
+	return (isset($result->GetPackagesResult->ResultData->MyApiPackageOut) ? $result->GetPackagesResult->ResultData->MyApiPackageOut : [] );
     }
 
     /**
