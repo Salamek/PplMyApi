@@ -38,7 +38,7 @@ class Order
     /** @var null|\DateTimeInterface */
     private $sendTimeTo = null;
 
-    /** @var Sender */
+    /** @var ISender */
     private $sender;
 
     /** @var Recipient */
@@ -50,7 +50,7 @@ class Order
      * @param $orderReferenceId
      * @param $packProductType
      * @param \DateTimeInterface $sendDate
-     * @param Sender $sender
+     * @param ISender $sender
      * @param Recipient $recipient
      * @param null $customerReference
      * @param null $email
@@ -63,7 +63,7 @@ class Order
         $orderReferenceId,
         $packProductType,
         \DateTimeInterface $sendDate,
-        Sender $sender,
+        ISender $sender,
         Recipient $recipient,
         $customerReference = null,
         $email = null,
@@ -190,9 +190,9 @@ class Order
     }
 
     /**
-     * @param Sender $sender
+     * @param ISender $sender
      */
-    public function setSender(Sender $sender)
+    public function setSender(ISender $sender)
     {
         $this->sender = $sender;
     }
@@ -278,7 +278,7 @@ class Order
     }
 
     /**
-     * @return Sender
+     * @return ISender
      */
     public function getSender()
     {

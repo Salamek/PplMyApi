@@ -10,6 +10,7 @@ use Salamek\PplMyApi\Enum\LabelDecomposition;
 use Salamek\PplMyApi\Exception\OfflineException;
 use Salamek\PplMyApi\Exception\SecurityException;
 use Salamek\PplMyApi\Exception\WrongDataException;
+use Salamek\PplMyApi\Model\EmptySender;
 use Salamek\PplMyApi\Model\Order;
 use Salamek\PplMyApi\Model\Package;
 use Salamek\PplMyApi\Model\PickUpOrder;
@@ -412,7 +413,7 @@ class Api
                 'Weight' => $package->getWeight(),
                 'Note' => $package->getNote(),
                 'DepoCode' => $package->getDepoCode(),
-                'Sender' => [
+                'Sender' => (!($package->getSender() instanceof EmptySender) ? [
                     'City' => $package->getSender()->getCity(),
                     'Contact' => $package->getSender()->getContact(),
                     'Country' => $package->getSender()->getCountry(),
@@ -422,7 +423,7 @@ class Api
                     'Phone' => $package->getSender()->getPhone(),
                     'Street' => $package->getSender()->getStreet(),
                     'ZipCode' => $package->getSender()->getZipCode()
-                ],
+                ] : null),
                 'Recipient' => [
                     'City' => $package->getRecipient()->getCity(),
                     'Contact' => $package->getRecipient()->getContact(),
