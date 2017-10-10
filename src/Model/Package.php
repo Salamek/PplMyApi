@@ -6,6 +6,7 @@
 namespace Salamek\PplMyApi\Model;
 
 
+use Salamek\PplMyApi\Enum\Flag as FlagEnum;
 use Salamek\PplMyApi\Enum\Depo;
 use Salamek\PplMyApi\Enum\Product;
 use Salamek\PplMyApi\Exception\WrongDataException;
@@ -126,6 +127,10 @@ class Package
         if (!is_null($seriesNumberId)) {
             $this->setSeriesNumberId($seriesNumberId);
         }
+
+		if (in_array($flags, Product::$deliverySaturday) && is_null($palletInfo)) {
+			throw new WrongDataException('Package require flag FlagEnum::SATURDAY_DELIVERY (SD) true or false');
+		}
     }
 
     /**
