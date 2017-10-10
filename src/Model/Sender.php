@@ -12,7 +12,7 @@ use Salamek\PplMyApi\Exception\WrongDataException;
  * Class Sender
  * @package Salamek\MyApi
  */
-class Sender
+class Sender implements ISender
 {
     /** @var string */
     private $city;
@@ -67,8 +67,7 @@ class Sender
     }
 
     /**
-     * @param $city string
-     * @throws WrongDataException
+     * @inheritdoc
      */
     public function setCity($city)
     {
@@ -79,8 +78,7 @@ class Sender
     }
 
     /**
-     * @param $contact string
-     * @throws WrongDataException
+     * @inheritdoc
      */
     public function setContact($contact)
     {
@@ -94,8 +92,7 @@ class Sender
     }
 
     /**
-     * @param $country string
-     * @throws WrongDataException
+     * @inheritdoc
      */
     public function setCountry($country)
     {
@@ -106,8 +103,7 @@ class Sender
     }
 
     /**
-     * @param $email string
-     * @throws WrongDataException
+     * @inheritdoc
      */
     public function setEmail($email)
     {
@@ -126,8 +122,7 @@ class Sender
     }
 
     /**
-     * @param $name string
-     * @throws WrongDataException
+     * @inheritdoc
      */
     public function setName($name)
     {
@@ -138,8 +133,7 @@ class Sender
     }
 
     /**
-     * @param $name2 string
-     * @throws WrongDataException
+     * @inheritdoc
      */
     public function setName2($name2)
     {
@@ -153,8 +147,7 @@ class Sender
     }
 
     /**
-     * @param $phone string
-     * @throws WrongDataException
+     * @inheritdoc
      */
     public function setPhone($phone)
     {
@@ -168,8 +161,7 @@ class Sender
     }
 
     /**
-     * @param $street string
-     * @throws WrongDataException
+     * @inheritdoc
      */
     public function setStreet($street)
     {
@@ -180,8 +172,7 @@ class Sender
     }
 
     /**
-     * @param $zipCode string
-     * @throws WrongDataException
+     * @inheritdoc
      */
     public function setZipCode($zipCode)
     {

@@ -31,7 +31,7 @@ class Package
     /** @var string */
     private $depoCode;
 
-    /** @var Sender */
+    /** @var ISender */
     private $sender;
 
     /** @var Recipient */
@@ -71,7 +71,7 @@ class Package
      * @param float $weight
      * @param string $note
      * @param string $depoCode
-     * @param Sender $sender
+     * @param ISender $sender
      * @param Recipient $recipient
      * @param null|SpecialDelivery $specialDelivery
      * @param null|PaymentInfo $paymentInfo
@@ -90,7 +90,7 @@ class Package
         $weight,
         $note,
         $depoCode,
-        Sender $sender,
+        ISender $sender,
         Recipient $recipient,
         SpecialDelivery $specialDelivery = null,
         PaymentInfo $paymentInfo = null,
@@ -197,9 +197,9 @@ class Package
     }
 
     /**
-     * @param Sender $sender
+     * @param ISender $sender
      */
-    public function setSender(Sender $sender)
+    public function setSender(ISender $sender)
     {
         $this->sender = $sender;
     }
@@ -325,7 +325,7 @@ class Package
     }
 
     /**
-     * @return Sender
+     * @return ISender
      */
     public function getSender()
     {

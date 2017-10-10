@@ -34,7 +34,7 @@ class PickUpOrder
     /** @var null|\DateTimeInterface */
     private $sendTimeTo = null;
 
-    /** @var Sender */
+    /** @var ISender */
     private $sender;
 
     /**
@@ -47,9 +47,9 @@ class PickUpOrder
      * @param \DateTimeInterface $sendDate
      * @param \DateTimeInterface|null $sendTimeFrom
      * @param \DateTimeInterface|null $sendTimeTo
-     * @param Sender $sender
+     * @param ISender $sender
      */
-    public function __construct($orderReferenceId, $customerReference, $countPackages, $note, $email, \DateTimeInterface $sendDate, $sendTimeFrom, $sendTimeTo, Sender $sender)
+    public function __construct($orderReferenceId, $customerReference, $countPackages, $note, $email, \DateTimeInterface $sendDate, $sendTimeFrom, $sendTimeTo, ISender $sender)
     {
         $this->setOrderReferenceId($orderReferenceId);
         $this->setCustomerReference($customerReference);
@@ -152,9 +152,9 @@ class PickUpOrder
     }
 
     /**
-     * @param Sender $sender
+     * @param ISender $sender
      */
-    public function setSender(Sender $sender)
+    public function setSender(ISender $sender)
     {
         $this->sender = $sender;
     }
@@ -224,7 +224,7 @@ class PickUpOrder
     }
 
     /**
-     * @return Sender
+     * @return ISender
      */
     public function getSender()
     {
