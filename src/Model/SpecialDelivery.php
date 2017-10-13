@@ -12,35 +12,35 @@ namespace Salamek\PplMyApi\Model;
 class SpecialDelivery
 {
     /** @var null|string */
-    private $parcelShopCode = null;
+    private $parcelShopCode;
 
     /** @var null|\DateTimeInterface */
-    private $deliveryDate = null;
+    private $deliveryDate;
 
     /** @var null|\DateTimeInterface */
-    private $deliveryTimeFrom = null;
+    private $deliveryTimeFrom;
 
     /** @var null|\DateTimeInterface */
-    private $deliveryTimeTo = null;
+    private $deliveryTimeTo;
 
-    /** @var \DateTimeInterface */
+    /** @var null|\DateTimeInterface */
     private $takeDate;
 
     /** @var null|\DateTimeInterface */
-    private $takeTimeFrom = null;
+    private $takeTimeFrom;
 
     /** @var null|\DateTimeInterface */
-    private $takeTimeTo = null;
+    private $takeTimeTo;
 
     /**
      * SpecialDelivery constructor.
-     * @param null|string $parcelShopCode
-     * @param \DateTimeInterface|null $deliveryDate
-     * @param \DateTimeInterface|null $deliveryTimeFrom
-     * @param \DateTimeInterface|null $deliveryTimeTo
-     * @param \DateTimeInterface $takeDate
-     * @param \DateTimeInterface|null $takeTimeFrom
-     * @param \DateTimeInterface|null $takeTimeTo
+     * @param null|string               $parcelShopCode
+     * @param \DateTimeInterface|null   $deliveryDate
+     * @param \DateTimeInterface|null   $deliveryTimeFrom
+     * @param \DateTimeInterface|null   $deliveryTimeTo
+     * @param \DateTimeInterface|null   $takeDate
+     * @param \DateTimeInterface|null   $takeTimeFrom
+     * @param \DateTimeInterface|null   $takeTimeTo
      */
     public function __construct(
         $parcelShopCode,
@@ -149,7 +149,7 @@ class SpecialDelivery
     }
 
     /**
-     * @return \DateTimeInterface
+     * @return \DateTimeInterface|null
      */
     public function getTakeDate()
     {
