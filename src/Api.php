@@ -407,6 +407,17 @@ class Api
                 $weightedPackageInfo['Routes'] = $routes;
             }
 
+            $specialDelivery = $package->getSpecialDelivery();
+            $specDelivery = $specialDelivery ? [
+                'ParcelShopCode' => $specialDelivery->getParcelShopCode(),
+                'SpecDelivDate' => $specialDelivery->getDeliveryDate() ? $specialDelivery->getDeliveryDate()->format('Y-m-d') : null,
+                'SpecDelivTimeFrom' => $specialDelivery->getDeliveryTimeFrom() ? $specialDelivery->getDeliveryTimeFrom()->format('H:i:s') : null,
+                'SpecDelivTimeTo' => $specialDelivery->getDeliveryTimeTo() ? $specialDelivery->getDeliveryTimeTo()->format('H:i:s') : null,
+                'SpecTakeDate' => $specialDelivery->getTakeDate() ? $specialDelivery->getTakeDate()->format('Y-m-d') : null,
+                'SpecTakeTimeFrom' => $specialDelivery->getTakeTimeFrom() ? $specialDelivery->getTakeTimeFrom()->format('H:i:s') : null,
+                'SpecTakeTimeTo' => $specialDelivery->getTakeTimeTo() ? $specialDelivery->getTakeTimeTo()->format('H:i:s') : null
+            ] : null;
+
             $packagesProcessed[] = [
                 'PackNumber' => $package->getPackageNumber(),
                 'PackProductType' => $package->getPackageProductType(),
@@ -435,15 +446,7 @@ class Api
                     'Street' => $package->getRecipient()->getStreet(),
                     'ZipCode' => $package->getRecipient()->getZipCode()
                 ],
-                'SpecDelivery' => ($package->getSpecialDelivery() ? [
-                    'ParcelShopCode' => $package->getSpecialDelivery()->getParcelShopCode(),
-                    'SpecDelivDate' => $package->getSpecialDelivery()->getDeliveryDate()->format('Y-m-d'),
-                    'SpecDelivTimeFrom' => $package->getSpecialDelivery()->getDeliveryTimeFrom()->format('H:i:s'),
-                    'SpecDelivTimeTo' => $package->getSpecialDelivery()->getDeliveryTimeTo()->format('H:i:s'),
-                    'SpecTakeDate' => $package->getSpecialDelivery()->getTakeDate()->format('Y-m-d'),
-                    'SpecTakeTimeFrom' => $package->getSpecialDelivery()->getTakeTimeFrom()->format('H:i:s'),
-                    'SpecTakeTimeTo' => $package->getSpecialDelivery()->getTakeTimeTo()->format('H:i:s')
-                ] : null),
+                'SpecDelivery' => $specDelivery,
                 'PaymentInfo' => ($package->getPaymentInfo() ? [
                     'BankAccount' => $package->getPaymentInfo()->getBankAccount(),
                     'BankCode' => $package->getPaymentInfo()->getBankCode(),
