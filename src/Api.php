@@ -103,7 +103,7 @@ class Api
      * @param null|string $username
      * @param null|string $password
      * @param null|integer $customerId
-	 * @param null|string
+     * @param null|string
      * @throws \Exception
      * @throws OfflineException
      * @throws SecurityException
@@ -254,7 +254,9 @@ class Api
             ]
         ]);
 
-	return (isset($result->GetPackagesResult->ResultData->MyApiPackageOut) ? $result->GetPackagesResult->ResultData->MyApiPackageOut : [] );
+        return isset($result->GetPackagesResult->ResultData->MyApiPackageOut)
+            ? $result->GetPackagesResult->ResultData->MyApiPackageOut
+            : [];
     }
 
     /**
@@ -392,9 +394,9 @@ class Api
 
             $weightedPackageInfo = null;
             if ($package->getWeightedPackageInfo()) {
-				$routeList = [];
+                $routeList = [];
                 foreach ($package->getWeightedPackageInfo()->getRoutes() AS $route) {
-					$routeList[]= [
+                    $routeList[]= [
                         'RouteType' => $route->getRouteType(),
                         'RouteCode' => $route->getRouteCode()
                     ];
@@ -477,12 +479,9 @@ class Api
             ]
         ]);
 
-        if (isset($result->CreatePackagesResult->ResultData->ItemResult))
-        {
-            return $result->CreatePackagesResult->ResultData->ItemResult;
-        }
-
-        return [];
+        return isset($result->CreatePackagesResult->ResultData->ItemResult)
+            ? $result->CreatePackagesResult->ResultData->ItemResult
+            : [];
     }
 
     /**

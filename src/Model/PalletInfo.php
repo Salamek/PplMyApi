@@ -168,5 +168,4 @@ class PalletInfo
     {
         return $this->volume;
     }
-
 }

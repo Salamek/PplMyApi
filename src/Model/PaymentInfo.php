@@ -248,6 +248,4 @@ class PaymentInfo
     {
         return $this->swift;
     }
-
-
 }

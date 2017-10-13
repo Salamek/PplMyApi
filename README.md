@@ -38,7 +38,7 @@ Check if PPL MyApi is in working shape
 $pplMyApi = new Salamek\PplMyApi\Api();
 if ($pplMyApi->isHealthy())
 {
-    echo 'Healthly :)' . PHP_EOL;
+    echo 'Healthy :)' . PHP_EOL;
 }
 else
 {
@@ -92,7 +92,7 @@ $recipient = new Salamek\PplMyApi\Model\Recipient('Olomouc', 'Adam Schubert', 'M
 
 $myPackageIdFromNumberSeries = 115;
 $weight = 3.15;
-$package = new Salamek\PplMyApi\Model\Package($myPackageIdFromNumberSeries, Product::PPL_PARCEL_CZ_PRIVATE, $weight, 'Testpvaci balik', Depo::CODE_09, $sender, $recipient);
+$package = new Salamek\PplMyApi\Model\Package($myPackageIdFromNumberSeries, Product::PPL_PARCEL_CZ_PRIVATE, $weight, 'Testovaci balik', Depo::CODE_09, $sender, $recipient);
 
 try
 {
@@ -208,7 +208,7 @@ $recipient = new Salamek\PplMyApi\Model\Recipient('Olomouc', 'Adam Schubert', 'M
 
 $myPackageIdFromNumberSeries = 115;
 $weight = 3.15;
-$package = new Salamek\PplMyApi\Model\Package($myPackageIdFromNumberSeries, Product::PPL_PARCEL_CZ_PRIVATE, $weight, 'Testpvaci balik', Depo::CODE_09, $sender, $recipient);
+$package = new Salamek\PplMyApi\Model\Package($myPackageIdFromNumberSeries, Product::PPL_PARCEL_CZ_PRIVATE, $weight, 'Testovaci balik', Depo::CODE_09, $sender, $recipient);
 
 
 $rawPdf = Label::generateLabels([$package]);

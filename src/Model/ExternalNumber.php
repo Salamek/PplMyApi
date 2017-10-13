@@ -64,5 +64,4 @@ class ExternalNumber
     {
         return $this->externalNumber;
     }
-
 }
