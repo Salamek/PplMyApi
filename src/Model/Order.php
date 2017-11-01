@@ -9,7 +9,7 @@ namespace Salamek\PplMyApi\Model;
 use Salamek\PplMyApi\Enum\Product;
 use Salamek\PplMyApi\Exception\WrongDataException;
 
-class Order
+class Order implements IOrder
 {
     /** @var integer */
     private $countPackages;
@@ -41,7 +41,7 @@ class Order
     /** @var ISender */
     private $sender;
 
-    /** @var Recipient */
+    /** @var IRecipient */
     private $recipient;
 
     /**
@@ -51,7 +51,7 @@ class Order
      * @param $packProductType
      * @param \DateTimeInterface $sendDate
      * @param ISender $sender
-     * @param Recipient $recipient
+     * @param IRecipient $recipient
      * @param null $customerReference
      * @param null $email
      * @param null $note
@@ -64,7 +64,7 @@ class Order
         $packProductType,
         \DateTimeInterface $sendDate,
         ISender $sender,
-        Recipient $recipient,
+        IRecipient $recipient,
         $customerReference = null,
         $email = null,
         $note = null,
@@ -198,9 +198,9 @@ class Order
     }
 
     /**
-     * @param Recipient $recipient
+     * @param IRecipient $recipient
      */
-    public function setRecipient(Recipient $recipient)
+    public function setRecipient(IRecipient $recipient)
     {
         $this->recipient = $recipient;
     }
@@ -286,7 +286,7 @@ class Order
     }
 
     /**
-     * @return Recipient
+     * @return IRecipient
      */
     public function getRecipient()
     {

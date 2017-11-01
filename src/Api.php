@@ -11,6 +11,9 @@ use Salamek\PplMyApi\Exception\OfflineException;
 use Salamek\PplMyApi\Exception\SecurityException;
 use Salamek\PplMyApi\Exception\WrongDataException;
 use Salamek\PplMyApi\Model\EmptySender;
+use Salamek\PplMyApi\Model\IOrder;
+use Salamek\PplMyApi\Model\IPackage;
+use Salamek\PplMyApi\Model\IPickUpOrder;
 use Salamek\PplMyApi\Model\Order;
 use Salamek\PplMyApi\Model\Package;
 use Salamek\PplMyApi\Model\PickUpOrder;
@@ -270,8 +273,8 @@ class Api
 
         /** @var Order $order */
         foreach ($orders AS $order) {
-            if (!$order instanceof Order) {
-                throw new \Exception('$orders must contain only instances of Order class');
+            if (!$order instanceof IOrder) {
+                throw new \Exception('$orders must contain only instances of IOrder class');
             }
 
             $ordersProcessed[] = [
@@ -338,8 +341,8 @@ class Api
 
         /** @var Order $order */
         foreach ($packages AS $package) {
-            if (!$package instanceof Package) {
-                throw new \Exception('$packages must contain only instances of Package class');
+            if (!$package instanceof IPackage) {
+                throw new \Exception('$packages must contain only instances of IPackage class');
             }
 
             $packagesExtNums = [];
@@ -494,8 +497,8 @@ class Api
         $pickupOrdersProcessed = [];
         /** @var Order $order */
         foreach ($pickupOrders AS $pickupOrder) {
-            if (!$pickupOrder instanceof PickUpOrder) {
-                throw new \Exception('$pickupOrders must contain only instances of PickUpOrder class');
+            if (!$pickupOrder instanceof IPickUpOrder) {
+                throw new \Exception('$pickupOrders must contain only instances of IPickUpOrder class');
             }
 
             $pickupOrdersProcessed[] = [

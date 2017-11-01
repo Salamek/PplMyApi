@@ -11,7 +11,7 @@ use Salamek\PplMyApi\Enum\Product;
 use Salamek\PplMyApi\Exception\WrongDataException;
 use Salamek\PplMyApi\Tools;
 
-class Package
+class Package implements IPackage
 {
     /** @var integer */
     private $seriesNumberId;
@@ -34,28 +34,28 @@ class Package
     /** @var ISender */
     private $sender;
 
-    /** @var Recipient */
+    /** @var IRecipient */
     private $recipient;
 
-    /** @var null|SpecialDelivery */
+    /** @var null|ISpecialDelivery */
     private $specialDelivery = null;
 
-    /** @var null|PaymentInfo */
+    /** @var null|IPaymentInfo */
     private $paymentInfo = null;
 
-    /** @var null|ExternalNumber[] */
+    /** @var null|IExternalNumber[] */
     private $externalNumbers = [];
 
-    /** @var PackageService[] */
+    /** @var IPackageService[] */
     private $packageServices = [];
 
-    /** @var Flag[] */
+    /** @var IFlag[] */
     private $flags = [];
 
-    /** @var null|PalletInfo */
+    /** @var null|IPalletInfo */
     private $palletInfo = null;
 
-    /** @var null|WeightedPackageInfo */
+    /** @var null|IWeightedPackageInfo */
     private $weightedPackageInfo = null;
 
     /** @var int */
@@ -72,14 +72,14 @@ class Package
      * @param string $note
      * @param string $depoCode
      * @param ISender $sender
-     * @param Recipient $recipient
-     * @param null|SpecialDelivery $specialDelivery
-     * @param null|PaymentInfo $paymentInfo
-     * @param ExternalNumber[] $externalNumbers
-     * @param PackageService[] $packageServices
-     * @param Flag[] $flags
-     * @param null|PalletInfo $palletInfo
-     * @param null|WeightedPackageInfo $weightedPackageInfo
+     * @param IRecipient $recipient
+     * @param null|ISpecialDelivery $specialDelivery
+     * @param null|IPaymentInfo $paymentInfo
+     * @param IExternalNumber[] $externalNumbers
+     * @param IPackageService[] $packageServices
+     * @param IFlag[] $flags
+     * @param null|IPalletInfo $palletInfo
+     * @param null|IWeightedPackageInfo $weightedPackageInfo
      * @param integer $packageCount
      * @param integer $packagePosition
      * @throws WrongDataException
@@ -91,14 +91,14 @@ class Package
         $note,
         $depoCode,
         ISender $sender,
-        Recipient $recipient,
-        SpecialDelivery $specialDelivery = null,
-        PaymentInfo $paymentInfo = null,
+        IRecipient $recipient,
+        ISpecialDelivery $specialDelivery = null,
+        IPaymentInfo $paymentInfo = null,
         array $externalNumbers = [],
         array $packageServices = [],
         array $flags = [],
-        PalletInfo $palletInfo = null,
-        WeightedPackageInfo $weightedPackageInfo = null,
+        IPalletInfo $palletInfo = null,
+        IWeightedPackageInfo $weightedPackageInfo = null,
         $packageCount = 1,
         $packagePosition = 1
     ) {
@@ -208,31 +208,31 @@ class Package
     }
 
     /**
-     * @param Recipient $recipient
+     * @param IRecipient $recipient
      */
-    public function setRecipient(Recipient $recipient)
+    public function setRecipient(IRecipient $recipient)
     {
         $this->recipient = $recipient;
     }
 
     /**
-     * @param null|SpecialDelivery $specialDelivery
+     * @param null|ISpecialDelivery $specialDelivery
      */
-    public function setSpecialDelivery(SpecialDelivery $specialDelivery = null)
+    public function setSpecialDelivery(ISpecialDelivery $specialDelivery = null)
     {
         $this->specialDelivery = $specialDelivery;
     }
 
     /**
-     * @param null|PaymentInfo $paymentInfo
+     * @param null|IPaymentInfo $paymentInfo
      */
-    public function setPaymentInfo($paymentInfo)
+    public function setPaymentInfo(IPaymentInfo $paymentInfo)
     {
         $this->paymentInfo = $paymentInfo;
     }
 
     /**
-     * @param ExternalNumber[] $externalNumbers
+     * @param IExternalNumber[] $externalNumbers
      */
     public function setExternalNumbers(array $externalNumbers)
     {
@@ -240,7 +240,7 @@ class Package
     }
 
     /**
-     * @param PackageService[] $packageServices
+     * @param IPackageService[] $packageServices
      */
     public function setPackageServices(array $packageServices)
     {
@@ -248,7 +248,7 @@ class Package
     }
 
     /**
-     * @param Flag[] $flags
+     * @param IFlag[] $flags
      */
     public function setFlags(array $flags)
     {
@@ -256,17 +256,17 @@ class Package
     }
 
     /**
-     * @param null|PalletInfo $palletInfo
+     * @param null|IPalletInfo $palletInfo
      */
-    public function setPalletInfo(PalletInfo $palletInfo = null)
+    public function setPalletInfo(IPalletInfo $palletInfo = null)
     {
         $this->palletInfo = $palletInfo;
     }
 
     /**
-     * @param null|WeightedPackageInfo $weightedPackageInfo
+     * @param null|IWeightedPackageInfo $weightedPackageInfo
      */
-    public function setWeightedPackageInfo($weightedPackageInfo)
+    public function setWeightedPackageInfo(IWeightedPackageInfo $weightedPackageInfo)
     {
         $this->weightedPackageInfo = $weightedPackageInfo;
     }
@@ -336,7 +336,7 @@ class Package
     }
 
     /**
-     * @return Recipient
+     * @return IRecipient
      */
     public function getRecipient()
     {
@@ -344,7 +344,7 @@ class Package
     }
 
     /**
-     * @return null|SpecialDelivery
+     * @return null|ISpecialDelivery
      */
     public function getSpecialDelivery()
     {
@@ -352,7 +352,7 @@ class Package
     }
 
     /**
-     * @return null|PaymentInfo
+     * @return null|IPaymentInfo
      */
     public function getPaymentInfo()
     {
@@ -360,7 +360,7 @@ class Package
     }
 
     /**
-     * @return ExternalNumber[]
+     * @return IExternalNumber[]
      */
     public function getExternalNumbers()
     {
@@ -368,7 +368,7 @@ class Package
     }
 
     /**
-     * @return PackageService[]
+     * @return IPackageService[]
      */
     public function getPackageServices()
     {
@@ -376,7 +376,7 @@ class Package
     }
 
     /**
-     * @return Flag[]
+     * @return IFlag[]
      */
     public function getFlags()
     {
@@ -384,7 +384,7 @@ class Package
     }
 
     /**
-     * @return PalletInfo
+     * @return IPalletInfo
      */
     public function getPalletInfo()
     {
@@ -392,7 +392,7 @@ class Package
     }
 
     /**
-     * @return null|WeightedPackageInfo
+     * @return null|IWeightedPackageInfo
      */
     public function getWeightedPackageInfo()
     {

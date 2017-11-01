@@ -9,7 +9,7 @@ namespace Salamek\PplMyApi\Model;
 use Salamek\PplMyApi\Enum\WrapCode;
 use Salamek\PplMyApi\Exception\WrongDataException;
 
-class Colli
+class Colli implements IColli
 {
     /** @var string */
     private $colliNumber;

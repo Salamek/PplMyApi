@@ -9,7 +9,7 @@ namespace Salamek\PplMyApi\Model;
 use Salamek\PplMyApi\Enum\PackageService as PackageServiceEnum;
 use Salamek\PplMyApi\Exception\WrongDataException;
 
-class PackageService
+class PackageService implements IPackageService
 {
     /** @var string */
     private $svcCode;

@@ -8,7 +8,7 @@ namespace Salamek\PplMyApi\Model;
 
 use Salamek\PplMyApi\Exception\WrongDataException;
 
-class PickUpOrder
+class PickUpOrder implements IPickUpOrder
 {
     /** @var string */
     private $orderReferenceId;
@@ -49,7 +49,7 @@ class PickUpOrder
      * @param \DateTimeInterface|null $sendTimeTo
      * @param ISender $sender
      */
-    public function __construct($orderReferenceId, $customerReference, $countPackages, $note, $email, \DateTimeInterface $sendDate, $sendTimeFrom, $sendTimeTo, ISender $sender)
+    public function __construct($orderReferenceId, $customerReference, $countPackages, $note, $email, \DateTimeInterface $sendDate, \DateTimeInterface $sendTimeFrom, \DateTimeInterface $sendTimeTo, ISender $sender)
     {
         $this->setOrderReferenceId($orderReferenceId);
         $this->setCustomerReference($customerReference);

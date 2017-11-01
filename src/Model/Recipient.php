@@ -12,7 +12,7 @@ use Salamek\PplMyApi\Exception\WrongDataException;
  * Class Recipient
  * @package Salamek\MyApi
  */
-class Recipient
+class Recipient implements IRecipient
 {
     /** @var string */
     private $city;
@@ -67,8 +67,7 @@ class Recipient
     }
 
     /**
-     * @param $city string
-     * @throws WrongDataException
+     * @inheritdoc
      */
     public function setCity($city)
     {
@@ -79,8 +78,7 @@ class Recipient
     }
 
     /**
-     * @param $contact string
-     * @throws WrongDataException
+     * @inheritdoc
      */
     public function setContact($contact)
     {
@@ -94,8 +92,7 @@ class Recipient
     }
 
     /**
-     * @param $country string
-     * @throws WrongDataException
+     * @inheritdoc
      */
     public function setCountry($country)
     {
@@ -106,8 +103,7 @@ class Recipient
     }
 
     /**
-     * @param $email string
-     * @throws WrongDataException
+     * @inheritdoc
      */
     public function setEmail($email)
     {
@@ -125,8 +121,7 @@ class Recipient
     }
 
     /**
-     * @param $name string
-     * @throws WrongDataException
+     * @inheritdoc
      */
     public function setName($name)
     {
@@ -137,8 +132,7 @@ class Recipient
     }
 
     /**
-     * @param $name2 string
-     * @throws WrongDataException
+     * @inheritdoc
      */
     public function setName2($name2)
     {
@@ -151,8 +145,7 @@ class Recipient
     }
 
     /**
-     * @param $phone string
-     * @throws WrongDataException
+     * @inheritdoc
      */
     public function setPhone($phone)
     {
@@ -166,8 +159,7 @@ class Recipient
     }
 
     /**
-     * @param $street string
-     * @throws WrongDataException
+     * @inheritdoc
      */
     public function setStreet($street)
     {
@@ -178,8 +170,7 @@ class Recipient
     }
 
     /**
-     * @param $zipCode string
-     * @throws WrongDataException
+     * @inheritdoc
      */
     public function setZipCode($zipCode)
     {
@@ -190,7 +181,7 @@ class Recipient
     }
 
     /**
-     * @return string
+     * @inheritdoc
      */
     public function getCity()
     {
@@ -198,7 +189,7 @@ class Recipient
     }
 
     /**
-     * @return null|string
+     * @inheritdoc
      */
     public function getContact()
     {
@@ -206,7 +197,7 @@ class Recipient
     }
 
     /**
-     * @return null|string
+     * @inheritdoc
      */
     public function getCountry()
     {
@@ -214,7 +205,7 @@ class Recipient
     }
 
     /**
-     * @return null|string
+     * @inheritdoc
      */
     public function getEmail()
     {
@@ -222,7 +213,7 @@ class Recipient
     }
 
     /**
-     * @return string
+     * @inheritdoc
      */
     public function getName()
     {
@@ -230,7 +221,7 @@ class Recipient
     }
 
     /**
-     * @return null|string
+     * @inheritdoc
      */
     public function getName2()
     {
@@ -238,7 +229,7 @@ class Recipient
     }
 
     /**
-     * @return null|string
+     * @inheritdoc
      */
     public function getPhone()
     {
@@ -246,7 +237,7 @@ class Recipient
     }
 
     /**
-     * @return string
+     * @inheritdoc
      */
     public function getStreet()
     {
@@ -254,7 +245,7 @@ class Recipient
     }
 
     /**
-     * @return string
+     * @inheritdoc
      */
     public function getZipCode()
     {

@@ -9,7 +9,7 @@ namespace Salamek\PplMyApi\Model;
 use Salamek\PplMyApi\Enum\RouteType;
 use Salamek\PplMyApi\Exception\WrongDataException;
 
-class Route
+class Route implements IRoute
 {
     /** @var string */
     private $routeType;

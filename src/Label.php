@@ -11,12 +11,13 @@ use Salamek\PplMyApi\Enum\LabelPosition;
 use Salamek\PplMyApi\Enum\PackageService;
 use Salamek\PplMyApi\Enum\Product;
 use Salamek\PplMyApi\Exception\WrongDataException;
+use Salamek\PplMyApi\Model\IPackage;
 use Salamek\PplMyApi\Model\Package;
 
 class Label
 {
     /**
-     * @param array $packages
+     * @param IPackage[] $packages
      * @param int $decomposition
      * @return string
      * @throws \Exception
@@ -29,7 +30,7 @@ class Label
 
         $packageNumbers = [];
 
-        /** @var Package $package */
+        /** @var IPackage $package */
         foreach ($packages AS $package) {
             $packageNumbers[] = $package->getPackageNumber();
         }
@@ -75,10 +76,10 @@ class Label
 
     /**
      * @param \TCPDF $pdf
-     * @param Package $package
+     * @param IPackage $package
      * @return \TCPDF
      */
-    public static function generateLabelFull(\TCPDF $pdf, Package $package)
+    public static function generateLabelFull(\TCPDF $pdf, IPackage $package)
     {
         $x = 17;
         $pdf->Image(__DIR__ . '/../assets/logo.png', $x, 10, 66, '', 'PNG');
@@ -180,12 +181,12 @@ class Label
 
     /**
      * @param \TCPDF $pdf
-     * @param Package $package
+     * @param IPackage $package
      * @param int $position
      * @return \TCPDF
      * @throws \Exception
      */
-    public static function generateLabelQuarter(\TCPDF $pdf, Package $package, $position = LabelPosition::TOP_LEFT)
+    public static function generateLabelQuarter(\TCPDF $pdf, IPackage $package, $position = LabelPosition::TOP_LEFT)
     {
         if (!in_array($position, [1, 2, 3, 4])) {
             throw new \Exception('Unknow position');
@@ -316,10 +317,10 @@ class Label
     }
 
     /**
-     * @param Package $package
+     * @param IPackage $package
      * @return array
      */
-    private static function packageServicesToArray(Package $package)
+    private static function packageServicesToArray(IPackage $package)
     {
         $return = [];
         foreach ($package->getPackageServices() AS $packageService) {

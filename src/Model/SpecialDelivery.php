@@ -9,7 +9,7 @@ namespace Salamek\PplMyApi\Model;
  * Class SpecialDelivery
  * @package Salamek\MyApi
  */
-class SpecialDelivery
+class SpecialDelivery implements ISpecialDelivery
 {
     /** @var null|string */
     private $parcelShopCode;
@@ -61,7 +61,7 @@ class SpecialDelivery
     }
 
     /**
-     * @param $parcelShopCode
+     * @inheritdoc
      */
     public function setParcelShopCode($parcelShopCode)
     {
@@ -69,7 +69,7 @@ class SpecialDelivery
     }
 
     /**
-     * @param \DateTimeInterface $deliveryDate
+     * @inheritdoc
      */
     public function setDeliveryDate(\DateTimeInterface $deliveryDate)
     {
@@ -77,7 +77,7 @@ class SpecialDelivery
     }
 
     /**
-     * @param \DateTimeInterface $deliveryTimeFrom
+     * @inheritdoc
      */
     public function setDeliveryTimeFrom(\DateTimeInterface $deliveryTimeFrom)
     {
@@ -85,7 +85,7 @@ class SpecialDelivery
     }
 
     /**
-     * @param \DateTimeInterface $deliveryTimeTo
+     * @inheritdoc
      */
     public function setDeliveryTimeTo(\DateTimeInterface $deliveryTimeTo)
     {
@@ -93,7 +93,7 @@ class SpecialDelivery
     }
 
     /**
-     * @param \DateTimeInterface $takeDate
+     * @inheritdoc
      */
     public function setTakeDate(\DateTimeInterface $takeDate)
     {
@@ -101,7 +101,7 @@ class SpecialDelivery
     }
 
     /**
-     * @param \DateTimeInterface $takeTimeFrom
+     * @inheritdoc
      */
     public function setTakeTimeFrom(\DateTimeInterface $takeTimeFrom)
     {
@@ -109,7 +109,7 @@ class SpecialDelivery
     }
 
     /**
-     * @param \DateTimeInterface $takeTimeTo
+     * @inheritdoc
      */
     public function setTakeTimeTo(\DateTimeInterface $takeTimeTo)
     {
@@ -117,7 +117,7 @@ class SpecialDelivery
     }
 
     /**
-     * @return null|string
+     * @inheritdoc
      */
     public function getParcelShopCode()
     {
@@ -125,7 +125,7 @@ class SpecialDelivery
     }
 
     /**
-     * @return \DateTimeInterface|null
+     * @inheritdoc
      */
     public function getDeliveryDate()
     {
@@ -133,7 +133,7 @@ class SpecialDelivery
     }
 
     /**
-     * @return \DateTimeInterface|null
+     * @inheritdoc
      */
     public function getDeliveryTimeFrom()
     {
@@ -141,7 +141,7 @@ class SpecialDelivery
     }
 
     /**
-     * @return \DateTimeInterface|null
+     * @inheritdoc
      */
     public function getDeliveryTimeTo()
     {
@@ -149,7 +149,7 @@ class SpecialDelivery
     }
 
     /**
-     * @return \DateTimeInterface|null
+     * @inheritdoc
      */
     public function getTakeDate()
     {
@@ -157,7 +157,7 @@ class SpecialDelivery
     }
 
     /**
-     * @return \DateTimeInterface|null
+     * @inheritdoc
      */
     public function getTakeTimeFrom()
     {
@@ -165,7 +165,7 @@ class SpecialDelivery
     }
 
     /**
-     * @return \DateTimeInterface|null
+     * @inheritdoc
      */
     public function getTakeTimeTo()
     {

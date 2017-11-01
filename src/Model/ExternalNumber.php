@@ -9,7 +9,7 @@ namespace Salamek\PplMyApi\Model;
 use Salamek\PplMyApi\Enum\ExternalNumber as ExternalNumberEnum;
 use Salamek\PplMyApi\Exception\WrongDataException;
 
-class ExternalNumber
+class ExternalNumber implements IExternalNumber
 {
     /** @var string */
     private $code;

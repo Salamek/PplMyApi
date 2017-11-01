@@ -10,7 +10,7 @@ use Salamek\PplMyApi\Enum\ManipulationType;
 use Salamek\PplMyApi\Enum\CargoType;
 use Salamek\PplMyApi\Exception\WrongDataException;
 
-class PalletInfo
+class PalletInfo implements IPalletInfo
 {
     /** @var Colli[] */
     private $collies = [];
