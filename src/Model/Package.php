@@ -90,8 +90,8 @@ class Package implements IPackage
         $weight,
         $note,
         $depoCode,
-        ISender $sender,
-        IRecipient $recipient,
+        $recipient,
+        $sender = null,
         ISpecialDelivery $specialDelivery = null,
         IPaymentInfo $paymentInfo = null,
         array $externalNumbers = [],
@@ -106,12 +106,30 @@ class Package implements IPackage
             throw new WrongDataException('$paymentInfo must be set if product type is CoD');
         }
 
+        if ($recipient instanceof ISender)
+        {
+            user_error('Passing ISender as 6th parameter of Package::__constructor is deprecated! ISender is now on 7th place of Package::__constructor, this compatibility layer will be removed in future.', E_USER_DEPRECATED);
+            $this->setSender($recipient);
+        }
+        else if ($recipient instanceof IRecipient)
+        {
+            $this->setRecipient($recipient);
+        }
+
+        if ($sender instanceof IRecipient)
+        {
+            user_error('Passing IRecipient as 7th parameter of Package::__constructor is deprecated! IRecipient is now on 6th place of Package::__constructor, this compatibility layer will be removed in future.', E_USER_DEPRECATED);
+            $this->setRecipient($sender);
+        }
+        else if ($sender instanceof ISender)
+        {
+            $this->setSender($sender);
+        }
+
         $this->setPackageProductType($packageProductType);
         $this->setWeight($weight);
         $this->setNote($note);
         $this->setDepoCode($depoCode);
-        $this->setSender($sender);
-        $this->setRecipient($recipient);
         $this->setSpecialDelivery($specialDelivery);
         $this->setPaymentInfo($paymentInfo);
         $this->setExternalNumbers($externalNumbers);

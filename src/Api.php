@@ -428,7 +428,7 @@ class Api
                 'Weight' => $package->getWeight(),
                 'Note' => $package->getNote(),
                 'DepoCode' => $package->getDepoCode(),
-                'Sender' => (!($package->getSender() instanceof EmptySender) ? [
+                'Sender' => ($package->getSender() ? [
                     'City' => $package->getSender()->getCity(),
                     'Contact' => $package->getSender()->getContact(),
                     'Country' => $package->getSender()->getCountry(),
