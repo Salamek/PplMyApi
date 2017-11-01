@@ -22,9 +22,8 @@ use Salamek\PplMyApi\Model\PickUpOrder;
  * Class Client
  * @package Salamek
  * ######## BUGS ###########
- * 1) SSL IS NOT VALID
- * 2) API SHOULD GENERATE ID
- * 3) API SHOULD GENERATE LABELS
+ * 1) API SHOULD GENERATE ID
+ * 2) API SHOULD GENERATE LABELS
  *
  * ######### BUGS IN DOC #######
  * isHealtly:
