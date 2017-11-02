@@ -103,16 +103,26 @@ class Package implements IPackage
             throw new WrongDataException('$paymentInfo must be set if product type is CoD');
         }
 
+        //!FIXME
         if ($recipient instanceof ISender)
         {
             user_error('Passing ISender as 6th parameter  of Package::__constructor is deprecated! ISender is now on 7th place of Package::__constructor, this compatibility layer will be removed in future.', E_USER_DEPRECATED);
-            $this->setSender($recipient);
+            if ($recipient instanceof EmptySender)
+            {
+                $this->setSender(null);
+                user_error('Using EmptySender is deprecated, please pass null instead, EmptySender will be removed in future.', E_USER_DEPRECATED);
+            }
+            else
+            {
+                $this->setSender($recipient);
+            }
         }
         else if ($recipient instanceof IRecipient)
         {
             $this->setRecipient($recipient);
         }
 
+        //!FIXME
         if ($sender instanceof IRecipient)
         {
             user_error('Passing IRecipient as 7th parameter of Package::__constructor is deprecated! IRecipient is now on 6th place of Package::__constructor, this compatibility layer will be removed in future.', E_USER_DEPRECATED);
@@ -120,7 +130,15 @@ class Package implements IPackage
         }
         else if ($sender instanceof ISender)
         {
-            $this->setSender($sender);
+            if ($sender instanceof EmptySender)
+            {
+                $this->setSender(null);
+                user_error('Using EmptySender is deprecated, please pass null instead, EmptySender will be removed in future.', E_USER_DEPRECATED);
+            }
+            else
+            {
+                $this->setSender($sender);
+            }
         }
 
         //!FIXME compabilty when someone is passing only seriesNumberId
@@ -129,7 +147,7 @@ class Package implements IPackage
         {
             $packageNumberInfo = new PackageNumberInfo($packageNumber, $packageProductType, $depoCode);
             $this->setPackageNumber(Tools::generatePackageNumber($packageNumberInfo));
-            user_error('Passing only seriesNumberId is deprecated, please pass packageNumber directly, you can use Tools::generatePackageNumber to generate it from seriesNumberId');
+            user_error('Passing only seriesNumberId is deprecated, please pass packageNumber directly, you can use Tools::generatePackageNumber to generate it from seriesNumberId', E_USER_DEPRECATED);
         }
         else
         {
@@ -212,7 +230,7 @@ class Package implements IPackage
     /**
      * @param ISender $sender
      */
-    public function setSender(ISender $sender)
+    public function setSender(ISender $sender = null)
     {
         $this->sender = $sender;
     }
