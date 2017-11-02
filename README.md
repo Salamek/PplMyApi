@@ -203,9 +203,14 @@ Returns PDF with label/s for print on paper, two decompositions are supported, L
 $sender = new Salamek\PplMyApi\Model\Sender('Olomouc', 'My Compamy s.r.o.', 'My Address', '77900', 'info@example.com', '+420123456789', 'http://www.example.cz', Country::CZ);
 $recipient = new Salamek\PplMyApi\Model\Recipient('Olomouc', 'Adam Schubert', 'My Address', '77900', 'adam@example.com', '+420123456789', 'http://www.salamek.cz', Country::CZ, 'My Compamy a.s.');
 
-$myPackageIdFromNumberSeries = 115;
+$packageNumber = 40950000114;
+/* Or you can use Tools::generatePackageNumber to get this number only from $packageSeriesNumberId like 114
+$packageSeriesNumberId = 114;
+$packageNumberInfo = new PackageNumberInfo($packageSeriesNumberId, Product::PPL_PARCEL_CZ_PRIVATE, Depo::CODE_09);
+$packageNumber = Tools::generatePackageNumber($packageNumberInfo); //40950000114
+*/
 $weight = 3.15;
-$package = new Salamek\PplMyApi\Model\Package($myPackageIdFromNumberSeries, Product::PPL_PARCEL_CZ_PRIVATE, $weight, 'Testovaci balik', Depo::CODE_09, $sender, $recipient);
+$package = new Salamek\PplMyApi\Model\Package($packageNumber, Product::PPL_PARCEL_CZ_PRIVATE, $weight, 'Testovaci balik', Depo::CODE_09, $sender, $recipient);
 
 
 $rawPdf = Label::generateLabels([$package]);
