@@ -110,14 +110,8 @@ catch (\Exception $e)
 
 #### Empty Sender
 
-It may happen that PPL support staff requires you to ommit the *Sender* while you send the **package** (not pallet) data. In that
-case you use the *EmptySender*:
-
-```php
-...
-$sender = new Salamek\PplMyApi\Model\EmptySender();
-...
-```
+It may happen that PPL support staff requires you to ommit the *ISender* while you send the **package** (not pallet) data. In that
+case you just use null:
 
 While sending **pallet** data, *Sender* is **required**.
 
