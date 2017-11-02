@@ -7,42 +7,12 @@ namespace Salamek\PplMyApi;
 
 use Salamek\PplMyApi\Enum\Depo;
 use Salamek\PplMyApi\Enum\Product;
-use Salamek\PplMyApi\Exception\WrongDataException;
-use Salamek\PplMyApi\Model\IPackage;
 use Salamek\PplMyApi\Model\IPackageNumberInfo;
 use Salamek\PplMyApi\Model\PackageNumberInfo;
 
 
 class Tools
 {
-    /**
-     * @param IPackage $package
-     * @return mixed
-     * @throws \Exception
-     */
-    public static function generatePackageNumberFromPackage(IPackage $package)
-    {
-        if (!$package->getSeriesNumberId()) {
-            throw new WrongDataException('Package has no Series number ID!');
-        }
-
-        return Tools::generatePackageNumber(self::packageToPackageNumberInfo($package));
-    }
-
-    /**
-     * @param IPackage $package
-     * @return PackageNumberInfo
-     */
-    public static function packageToPackageNumberInfo(IPackage $package)
-    {
-        return new PackageNumberInfo(
-            $package->getSeriesNumberId(),
-            $package->getPackageProductType(),
-            $package->getDepoCode(),
-            in_array($package->getPackageProductType(), Product::$cashOnDelivery)
-        );
-    }
-
     /**
      * @param IPackageNumberInfo $packageNumberInfo
      * @return string

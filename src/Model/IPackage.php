@@ -15,12 +15,6 @@ use Salamek\PplMyApi\Exception\WrongDataException;
 interface IPackage
 {
     /**
-     * @param $seriesNumberId
-     * @throws WrongDataException
-     */
-    public function setSeriesNumberId($seriesNumberId);
-
-    /**
      * @param null|string $note
      * @throws WrongDataException
      */
@@ -172,11 +166,6 @@ interface IPackage
      * @return null|IWeightedPackageInfo
      */
     public function getWeightedPackageInfo();
-
-    /**
-     * @return int
-     */
-    public function getSeriesNumberId();
 
     /**
      * @return int

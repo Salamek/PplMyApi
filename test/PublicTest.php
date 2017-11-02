@@ -40,8 +40,12 @@ final class PublicTest extends BaseTest
      */
     public function testGeneratePackageNumber()
     {
-        $this->package->setSeriesNumberId(114);
-        $this->assertEquals('40950000114', Tools::generatePackageNumberFromPackage($this->package));
+        $packageNumberInfo = new \Salamek\PplMyApi\Model\PackageNumberInfo(
+            114,
+            \Salamek\PplMyApi\Enum\Product::PPL_PARCEL_CZ_PRIVATE,
+            \Salamek\PplMyApi\Enum\Depo::CODE_09
+        );
+        $this->assertEquals('40950000114', Tools::generatePackageNumber($packageNumberInfo));
     }
 
     /**

@@ -9,6 +9,8 @@
 namespace Salamek\PplMyApi\Model;
 
 
+use Salamek\PplMyApi\Enum\Product;
+
 class PackageNumberInfo implements IPackageNumberInfo
 {
     /** @var int */
@@ -30,11 +32,18 @@ class PackageNumberInfo implements IPackageNumberInfo
      * @param $depoCode string
      * @param $isCod boolean
      */
-    public function __construct($seriesNumberId, $productType, $depoCode, $isCod)
+    public function __construct($seriesNumberId, $productType, $depoCode, $isCod = null)
     {
         $this->productType = $productType;
         $this->depoCode = $depoCode;
         $this->seriesNumberId = $seriesNumberId;
+
+        if (is_null($isCod))
+        {
+            //Autodetect
+            $isCod = in_array($productType, Product::$cashOnDelivery);
+        }
+
         $this->isCod = $isCod;
     }
 

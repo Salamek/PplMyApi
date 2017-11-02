@@ -13,9 +13,6 @@ use Salamek\PplMyApi\Tools;
 
 class Package implements IPackage
 {
-    /** @var integer */
-    private $seriesNumberId;
-
     /** @var string */
     private $packageNumber;
 
@@ -66,7 +63,7 @@ class Package implements IPackage
 
     /**
      * Package constructor.
-     * @param null|integer $seriesNumberId
+     * @param string $packageNumber
      * @param int $packageProductType
      * @param float $weight
      * @param string $note
@@ -85,7 +82,7 @@ class Package implements IPackage
      * @throws WrongDataException
      */
     public function __construct(
-        $seriesNumberId,
+        $packageNumber,
         $packageProductType,
         $weight,
         $note,
@@ -126,6 +123,19 @@ class Package implements IPackage
             $this->setSender($sender);
         }
 
+        //!FIXME compabilty when someone is passing only seriesNumberId
+        $packageNumberInfo = Tools::parsePackageNumber($packageNumber);
+        if (is_null($packageNumberInfo) && is_numeric($packageNumber))
+        {
+            $packageNumberInfo = new PackageNumberInfo($packageNumber, $packageProductType, $depoCode);
+            $this->setPackageNumber(Tools::generatePackageNumber($packageNumberInfo));
+            user_error('Passing only seriesNumberId is deprecated, please pass packageNumber directly, you can use Tools::generatePackageNumber to generate it from seriesNumberId');
+        }
+        else
+        {
+            $this->setPackageNumber($packageNumber);
+        }
+
         $this->setPackageProductType($packageProductType);
         $this->setWeight($weight);
         $this->setNote($note);
@@ -139,28 +149,10 @@ class Package implements IPackage
         $this->setWeightedPackageInfo($weightedPackageInfo);
         $this->setPackageCount($packageCount);
         $this->setPackagePosition($packagePosition);
-
-        if (!is_null($seriesNumberId)) {
-            $this->setSeriesNumberId($seriesNumberId);
-        }
-
+        
         if (in_array($flags, Product::$deliverySaturday) && is_null($palletInfo)) {
             throw new WrongDataException('Package requires Salamek\PplMyApi\Enum\Flag::SATURDAY_DELIVERY to be true or false');
         }
-    }
-
-    /**
-     * @param $seriesNumberId
-     * @throws WrongDataException
-     */
-    public function setSeriesNumberId($seriesNumberId)
-    {
-        if (!is_numeric($seriesNumberId)) {
-            throw new WrongDataException('$seriesNumberId has wrong format');
-        }
-
-        $this->seriesNumberId = $seriesNumberId;
-        $this->setPackageNumber(Tools::generatePackageNumberFromPackage($this));
     }
 
     /**
@@ -417,13 +409,6 @@ class Package implements IPackage
         return $this->weightedPackageInfo;
     }
 
-    /**
-     * @return int
-     */
-    public function getSeriesNumberId()
-    {
-        return $this->seriesNumberId;
-    }
 
     /**
      * @return int
