@@ -5,9 +5,12 @@
 
 namespace Salamek\PplMyApi;
 
+use Salamek\PplMyApi\Enum\Depo;
 use Salamek\PplMyApi\Enum\Product;
 use Salamek\PplMyApi\Exception\WrongDataException;
 use Salamek\PplMyApi\Model\IPackage;
+use Salamek\PplMyApi\Model\IPackageNumberInfo;
+use Salamek\PplMyApi\Model\PackageNumberInfo;
 
 
 class Tools
@@ -17,13 +20,37 @@ class Tools
      * @return mixed
      * @throws \Exception
      */
-    public static function generatePackageNumber(IPackage $package)
+    public static function generatePackageNumberFromPackage(IPackage $package)
     {
         if (!$package->getSeriesNumberId()) {
             throw new WrongDataException('Package has no Series number ID!');
         }
 
-        switch ($package->getPackageProductType()) {
+        return Tools::generatePackageNumber(self::packageToPackageNumberInfo($package));
+    }
+
+    /**
+     * @param IPackage $package
+     * @return PackageNumberInfo
+     */
+    public static function packageToPackageNumberInfo(IPackage $package)
+    {
+        return new PackageNumberInfo(
+            $package->getSeriesNumberId(),
+            $package->getPackageProductType(),
+            $package->getDepoCode(),
+            in_array($package->getPackageProductType(), Product::$cashOnDelivery)
+        );
+    }
+
+    /**
+     * @param IPackageNumberInfo $packageNumberInfo
+     * @return string
+     * @throws \Exception
+     */
+    public static function generatePackageNumber(IPackageNumberInfo $packageNumberInfo)
+    {
+        switch ($packageNumberInfo->getProductType()) {
             case Product::PRIVATE_PALETTE:
             case Product::PRIVATE_PALETTE_COD:
                 $packageIdentifierPackageProductType = 5;
@@ -55,16 +82,16 @@ class Tools
                 break;
 
             default:
-                throw new \Exception(sprintf('Unknown packageProductType "%s"', $package->getPackageProductType()));
+                throw new \Exception(sprintf('Unknown packageProductType "%s"', $packageNumberInfo->getProductType()));
                 break;
         }
 
         $list = [
             $packageIdentifierPackageProductType,
-            $package->getDepoCode(),
-            (in_array($package->getPackageProductType(), Product::$cashOnDelivery) ? '9' : '5'),
+            $packageNumberInfo->getDepoCode(),
+            ($packageNumberInfo->isCod() ? '9' : '5'),
             0,
-            str_pad($package->getSeriesNumberId(), 6, '0', STR_PAD_LEFT)
+            str_pad($packageNumberInfo->getSeriesNumberId(), 6, '0', STR_PAD_LEFT)
         ];
 
         $identifier = implode('', $list);
@@ -74,5 +101,22 @@ class Tools
         }
 
         return $identifier;
+    }
+
+    /**
+     * @param $packageNumber
+     * @return null|PackageNumberInfo
+     */
+    public static function parsePackageNumber($packageNumber)
+    {
+        $packageProductTypes = [5, 4, 9, 8, 2, 3];
+        $regex = '/^('.implode('|', $packageProductTypes).')('.implode('|', Depo::$list).')(\d{1})(\d{1})(\d{6})$/i';
+        $matches = [];
+        if (preg_match($regex, $packageNumber, $matches))
+        {
+            return new PackageNumberInfo($matches[5], $matches[1], $matches[2], $matches[3] == '9');
+        }
+
+        return null;
     }
 }

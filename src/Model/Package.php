@@ -108,7 +108,7 @@ class Package implements IPackage
 
         if ($recipient instanceof ISender)
         {
-            user_error('Passing ISender as 6th parameter of Package::__constructor is deprecated! ISender is now on 7th place of Package::__constructor, this compatibility layer will be removed in future.', E_USER_DEPRECATED);
+            user_error('Passing ISender as 6th parameter  of Package::__constructor is deprecated! ISender is now on 7th place of Package::__constructor, this compatibility layer will be removed in future.', E_USER_DEPRECATED);
             $this->setSender($recipient);
         }
         else if ($recipient instanceof IRecipient)
@@ -160,7 +160,7 @@ class Package implements IPackage
         }
 
         $this->seriesNumberId = $seriesNumberId;
-        $this->setPackageNumber(Tools::generatePackageNumber($this));
+        $this->setPackageNumber(Tools::generatePackageNumberFromPackage($this));
     }
 
     /**
@@ -244,7 +244,7 @@ class Package implements IPackage
     /**
      * @param null|IPaymentInfo $paymentInfo
      */
-    public function setPaymentInfo(IPaymentInfo $paymentInfo)
+    public function setPaymentInfo(IPaymentInfo $paymentInfo = null)
     {
         $this->paymentInfo = $paymentInfo;
     }
@@ -284,7 +284,7 @@ class Package implements IPackage
     /**
      * @param null|IWeightedPackageInfo $weightedPackageInfo
      */
-    public function setWeightedPackageInfo(IWeightedPackageInfo $weightedPackageInfo)
+    public function setWeightedPackageInfo(IWeightedPackageInfo $weightedPackageInfo = null)
     {
         $this->weightedPackageInfo = $weightedPackageInfo;
     }

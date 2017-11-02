@@ -41,7 +41,20 @@ final class PublicTest extends BaseTest
     public function testGeneratePackageNumber()
     {
         $this->package->setSeriesNumberId(114);
-        $this->assertEquals('40950000114', Tools::generatePackageNumber($this->package));
+        $this->assertEquals('40950000114', Tools::generatePackageNumberFromPackage($this->package));
+    }
+
+    /**
+     * @test
+     */
+    public function testParsePackageNumber()
+    {
+        $packageNumberInfo = Tools::parsePackageNumber('40950000114');
+        
+        $this->assertEquals('4', $packageNumberInfo->getProductType());
+        $this->assertEquals('000114', $packageNumberInfo->getSeriesNumberId());
+        $this->assertEquals('09', $packageNumberInfo->getDepoCode());
+        $this->assertFalse($packageNumberInfo->isCod());
     }
 
     /**
