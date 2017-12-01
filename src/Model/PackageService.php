@@ -43,4 +43,18 @@ class PackageService implements IPackageService
     {
         return $this->svcCode;
     }
+
+    /**
+     * @param IPackage $package
+     * @return array
+     */
+    public static function packageServicesToArray(IPackage $package)
+    {
+        $return = [];
+        foreach ($package->getPackageServices() AS $packageService) {
+            $return[] = $packageService->getSvcCode();
+        }
+
+        return $return;
+    }
 }

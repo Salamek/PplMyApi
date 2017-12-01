@@ -24,4 +24,10 @@ interface IPackageService
      * @return string
      */
     public function getSvcCode();
+
+    /**
+     * @param IPackage $package
+     * @return array
+     */
+    public static function packageServicesToArray(IPackage $package);
 }
