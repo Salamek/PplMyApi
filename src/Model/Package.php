@@ -324,6 +324,30 @@ class Package implements IPackage
     }
 
     /**
+     * @return string
+     */
+    public function getPackageNumberChecksum()
+    {
+        $checksum = null;
+        $odd = 0;
+        $even = 0;
+        for ($i = 0; $i < strlen($this->packageNumber); $i++) {
+            $n = substr($this->packageNumber, $i, 1);
+            if (!($i % 2)) {
+                $odd += $n;
+            } else {
+                $even += $n;
+            }
+        }
+        $odd *= 3;
+        $odd += $even;
+        $checksum = 10 - substr($odd, -1);
+        if ($checksum == 10) $checksum = 0;
+        return $checksum;
+
+    }
+
+    /**
      * @return int
      */
     public function getPackageProductType()

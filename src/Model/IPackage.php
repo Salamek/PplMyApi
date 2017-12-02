@@ -105,6 +105,11 @@ interface IPackage
     /**
      * @return int
      */
+    public function getPackageNumberChecksum();
+
+    /**
+     * @return int
+     */
     public function getPackageProductType();
 
     /**
