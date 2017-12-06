@@ -196,7 +196,13 @@ print_r($result);
 
 ### Get Labels
 
+#### PdfLabel
+
 Returns PDF with label/s for print on paper, two decompositions are supported, LabelDecomposition::FULL (one A4 Label per page) or LabelDecomposition::QUARTER (one label per 1/4 of A4 page)
+
+#### ZplLabel
+
+Returns ZPL (Zebra printer format) label/s for print on paper
 
 ```php
 
@@ -212,7 +218,11 @@ $packageNumber = Tools::generatePackageNumber($packageNumberInfo); //40950000114
 $weight = 3.15;
 $package = new Salamek\PplMyApi\Model\Package($packageNumber, Product::PPL_PARCEL_CZ_PRIVATE, $weight, 'Testovaci balik', Depo::CODE_09, $sender, $recipient);
 
-
-$rawPdf = Label::generateLabels([$package]);
+// PDF Label
+$rawPdf = PdfLabel::generateLabels([$package]);
 file_put_contents($package->getPackageNumber() . '.pdf', $rawPdf);
+
+// ZPL Label
+$rawZpl = ZplLabel::generateLabels([$package]);
+file_put_contents($package->getPackageNumber() . '.zpl', $rawZpl);
 ```
