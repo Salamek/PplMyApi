@@ -226,7 +226,8 @@ class Api
             ]
         ]);
 
-        return $result->GetCitiesRoutingResult->ResultData->MyApiCityRouting;
+        return isset($result->GetCitiesRoutingResult->ResultData->MyApiCityRouting) ?
+            $result->GetCitiesRoutingResult->ResultData->MyApiCityRouting : [];
     }
 
     /**
