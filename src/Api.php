@@ -102,16 +102,16 @@ class Api
     private $tokenLifespan = '+30 minutes'; //DateTime::modify() format
 
     /**
-     * MyApi constructor.
-     * @param null|string $username
-     * @param null|string $password
-     * @param null|integer $customerId
-     * @param null|string
-     * @throws \Exception
+     * Api constructor.
+     * @param string|null $username
+     * @param string|null $password
+     * @param string|null $customerId
+     * @param string|null $storage
      * @throws OfflineException
      * @throws SecurityException
+     * @throws \Exception
      */
-    public function __construct($username = null, $password = null, $customerId = null, $storage = null)
+    public function __construct(string $username = null, string $password = null, string $customerId = null, string $storage = null)
     {
         if (mb_strlen($username) > 32) {
             throw new SecurityException('$username is longer than 32 characters');
@@ -142,9 +142,10 @@ class Api
     }
 
     /**
-     * @return mixed
+     * Method returns API token
+     * @return string
      */
-    private function getAuthToken()
+    private function getAuthToken(): string
     {
         if (file_exists($this->securedStorage)) {
             $modified = new \DateTime('@' . filemtime($this->securedStorage));
@@ -158,13 +159,14 @@ class Api
         $token = $this->login();
         file_put_contents($this->securedStorage, $token);
 
-        return $token;
+        return (string)$token;
     }
 
     /**
+     * Method checks if API responds OK
      * @return bool
      */
-    public function isHealthy()
+    public function isHealthy(): bool
     {
         try {
             $response = $this->soap->isHealtly();
@@ -174,19 +176,22 @@ class Api
         }
     }
 
-    public function getVersion()
+    /**
+     * Returns API version
+     * @return string
+     */
+    public function getVersion(): string
     {
         return $this->soap->Version()->VersionResult;
     }
 
     /**
-     * @param null $code
+     * @param string|null $code
      * @param string $countryCode
-     * @return mixed
-     * @throws \Exception
+     * @return array
      * @throws WrongDataException
      */
-    public function getParcelShops($code = null, $countryCode = Country::CZ)
+    public function getParcelShops(string $code = null, string $countryCode = Country::CZ): array
     {
         if (!in_array($countryCode, Country::$list)) {
             throw new WrongDataException(sprintf('Country Code %s is not supported, use one of %s', $countryCode, implode(', ', Country::$list)));
@@ -199,18 +204,18 @@ class Api
             ]
         ]);
 
-        return $result->GetParcelShopsResult->ResultData->MyApiParcelShop;
+        return isset($result->GetParcelShopsResult->ResultData->MyApiParcelShop) ?
+            $result->GetParcelShopsResult->ResultData->MyApiParcelShop : [];
     }
 
     /**
      * @param string $countryCode
      * @param \DateTimeInterface|null $dateFrom
-     * @param null $zipCode
-     * @return mixed
-     * @throws \Exception
+     * @param string|null $zipCode
+     * @return array
      * @throws WrongDataException
      */
-    public function getCitiesRouting($countryCode = Country::CZ, \DateTimeInterface $dateFrom = null, $zipCode = null)
+    public function getCitiesRouting(string $countryCode = Country::CZ, \DateTimeInterface $dateFrom = null, string $zipCode = null): array
     {
         if (!in_array($countryCode, Country::$list)) {
             throw new WrongDataException(sprintf('Country Code %s is not supported, use one of %s', $countryCode, implode(', ', Country::$list)));
@@ -232,15 +237,14 @@ class Api
     }
 
     /**
-     * @param null $customRefs
+     * @param string|null $customRefs
      * @param \DateTimeInterface|null $dateFrom
      * @param \DateTimeInterface|null $dateTo
      * @param array $packageNumbers
-     * @throws \Exception
+     * @return array
      * @throws WrongDataException
-     * @return mixed
      */
-    public function getPackages($customRefs = null, \DateTimeInterface $dateFrom = null, \DateTimeInterface $dateTo = null, array $packageNumbers = [])
+    public function getPackages(string $customRefs = null, \DateTimeInterface $dateFrom = null, \DateTimeInterface $dateTo = null, array $packageNumbers = []): array
     {
         if (is_null($customRefs) && is_null($dateFrom) && is_null($dateTo) && empty($packageNumbers)) {
             throw new WrongDataException('At least one parameter must be specified!');
@@ -259,16 +263,15 @@ class Api
         ]);
 
         return isset($result->GetPackagesResult->ResultData->MyApiPackageOut)
-            ? $result->GetPackagesResult->ResultData->MyApiPackageOut
-            : [];
+            ? $result->GetPackagesResult->ResultData->MyApiPackageOut : [];
     }
 
     /**
      * @param array $orders
-     * @return mixed
+     * @return array
      * @throws \Exception
      */
-    public function createOrders(array $orders)
+    public function createOrders(array $orders): array
     {
         $ordersProcessed = [];
 
@@ -326,17 +329,16 @@ class Api
     }
 
     /**
-     * @param Package[] $packages
-     * @param null $customerUniqueImportId
+     * @param array $packages
+     * @param string|null $customerUniqueImportId
      * @return array
      * @throws \Exception
      */
-    public function createPackages(array $packages, $customerUniqueImportId = null)
+    public function createPackages(array $packages, string $customerUniqueImportId = null): array
     {
         $packagesProcessed = [];
 
-        if (empty($packages))
-        {
+        if (empty($packages)) {
             throw new \Exception('$packages cannot be empty');
         }
 
@@ -400,7 +402,7 @@ class Api
             if ($package->getWeightedPackageInfo()) {
                 $routeList = [];
                 foreach ($package->getWeightedPackageInfo()->getRoutes() AS $route) {
-                    $routeList[]= [
+                    $routeList[] = [
                         'RouteType' => $route->getRouteType(),
                         'RouteCode' => $route->getRouteCode()
                     ];
@@ -484,8 +486,7 @@ class Api
         ]);
 
         return isset($result->CreatePackagesResult->ResultData->ItemResult)
-            ? $result->CreatePackagesResult->ResultData->ItemResult
-            : [];
+            ? $result->CreatePackagesResult->ResultData->ItemResult : [];
     }
 
     /**
