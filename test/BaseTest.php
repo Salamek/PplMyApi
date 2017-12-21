@@ -1,5 +1,6 @@
 <?php
 
+use PHPUnit\Framework\TestCase;
 use Salamek\PplMyApi\Api;
 use Salamek\PplMyApi\Enum\Country;
 use Salamek\PplMyApi\Enum\Currency;
@@ -13,7 +14,7 @@ use Salamek\PplMyApi\Model\Sender;
 /**
  * Copyright (C) 2016 Adam Schubert <adam.schubert@sg1-game.net>.
  */
-abstract class BaseTest extends PHPUnit_Framework_TestCase
+abstract class BaseTest extends TestCase
 {
     /** @var Api */
     public $pplMyApi;
