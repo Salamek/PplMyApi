@@ -226,3 +226,13 @@ file_put_contents($package->getPackageNumber() . '.pdf', $rawPdf);
 $rawZpl = ZplLabel::generateLabels([$package]);
 file_put_contents($package->getPackageNumber() . '.zpl', $rawZpl);
 ```
+
+# PPL Package number format
+```AsciiDoc
+40990019352
+│├┘│└─────┴──── [0019352] SeriesNumber
+││ └─────────── [9] IsCashOnDelivery 9==CoD 5== NonCoD
+│└───────────── [09] DepoCode
+└────────────── [4] ProductType
+```
+
