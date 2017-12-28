@@ -60,8 +60,7 @@ class Tools
             $packageIdentifierPackageProductType,
             $packageNumberInfo->getDepoCode(),
             ($packageNumberInfo->isCod() ? '9' : '5'),
-            0,
-            str_pad($packageNumberInfo->getSeriesNumberId(), 6, '0', STR_PAD_LEFT)
+            str_pad($packageNumberInfo->getSeriesNumberId(), 7, '0', STR_PAD_LEFT)
         ];
 
         $identifier = implode('', $list);
@@ -80,11 +79,11 @@ class Tools
     public static function parsePackageNumber($packageNumber)
     {
         $packageProductTypes = [5, 4, 9, 8, 2, 3];
-        $regex = '/^('.implode('|', $packageProductTypes).')('.implode('|', Depo::$list).')(\d{1})(\d{1})(\d{6})$/i';
+        $regex = '/^('.implode('|', $packageProductTypes).')('.implode('|', Depo::$list).')(\d{1})(\d{7})$/i';
         $matches = [];
         if (preg_match($regex, $packageNumber, $matches))
         {
-            return new PackageNumberInfo($matches[5], $matches[1], $matches[2], $matches[3] == '9');
+            return new PackageNumberInfo($matches[4], $matches[1], $matches[2], $matches[3] == '9');
         }
 
         return null;
