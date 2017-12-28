@@ -133,7 +133,7 @@ class Order implements IOrder
      */
     public function setNote($note = null)
     {
-        if (mb_strlen($note) > 100) {
+        if (mb_strlen($note) > 300) {
             throw new WrongDataException('$note is longer than 300 characters');
         }
 
@@ -147,7 +147,7 @@ class Order implements IOrder
     public function setOrderReferenceId($orderReferenceId)
     {
         if (mb_strlen($orderReferenceId) > 100) {
-            throw new WrongDataException('$orderReferenceId is longer than 300 characters');
+            throw new WrongDataException('$orderReferenceId is longer than 100 characters');
         }
 
         $this->orderReferenceId = $orderReferenceId;
