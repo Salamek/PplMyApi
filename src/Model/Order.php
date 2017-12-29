@@ -8,6 +8,7 @@ namespace Salamek\PplMyApi\Model;
 
 use Salamek\PplMyApi\Enum\Product;
 use Salamek\PplMyApi\Exception\WrongDataException;
+use Salamek\PplMyApi\Validators\MaxLengthValidator;
 
 class Order implements IOrder
 {
@@ -103,10 +104,7 @@ class Order implements IOrder
      */
     public function setCustomerReference($customerReference = null)
     {
-        if (mb_strlen($customerReference) > 40) {
-            throw new WrongDataException('$customerReference is longer than 40 characters');
-        }
-
+    	MaxLengthValidator::validate($customerReference, 40);
         $this->customerReference = $customerReference;
     }
 
@@ -116,9 +114,7 @@ class Order implements IOrder
      */
     public function setEmail($email = null)
     {
-        if (mb_strlen($email) > 100) {
-            throw new WrongDataException('$email is longer than 100 characters');
-        }
+        MaxLengthValidator::validate($email, 100);
 
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             throw new WrongDataException('$email have invalid value');
@@ -133,10 +129,7 @@ class Order implements IOrder
      */
     public function setNote($note = null)
     {
-        if (mb_strlen($note) > 300) {
-            throw new WrongDataException('$note is longer than 300 characters');
-        }
-
+    	MaxLengthValidator::validate($note, 300);
         $this->note = $note;
     }
 
@@ -146,10 +139,7 @@ class Order implements IOrder
      */
     public function setOrderReferenceId($orderReferenceId)
     {
-        if (mb_strlen($orderReferenceId) > 100) {
-            throw new WrongDataException('$orderReferenceId is longer than 100 characters');
-        }
-
+        MaxLengthValidator::validate($orderReferenceId, 100);
         $this->orderReferenceId = $orderReferenceId;
     }
 

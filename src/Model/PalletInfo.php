@@ -9,6 +9,7 @@ namespace Salamek\PplMyApi\Model;
 use Salamek\PplMyApi\Enum\ManipulationType;
 use Salamek\PplMyApi\Enum\CargoType;
 use Salamek\PplMyApi\Exception\WrongDataException;
+use Salamek\PplMyApi\Validators\MaxLengthValidator;
 
 class PalletInfo implements IPalletInfo
 {
@@ -90,9 +91,7 @@ class PalletInfo implements IPalletInfo
      */
     public function setPackDescription($packDescription)
     {
-        if (mb_strlen($packDescription) > 512) {
-            throw new WrongDataException('$packDescription is longer than 512');
-        }
+        MaxLengthValidator::validate($packDescription, 512);
         $this->packDescription = $packDescription;
     }
 

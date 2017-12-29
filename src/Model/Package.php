@@ -10,6 +10,7 @@ use Salamek\PplMyApi\Enum\Depo;
 use Salamek\PplMyApi\Enum\Product;
 use Salamek\PplMyApi\Exception\WrongDataException;
 use Salamek\PplMyApi\Tools;
+use Salamek\PplMyApi\Validators\MaxLengthValidator;
 
 class Package implements IPackage
 {
@@ -179,10 +180,7 @@ class Package implements IPackage
      */
     public function setNote($note = null)
     {
-        $noteLen = mb_strlen($note);
-        if ($noteLen > 300) {
-            throw new WrongDataException(sprintf('$note is longer than 300 characters (%s)', $noteLen));
-        }
+        MaxLengthValidator::validate($note, 300);
 
         $this->note = $note;
     }

@@ -8,6 +8,7 @@ namespace Salamek\PplMyApi\Model;
 
 use Salamek\PplMyApi\Enum\WrapCode;
 use Salamek\PplMyApi\Exception\WrongDataException;
+use Salamek\PplMyApi\Validators;
 
 class Colli implements IColli
 {
@@ -54,9 +55,7 @@ class Colli implements IColli
      */
     public function setColliNumber($colliNumber)
     {
-        if (mb_strlen($colliNumber) > 50) {
-            throw new WrongDataException('$colliNumber is longer than 50');
-        }
+    	Validators\MaxLengthValidator::validate($colliNumber, 50);
         $this->colliNumber = $colliNumber;
     }
 
