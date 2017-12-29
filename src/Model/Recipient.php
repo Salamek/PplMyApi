@@ -7,6 +7,7 @@ namespace Salamek\PplMyApi\Model;
 
 use Salamek\PplMyApi\Enum\Country;
 use Salamek\PplMyApi\Exception\WrongDataException;
+use Salamek\PplMyApi\Validators\MaxLengthValidator;
 
 /**
  * Class Recipient
@@ -71,9 +72,7 @@ class Recipient implements IRecipient
      */
     public function setCity($city)
     {
-        if (mb_strlen($city) > 50) {
-            throw new WrongDataException('$city is longer than 50 characters');
-        }
+        MaxLengthValidator::validate($city, 50);
         $this->city = $city;
     }
 
@@ -83,9 +82,7 @@ class Recipient implements IRecipient
     public function setContact($contact)
     {
         if (!is_null($contact)) {
-            if (mb_strlen($contact) > 300) {
-                throw new WrongDataException('$contact is longer than 300 characters');
-            }
+            MaxLengthValidator::validate($contact, 300);
         }
 
         $this->contact = $contact;
@@ -108,9 +105,7 @@ class Recipient implements IRecipient
     public function setEmail($email)
     {
         if (!is_null($email)) {
-            if (mb_strlen($email) > 50) {
-                throw new WrongDataException('$email is longer than 50 characters');
-            }
+            MaxLengthValidator::validate($email, 50);
 
             if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
                 throw new WrongDataException('$email have invalid value');
@@ -125,9 +120,7 @@ class Recipient implements IRecipient
      */
     public function setName($name)
     {
-        if (mb_strlen($name) > 50) {
-            throw new WrongDataException('$name is longer than 50 characters');
-        }
+        MaxLengthValidator::validate($name, 50);
         $this->name = $name;
     }
 
@@ -137,9 +130,7 @@ class Recipient implements IRecipient
     public function setName2($name2)
     {
         if (!is_null($name2)) {
-            if (mb_strlen($name2) > 50) {
-                throw new WrongDataException('$name2 is longer than 50 characters');
-            }
+            MaxLengthValidator::validate($name2, 50);
         }
         $this->name2 = $name2;
     }
@@ -150,9 +141,7 @@ class Recipient implements IRecipient
     public function setPhone($phone)
     {
         if (!is_null($phone)) {
-            if (mb_strlen($phone) > 30) {
-                throw new WrongDataException('$phone is longer than 30 characters');
-            }
+            MaxLengthValidator::validate($phone, 30);
         }
 
         $this->phone = $phone;
@@ -163,9 +152,7 @@ class Recipient implements IRecipient
      */
     public function setStreet($street)
     {
-        if (mb_strlen($street) > 50) {
-            throw new WrongDataException('$street is longer than 50 characters');
-        }
+        MaxLengthValidator::validate($street, 50);
         $this->street = $street;
     }
 
@@ -174,9 +161,7 @@ class Recipient implements IRecipient
      */
     public function setZipCode($zipCode)
     {
-        if (mb_strlen($zipCode) > 10) {
-            throw new WrongDataException('$zipCode is longer than 10 characters');
-        }
+        MaxLengthValidator::validate($zipCode, 10);
         $this->zipCode = $zipCode;
     }
 
