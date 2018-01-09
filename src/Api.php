@@ -576,7 +576,7 @@ class Api
      * @return array
      * @throws WrongDataException
      */
-    public function getNumberRange(int $product, int $quantity)
+    public function getNumberRange($product, $quantity)
     {
         if (!in_array($product, Product::$list)) {
             throw new WrongDataException(sprintf('Product Code %s is not supported, use one of %s', $product, implode(', ', Product::$list)));

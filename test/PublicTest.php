@@ -190,10 +190,7 @@ final class PublicTest extends BaseTest
      */
     public function testGetNumberRange()
     {
-        //temporary disabled. API not responding corectly.
-        return;
-
-        $numberRagnePersonal = $this->pplMyApi->getNumberRange(Product::PPL_PARCEL_CZ_PRIVATE, 10);
-        $this->assertGreaterThan(0, count($numberRagnePersonal));
+        $response = $this->pplMyApi->getNumberRange(Product::PPL_PARCEL_CZ_PRIVATE, 10);
+        $this->assertGreaterThan(0, $response->Quantity);
     }
 }
