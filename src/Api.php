@@ -17,6 +17,7 @@ use Salamek\PplMyApi\Model\IPickUpOrder;
 use Salamek\PplMyApi\Model\Order;
 use Salamek\PplMyApi\Model\Package;
 use Salamek\PplMyApi\Model\PickUpOrder;
+use Salamek\PplMyApi\Enum\Product;
 
 /**
  * Class Client
@@ -563,7 +564,36 @@ class Api
         } catch (\Exception $e) {
             throw new SecurityException($e->getMessage());
         }
-
-
     }
+
+    /**
+     * @param int $product
+     * @param int $quantity
+     * @return array
+     * @throws WrongDataException
+     */
+    public function getNumberRange(int $product, int $quantity): array
+    {
+        if (!in_array($product, Product::$list)) {
+            throw new WrongDataException(sprintf('Product Code %s is not supported, use one of %s', $product, implode(', ', Product::$list)));
+        }
+
+        if ($quantity <= 0) {
+            throw new WrongDataException(sprintf('Quantity must be more than %s', 0));
+        }
+
+        $result = $this->soap->GetNumberRange([
+            'Auth' => [
+                'AuthToken' => $this->getAuthToken(),
+            ],
+            'NumberRanges' => [
+                'PackProductType' => $product,
+                'Quantity' => $quantity
+            ]
+        ]);
+
+        return isset($result->GetNumberRangeResult->ResultData->MyApiCityRouting) ?
+            $result->GetNumberRangeResult->ResultData->MyApiCityRouting : [];
+    }
+
 }
