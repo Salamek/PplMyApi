@@ -102,16 +102,16 @@ class Api
     private $tokenLifespan = '+30 minutes'; //DateTime::modify() format
 
     /**
-     * Api constructor.
-     * @param string|null $username
-     * @param string|null $password
-     * @param string|null $customerId
-     * @param string|null $storage
+     * MyApi constructor.
+     * @param null|string $username
+     * @param null|string $password
+     * @param null|integer $customerId
+     * @param null|string
+     * @throws \Exception
      * @throws OfflineException
      * @throws SecurityException
-     * @throws \Exception
      */
-    public function __construct(string $username = null, string $password = null, string $customerId = null, string $storage = null)
+    public function __construct($username = null, $password = null, $customerId = null, $storage = null)
     {
         if (mb_strlen($username) > 32) {
             throw new SecurityException('$username is longer than 32 characters');
@@ -142,10 +142,9 @@ class Api
     }
 
     /**
-     * Method returns API token
-     * @return string
+     * @return mixed
      */
-    private function getAuthToken(): string
+    private function getAuthToken()
     {
         if (file_exists($this->securedStorage)) {
             $modified = new \DateTime('@' . filemtime($this->securedStorage));
@@ -159,14 +158,13 @@ class Api
         $token = $this->login();
         file_put_contents($this->securedStorage, $token);
 
-        return (string)$token;
+        return $token;
     }
 
     /**
-     * Method checks if API responds OK
      * @return bool
      */
-    public function isHealthy(): bool
+    public function isHealthy()
     {
         try {
             $response = $this->soap->isHealtly();
@@ -176,22 +174,19 @@ class Api
         }
     }
 
-    /**
-     * Returns API version
-     * @return string
-     */
-    public function getVersion(): string
+    public function getVersion()
     {
         return $this->soap->Version()->VersionResult;
     }
 
     /**
-     * @param string|null $code
+     * @param null $code
      * @param string $countryCode
-     * @return array
+     * @return mixed
+     * @throws \Exception
      * @throws WrongDataException
      */
-    public function getParcelShops(string $code = null, string $countryCode = Country::CZ): array
+    public function getParcelShops($code = null, $countryCode = Country::CZ)
     {
         if (!in_array($countryCode, Country::$list)) {
             throw new WrongDataException(sprintf('Country Code %s is not supported, use one of %s', $countryCode, implode(', ', Country::$list)));
@@ -204,18 +199,20 @@ class Api
             ]
         ]);
 
-        return isset($result->GetParcelShopsResult->ResultData->MyApiParcelShop) ?
-            $result->GetParcelShopsResult->ResultData->MyApiParcelShop : [];
+        return isset($result->GetParcelShopsResult->ResultData->MyApiParcelShop)
+            ? $result->GetParcelShopsResult->ResultData->MyApiParcelShop
+            : [];
     }
 
     /**
      * @param string $countryCode
      * @param \DateTimeInterface|null $dateFrom
-     * @param string|null $zipCode
-     * @return array
+     * @param null $zipCode
+     * @return mixed
+     * @throws \Exception
      * @throws WrongDataException
      */
-    public function getCitiesRouting(string $countryCode = Country::CZ, \DateTimeInterface $dateFrom = null, string $zipCode = null): array
+    public function getCitiesRouting($countryCode = Country::CZ, \DateTimeInterface $dateFrom = null, $zipCode = null)
     {
         if (!in_array($countryCode, Country::$list)) {
             throw new WrongDataException(sprintf('Country Code %s is not supported, use one of %s', $countryCode, implode(', ', Country::$list)));
@@ -232,19 +229,21 @@ class Api
             ]
         ]);
 
-        return isset($result->GetCitiesRoutingResult->ResultData->MyApiCityRouting) ?
-            $result->GetCitiesRoutingResult->ResultData->MyApiCityRouting : [];
+        return isset($result->GetCitiesRoutingResult->ResultData->MyApiCityRouting)
+            ? $result->GetCitiesRoutingResult->ResultData->MyApiCityRouting
+            : [];
     }
 
     /**
-     * @param string|null $customRefs
+     * @param null $customRefs
      * @param \DateTimeInterface|null $dateFrom
      * @param \DateTimeInterface|null $dateTo
      * @param array $packageNumbers
-     * @return array
+     * @throws \Exception
      * @throws WrongDataException
+     * @return mixed
      */
-    public function getPackages(string $customRefs = null, \DateTimeInterface $dateFrom = null, \DateTimeInterface $dateTo = null, array $packageNumbers = []): array
+    public function getPackages($customRefs = null, \DateTimeInterface $dateFrom = null, \DateTimeInterface $dateTo = null, array $packageNumbers = [])
     {
         if (is_null($customRefs) && is_null($dateFrom) && is_null($dateTo) && empty($packageNumbers)) {
             throw new WrongDataException('At least one parameter must be specified!');
@@ -263,15 +262,16 @@ class Api
         ]);
 
         return isset($result->GetPackagesResult->ResultData->MyApiPackageOut)
-            ? $result->GetPackagesResult->ResultData->MyApiPackageOut : [];
+            ? $result->GetPackagesResult->ResultData->MyApiPackageOut
+            : [];
     }
 
     /**
      * @param array $orders
-     * @return array
+     * @return mixed
      * @throws \Exception
      */
-    public function createOrders(array $orders): array
+    public function createOrders(array $orders)
     {
         $ordersProcessed = [];
 
@@ -329,12 +329,12 @@ class Api
     }
 
     /**
-     * @param array $packages
-     * @param string|null $customerUniqueImportId
+     * @param Package[] $packages
+     * @param null $customerUniqueImportId
      * @return array
      * @throws \Exception
      */
-    public function createPackages(array $packages, string $customerUniqueImportId = null): array
+    public function createPackages(array $packages, $customerUniqueImportId = null)
     {
         $packagesProcessed = [];
 
@@ -486,7 +486,8 @@ class Api
         ]);
 
         return isset($result->CreatePackagesResult->ResultData->ItemResult)
-            ? $result->CreatePackagesResult->ResultData->ItemResult : [];
+            ? $result->CreatePackagesResult->ResultData->ItemResult
+            : [];
     }
 
     /**
@@ -535,7 +536,9 @@ class Api
             ]
         ]);
 
-        return $result;
+        return isset($result->CreatePickupOrdersResult->ResultData->ItemResult)
+            ? $result->CreatePickupOrdersResult->ResultData->ItemResult
+            : [];
     }
 
     /**
@@ -573,7 +576,7 @@ class Api
      * @return array
      * @throws WrongDataException
      */
-    public function getNumberRange(int $product, int $quantity): array
+    public function getNumberRange(int $product, int $quantity)
     {
         if (!in_array($product, Product::$list)) {
             throw new WrongDataException(sprintf('Product Code %s is not supported, use one of %s', $product, implode(', ', Product::$list)));
@@ -588,13 +591,16 @@ class Api
                 'AuthToken' => $this->getAuthToken(),
             ],
             'NumberRanges' => [
-                'PackProductType' => $product,
-                'Quantity' => $quantity
+                'NumberRangeRequest' => [
+                    'PackProductType' => $product,
+                    'Quantity' => $quantity
+                ]
             ]
         ]);
 
-        return isset($result->GetNumberRangeResult->ResultData->MyApiCityRouting) ?
-            $result->GetNumberRangeResult->ResultData->MyApiCityRouting : [];
+        return isset($result->GetNumberRangeResult->ResultData->NumberRange)
+            ? $result->GetNumberRangeResult->ResultData->NumberRange
+            : [];
     }
 
 }
