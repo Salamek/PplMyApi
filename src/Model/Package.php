@@ -97,7 +97,8 @@ class Package implements IPackage
         IPalletInfo $palletInfo = null,
         IWeightedPackageInfo $weightedPackageInfo = null,
         $packageCount = 1,
-        $packagePosition = 1
+        $packagePosition = 1,
+        $forceOwnPackageNumber = false
     ) {
         if (in_array($packageProductType, Product::$cashOnDelivery) && is_null($paymentInfo)) {
             throw new WrongDataException('$paymentInfo must be set if product type is CoD');
@@ -143,7 +144,7 @@ class Package implements IPackage
 
         //!FIXME compabilty when someone is passing only seriesNumberId
         $packageNumberInfo = Tools::parsePackageNumber($packageNumber);
-        if (is_null($packageNumberInfo) && is_numeric($packageNumber))
+        if (is_null($packageNumberInfo) && is_numeric($packageNumber) && !$forceOwnPackageNumber)
         {
             $packageNumberInfo = new PackageNumberInfo($packageNumber, $packageProductType, $depoCode);
             $this->setPackageNumber(Tools::generatePackageNumber($packageNumberInfo));
@@ -167,7 +168,7 @@ class Package implements IPackage
         $this->setWeightedPackageInfo($weightedPackageInfo);
         $this->setPackageCount($packageCount);
         $this->setPackagePosition($packagePosition);
-        
+
         if (in_array($flags, Product::$deliverySaturday) && is_null($palletInfo)) {
             throw new WrongDataException('Package requires Salamek\PplMyApi\Enum\Flag::SATURDAY_DELIVERY to be true or false');
         }
