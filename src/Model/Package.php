@@ -64,11 +64,11 @@ class Package implements IPackage
 
     /**
      * Package constructor.
-     * @param string $packageNumber
-     * @param int $packageProductType
-     * @param float $weight
-     * @param string $note
-     * @param string $depoCode
+     * @param string $packageNumber Package number (40990019352)
+     * @param int $packageProductType Product type
+     * @param float $weight weight
+     * @param string $note note
+     * @param string $depoCode code of depo, see Enum\Depo.php
      * @param ISender $sender
      * @param IRecipient $recipient
      * @param null|ISpecialDelivery $specialDelivery
@@ -80,6 +80,7 @@ class Package implements IPackage
      * @param null|IWeightedPackageInfo $weightedPackageInfo
      * @param integer $packageCount
      * @param integer $packagePosition
+     * @param bool $forceOwnPackageNumber
      * @throws WrongDataException
      */
     public function __construct(

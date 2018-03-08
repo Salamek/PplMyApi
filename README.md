@@ -89,7 +89,7 @@ $pplMyApi = new Salamek\PplMyApi\Api($username, $password, $customerId);
 
 $recipient = new Salamek\PplMyApi\Model\Recipient('Olomouc', 'Adam Schubert', 'My Address', '77900', 'adam@example.com', '+420123456789', 'http://www.salamek.cz', Country::CZ, 'My Compamy a.s.');
 
-$packageNumber = 40950000114;
+$packageNumber = '40950000114';
 /* Or you can use Tools::generatePackageNumber to get this number only from $packageSeriesNumberId like 114
 $packageSeriesNumberId = 114;
 $packageNumberInfo = new PackageNumberInfo($packageSeriesNumberId, Product::PPL_PARCEL_CZ_PRIVATE, Depo::CODE_09);
