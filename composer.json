@@ -30,7 +30,7 @@
   },
   "scripts": {
     "post-install-cmd": [
-      "mkdir .tmp",
+      "mkdir ./tmp",
       "chmod -R 777 ./tmp"
     ],
     "post-update-cmd": [

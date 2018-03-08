@@ -9,7 +9,6 @@ use Salamek\PplMyApi\Model\Package;
 use Salamek\PplMyApi\Tools;
 use Salamek\PplMyApi\PdfLabel;
 use Salamek\PplMyApi\ZplLabel;
-use Salamek\PplMyApi\Enum\Product;
 
 final class PublicTest extends BaseTest
 {
@@ -171,7 +170,7 @@ final class PublicTest extends BaseTest
      */
     public function testGenerateZplLabel()
     {
-        $filePathExpected = __DIR__ . '/../tmp/'. $this->package->getPackageNumber() . '-expected.zpl';
+        $filePathExpected = __DIR__ . '/'. $this->package->getPackageNumber() . '-expected.zpl';
 
         $zplString = ZplLabel::generateLabels([$this->package]);
         $this->assertNotEmpty($zplString);
@@ -183,14 +182,5 @@ final class PublicTest extends BaseTest
             $filePathExpected,
             $filePath
         );
-    }
-
-    /**
-     * @test
-     */
-    public function testGetNumberRange()
-    {
-        $response = $this->pplMyApi->getNumberRange(Product::PPL_PARCEL_CZ_PRIVATE, 10);
-        $this->assertGreaterThan(0, $response->Quantity);
     }
 }

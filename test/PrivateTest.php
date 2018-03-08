@@ -1,5 +1,7 @@
 <?php
 
+use Salamek\PplMyApi\Enum\Product;
+
 /**
  * Copyright (C) 2016 Adam Schubert <adam.schubert@sg1-game.net>.
  */
@@ -74,6 +76,19 @@ final class PrivateTest extends BaseTest
         $this->markTestIncomplete(
             'This test has not been implemented yet.'
         );
+    }
+
+    /**
+     * @test
+     */
+    public function testGetNumberRange()
+    {
+        if ($this->anonymous) {
+            $this->markTestSkipped('No login credentials has been set.');
+        }
+        
+        $response = $this->pplMyApi->getNumberRange(Product::PPL_PARCEL_CZ_PRIVATE, 10);
+        $this->assertGreaterThan(0, $response->Quantity);
     }
 
 }
