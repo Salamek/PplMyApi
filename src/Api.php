@@ -17,6 +17,7 @@ use Salamek\PplMyApi\Model\IPickUpOrder;
 use Salamek\PplMyApi\Model\Order;
 use Salamek\PplMyApi\Model\Package;
 use Salamek\PplMyApi\Model\PickUpOrder;
+use Salamek\PplMyApi\Enum\Product;
 
 /**
  * Class Client
@@ -198,7 +199,9 @@ class Api
             ]
         ]);
 
-        return $result->GetParcelShopsResult->ResultData->MyApiParcelShop;
+        return isset($result->GetParcelShopsResult->ResultData->MyApiParcelShop)
+            ? $result->GetParcelShopsResult->ResultData->MyApiParcelShop
+            : [];
     }
 
     /**
@@ -226,8 +229,9 @@ class Api
             ]
         ]);
 
-        return isset($result->GetCitiesRoutingResult->ResultData->MyApiCityRouting) ?
-            $result->GetCitiesRoutingResult->ResultData->MyApiCityRouting : [];
+        return isset($result->GetCitiesRoutingResult->ResultData->MyApiCityRouting)
+            ? $result->GetCitiesRoutingResult->ResultData->MyApiCityRouting
+            : [];
     }
 
     /**
@@ -334,8 +338,7 @@ class Api
     {
         $packagesProcessed = [];
 
-        if (empty($packages))
-        {
+        if (empty($packages)) {
             throw new \Exception('$packages cannot be empty');
         }
 
@@ -399,7 +402,7 @@ class Api
             if ($package->getWeightedPackageInfo()) {
                 $routeList = [];
                 foreach ($package->getWeightedPackageInfo()->getRoutes() AS $route) {
-                    $routeList[]= [
+                    $routeList[] = [
                         'RouteType' => $route->getRouteType(),
                         'RouteCode' => $route->getRouteCode()
                     ];
@@ -533,7 +536,9 @@ class Api
             ]
         ]);
 
-        return $result;
+        return isset($result->CreatePickupOrdersResult->ResultData->ItemResult)
+            ? $result->CreatePickupOrdersResult->ResultData->ItemResult
+            : [];
     }
 
     /**
@@ -563,7 +568,39 @@ class Api
         } catch (\Exception $e) {
             throw new SecurityException($e->getMessage());
         }
-
-
     }
+
+    /**
+     * @param int $product
+     * @param int $quantity
+     * @return array
+     * @throws WrongDataException
+     */
+    public function getNumberRange($product, $quantity)
+    {
+        if (!in_array($product, Product::$list)) {
+            throw new WrongDataException(sprintf('Product Code %s is not supported, use one of %s', $product, implode(', ', Product::$list)));
+        }
+
+        if ($quantity <= 0) {
+            throw new WrongDataException(sprintf('Quantity must be more than %s', 0));
+        }
+
+        $result = $this->soap->GetNumberRange([
+            'Auth' => [
+                'AuthToken' => $this->getAuthToken(),
+            ],
+            'NumberRanges' => [
+                'NumberRangeRequest' => [
+                    'PackProductType' => $product,
+                    'Quantity' => $quantity
+                ]
+            ]
+        ]);
+
+        return isset($result->GetNumberRangeResult->ResultData->NumberRange)
+            ? $result->GetNumberRangeResult->ResultData->NumberRange
+            : [];
+    }
+
 }
