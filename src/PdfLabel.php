@@ -87,7 +87,7 @@ class PdfLabel implements ILabel
         //Contact info
         $contactInfoY = 45;
         $pdf->SetFont($pdf->getFontFamily(), '', 20);
-        $pdf->Text($x, $contactInfoY, 'Modrá linka: 844 775 775');
+        $pdf->Text($x, $contactInfoY, 'Pevná linka: 225 331 500');
         $pdf->Text($x, $contactInfoY + 10, 'E-mail: info@ppl.cz');
         $pdf->Text($x, $contactInfoY + 20, 'https://www.ppl.cz');
 
@@ -220,7 +220,7 @@ class PdfLabel implements ILabel
 
         //Contact info
         $pdf->SetFont($pdf->getFontFamily(), '', 9);
-        $pdf->Text(3 + $xPositionOffset, 20 + $yPositionOffset, 'Modrá linka: 844 775 775');
+        $pdf->Text(3 + $xPositionOffset, 20 + $yPositionOffset, 'Pevná linka: 225 331 500');
         $pdf->Text(3 + $xPositionOffset, 25 + $yPositionOffset, 'E-mail: info@ppl.cz');
         $pdf->Text(3 + $xPositionOffset, 30 + $yPositionOffset, 'https://www.ppl.cz');
 
