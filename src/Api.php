@@ -372,7 +372,7 @@ class Api
                 ];
             }
 
-            $flags = ['MyApiFlag' => $flagList];
+            $flags = empty($flagList) ? false : ['MyApiFlag' => $flagList];
 
             $palletInfo = null;
             if ($package->getPalletInfo()) {
