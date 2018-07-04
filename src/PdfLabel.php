@@ -16,8 +16,14 @@ use Salamek\PplMyApi\Model\Package;
 
 class PdfLabel implements ILabel
 {
+    const SENDER = 'Odesílatel:';
+    const RECEIVER = 'Příjemce:';
+
+    /** @var boolean */
+    protected static $dayNightLabel = true;
+
     /**
-     * @param IPackage[] $packages
+     * @param array $packages
      * @param int $decomposition
      * @return string
      * @throws \Exception
@@ -30,7 +36,7 @@ class PdfLabel implements ILabel
 
         $packageNumbers = [];
 
-        /** @var IPackage $package */
+        /** @var Package $package */
         foreach ($packages AS $package) {
             $packageNumbers[] = $package->getPackageNumber();
         }
@@ -53,7 +59,7 @@ class PdfLabel implements ILabel
             switch ($decomposition) {
                 case LabelDecomposition::FULL:
                     $pdf->AddPage();
-                    $pdf = self::generateLabelFull($pdf, $package);
+                    $pdf = static::generateLabelFull($pdf, $package);
                     break;
 
                 case LabelDecomposition::QUARTER:
@@ -65,7 +71,7 @@ class PdfLabel implements ILabel
                         $pdf->AddPage();
                     }
 
-                    $pdf = self::generateLabelQuarter($pdf, $package, $quarterPosition);
+                    $pdf = static::generateLabelQuarter($pdf, $package, $quarterPosition);
                     $quarterPosition++;
                     break;
             }
@@ -76,33 +82,36 @@ class PdfLabel implements ILabel
 
     /**
      * @param \TCPDF $pdf
-     * @param IPackage $package
+     * @param Package $package
      * @return \TCPDF
      */
-    public static function generateLabelFull(\TCPDF $pdf, IPackage $package)
+    public static function generateLabelFull(\TCPDF $pdf, Package $package)
     {
-        $x = 17;
-        $pdf->Image(__DIR__ . '/../assets/logo.png', $x, 10, 66, '', 'PNG');
+        $contact = static::parcelContact();
 
-        //Contact info
+        $x = 17;
+        if ($contact['logo']) {
+            $pdf->Image($contact['logo'], $x, 10, 66, '', 'PNG');
+        }
+
+        // Contact info
         $contactInfoY = 45;
         $pdf->SetFont($pdf->getFontFamily(), '', 20);
-        $pdf->Text($x, $contactInfoY, 'Pevná linka: 225 331 500');
-        $pdf->Text($x, $contactInfoY + 10, 'E-mail: info@ppl.cz');
-        $pdf->Text($x, $contactInfoY + 20, 'https://www.ppl.cz');
+        $pdf->Text($x, $contactInfoY, $contact['phone']);
+        $pdf->Text($x, $contactInfoY + 10, $contact['email']);
+        $pdf->Text($x, $contactInfoY + 20, $contact['web']);
 
-
-        //Barcode
+        // Barcode
         $pdf->StartTransform();
-        $x = 78; //65
-        $y = 85; //110
+        $x = 78; // 65
+        $y = 85; // 110
         $pdf->Rotate(270, $x, $y);
         $pdf->write1DBarcode($package->getPackageNumber(), 'I25+', $x, $y, 80, 60, 0.3, ['stretch' => true]);
 
         // Stop Transformation
         $pdf->StopTransform();
 
-        //Barcode number
+        // Barcode number
         $pdf->StartTransform();
 
         $x = 90;
@@ -118,22 +127,20 @@ class PdfLabel implements ILabel
         $pdf->MultiCell(40, 0, sprintf('%s/%s', $package->getPackagePosition(), $package->getPackageCount()), ['LTRB' => ['width' => 1]], 'C', 0, 0, 244, 175, true, 0, false, true, 0);
 
         // Dobirka
-        if (in_array($package->getPackageProductType(), Product::$cashOnDelivery)) {
+        if ($package->isCashOnDelivery()) {
             $pdf->SetFont($pdf->getFontFamily(), 'B', 27);
             $pdf->SetTextColor(255, 255, 255);
             $pdf->SetFillColor(0, 0, 0);
             $pdf->MultiCell(30, 0, 'DOB.:', ['LTRB' => ['width' => 0.7]], 'L', true, 0, 19, 175, true, 0, false, true, 0);
-            $pdf->MultiCell(60, 0, sprintf('%s %s', $package->getPaymentInfo()->getCashOnDeliveryPrice(), $package->getPaymentInfo()->getCashOnDeliveryCurrency()), ['LTRB' => ['width' => 0.7]], 'R',
-                true, 0, 45, 175, true, 0, false, true, 0);
+            $pdf->MultiCell(60, 0, sprintf('%s %s', $package->getPaymentInfo()->getCashOnDeliveryPrice(), $package->getPaymentInfo()->getCashOnDeliveryCurrency()), ['LTRB' => ['width' => 0.7]], 'R', true, 0, 45, 175, true, 0, false, true, 0);
             $pdf->SetTextColor(0, 0, 0);
             $pdf->SetFillColor(255, 255, 255);
         }
 
-
-        //Prijemce
+        // Prijemce
         $pdf->SetFont($pdf->getFontFamily(), '', 25);
 
-        $pdf->Text(110, 9, 'Příjemce:');
+        $pdf->Text(110, 9, static::RECEIVER);
 
         $x = 120;
         $y = 25;
@@ -152,17 +159,19 @@ class PdfLabel implements ILabel
         $pdf->Text($x, $y + 63, sprintf('Tel.: %s', $package->getRecipient()->getPhone()));
 
         $pdf->MultiCell(173, 80, '', ['LTRB' => ['width' => 1]], 'L', 0, 0, 112, 21, true, 0, false, true, 0);
-        $pdf->SetFont($pdf->getFontFamily(), 'B', 60);
-        $pdf->SetTextColor(255, 255, 255);
-        $pdf->SetFillColor(0, 0, 0);
-        $pdf->MultiCell(60, 15, (in_array(PackageService::EVENING_DELIVERY, \Salamek\PplMyApi\Model\PackageService::packageServicesToArray($package)) ? 'Večer' : 'Den'), ['LTRB' => ['width' => 1]], 'C', true, 0, 224, 73, true, 0,
-            false, true, 0);
-        $pdf->SetTextColor(0, 0, 0);
-        $pdf->SetFillColor(255, 255, 255);
 
-        //Sender
+        if (static::$dayNightLabel) {
+            $pdf->SetFont($pdf->getFontFamily(), 'B', 60);
+            $pdf->SetTextColor(255, 255, 255);
+            $pdf->SetFillColor(0, 0, 0);
+            $pdf->MultiCell(60, 15, (in_array(PackageService::EVENING_DELIVERY, static::packageServicesToArray($package)) ? 'Večer' : 'Den'), ['LTRB' => ['width' => 1]], 'C', true, 0, 224, 73, true, 0, false, true, 0);
+            $pdf->SetTextColor(0, 0, 0);
+            $pdf->SetFillColor(255, 255, 255);
+        }
+
+        // Sender
         $pdf->SetFont($pdf->getFontFamily(), '', 25);
-        $pdf->Text(112, 105, 'Odesílatel:');
+        $pdf->Text(112, 105, static::SENDER);
 
         $x = 120;
         $y = 120;
@@ -176,17 +185,27 @@ class PdfLabel implements ILabel
 
         $pdf->MultiCell(173, 48, '', ['LTRB' => ['width' => 1]], 'L', 0, 0, 112, 117, true, 0, false, true, 0);
 
+        // Note
+        if ($package->getNote()) {
+            $x = 120;
+            $y = 175;
+
+            $pdf->SetXY($x, $y);
+            $pdf->SetFont($pdf->getFontFamily(), '', 12);
+            $pdf->MultiCell(120, 12, 'Pozn.: ' . $package->getNote(), '', 'L');
+        }
+
         return $pdf;
     }
 
     /**
      * @param \TCPDF $pdf
-     * @param IPackage $package
+     * @param Package $package
      * @param int $position
      * @return \TCPDF
      * @throws \Exception
      */
-    public static function generateLabelQuarter(\TCPDF $pdf, IPackage $package, $position = LabelPosition::TOP_LEFT)
+    public static function generateLabelQuarter(\TCPDF $pdf, Package $package, $position = LabelPosition::TOP_LEFT)
     {
         if (!in_array($position, [1, 2, 3, 4])) {
             throw new \Exception('Unknow position');
@@ -215,17 +234,20 @@ class PdfLabel implements ILabel
                 break;
         }
 
-        //Logo
-        $pdf->Image(__DIR__ . '/../assets/logo.png', 3 + $xPositionOffset, 3 + $yPositionOffset, 34, '', 'PNG');
+        $contact = static::parcelContact();
 
-        //Contact info
+        // Logo
+        if ($contact['logo']) {
+            $pdf->Image($contact['logo'], 3 + $xPositionOffset, 3 + $yPositionOffset, 34, '', 'PNG');
+        }
+
+        // Contact info
         $pdf->SetFont($pdf->getFontFamily(), '', 9);
-        $pdf->Text(3 + $xPositionOffset, 20 + $yPositionOffset, 'Pevná linka: 225 331 500');
-        $pdf->Text(3 + $xPositionOffset, 25 + $yPositionOffset, 'E-mail: info@ppl.cz');
-        $pdf->Text(3 + $xPositionOffset, 30 + $yPositionOffset, 'https://www.ppl.cz');
+        $pdf->Text(3 + $xPositionOffset, 20 + $yPositionOffset, $contact['phone']);
+        $pdf->Text(3 + $xPositionOffset, 25 + $yPositionOffset, $contact['email']);
+        $pdf->Text(3 + $xPositionOffset, 30 + $yPositionOffset, $contact['web']);
 
-
-        //Barcode
+        // Barcode
         $pdf->StartTransform();
         $x = 34 + $xPositionOffset;
         $y = 40 + $yPositionOffset;
@@ -235,7 +257,7 @@ class PdfLabel implements ILabel
         // Stop Transformation
         $pdf->StopTransform();
 
-        //Barcode number
+        // Barcode number
         $pdf->StartTransform();
 
         $x = 40 + $xPositionOffset;
@@ -248,24 +270,22 @@ class PdfLabel implements ILabel
 
         // PackagePosition of PackageCount
         $pdf->SetFont($pdf->getFontFamily(), 'B', 13);
-        $pdf->MultiCell(20, 0, sprintf('%s/%s', $package->getPackagePosition(), $package->getPackageCount()), ['LTRB' => ['width' => 0.7]], 'C', 0, 0, 116 + $xPositionOffset, 85 + $yPositionOffset,
-            true, 0, false, true, 0);
+        $pdf->MultiCell(20, 0, sprintf('%s/%s', $package->getPackagePosition(), $package->getPackageCount()), ['LTRB' => ['width' => 0.7]], 'C', 0, 0, 116 + $xPositionOffset, 85 + $yPositionOffset, true, 0, false, true, 0);
 
         // Dobirka
-        if (in_array($package->getPackageProductType(), Product::$cashOnDelivery)) {
+        if ($package->isCashOnDelivery()) {
             $pdf->SetFont($pdf->getFontFamily(), 'B', 13);
             $pdf->SetTextColor(255, 255, 255);
             $pdf->SetFillColor(0, 0, 0);
             $pdf->MultiCell(15, 0, 'DOB.:', ['LTRB' => ['width' => 0.7]], 'L', true, 0, 4 + $xPositionOffset, 85 + $yPositionOffset, true, 0, false, true, 0);
-            $pdf->MultiCell(28, 0, sprintf('%s %s', $package->getPaymentInfo()->getCashOnDeliveryPrice(), $package->getPaymentInfo()->getCashOnDeliveryCurrency()), ['LTRB' => ['width' => 0.7]], 'R',
-                true, 0, 19 + $xPositionOffset, 85 + $yPositionOffset, true, 0, false, true, 0);
+            $pdf->MultiCell(28, 0, sprintf('%s %s', $package->getPaymentInfo()->getCashOnDeliveryPrice(), $package->getPaymentInfo()->getCashOnDeliveryCurrency()), ['LTRB' => ['width' => 0.7]], 'R', true, 0, 19 + $xPositionOffset, 85 + $yPositionOffset, true, 0, false, true, 0);
             $pdf->SetTextColor(0, 0, 0);
             $pdf->SetFillColor(255, 255, 255);
         }
 
-        //Prijemce
+        // Prijemce
         $pdf->SetFont($pdf->getFontFamily(), '', 12);
-        $pdf->Text(50 + $xPositionOffset, 3 + $yPositionOffset, 'Příjemce:');
+        $pdf->Text(50 + $xPositionOffset, 3 + $yPositionOffset, static::RECEIVER);
 
         $x = 53 + $xPositionOffset;
         $y = 10 + $yPositionOffset;
@@ -284,17 +304,19 @@ class PdfLabel implements ILabel
         $pdf->Text($x, $y + 33, sprintf('Tel.: %s', $package->getRecipient()->getPhone()));
 
         $pdf->MultiCell(85, 40, '', ['LTRB' => ['width' => 0.7]], 'L', 0, 0, 51 + $xPositionOffset, 9 + $yPositionOffset, true, 0, false, true, 0);
-        $pdf->SetFont($pdf->getFontFamily(), 'B', 30);
-        $pdf->SetTextColor(255, 255, 255);
-        $pdf->SetFillColor(0, 0, 0);
-        $pdf->MultiCell(30, 15, (in_array(PackageService::EVENING_DELIVERY, \Salamek\PplMyApi\Model\PackageService::packageServicesToArray($package)) ? 'Večer' : 'Den'), ['LTRB' => ['width' => 0.7]], 'C', true, 0,
-            106 + $xPositionOffset, 34 + $yPositionOffset, true, 0, false, true, 0);
-        $pdf->SetTextColor(0, 0, 0);
-        $pdf->SetFillColor(255, 255, 255);
 
-        //Sender
+        if (static::$dayNightLabel) {
+            $pdf->SetFont($pdf->getFontFamily(), 'B', 30);
+            $pdf->SetTextColor(255, 255, 255);
+            $pdf->SetFillColor(0, 0, 0);
+            $pdf->MultiCell(30, 15, (in_array(PackageService::EVENING_DELIVERY, static::packageServicesToArray($package)) ? 'Večer' : 'Den'), ['LTRB' => ['width' => 0.7]], 'C', true, 0, 106 + $xPositionOffset, 34 + $yPositionOffset, true, 0, false, true, 0);
+            $pdf->SetTextColor(0, 0, 0);
+            $pdf->SetFillColor(255, 255, 255);
+        }
+
+        // Sender
         $pdf->SetFont($pdf->getFontFamily(), '', 12);
-        $pdf->Text(50 + $xPositionOffset, 51 + $yPositionOffset, 'Odesílatel:');
+        $pdf->Text(50 + $xPositionOffset, 51 + $yPositionOffset, static::SENDER);
 
         $x = 53 + $xPositionOffset;
         $y = 58 + $yPositionOffset;
@@ -313,6 +335,43 @@ class PdfLabel implements ILabel
         $pdf->SetFont($pdf->getFontFamily(), 'B', 13);
         $pdf->MultiCell(85, 23, '', ['LTRB' => ['width' => 0.7]], 'L', 0, 0, 51 + $xPositionOffset, 57 + $yPositionOffset, true, 0, false, true, 0);
 
+        // Note
+        if ($package->getNote()) {
+            $x = 53 + $xPositionOffset;
+            $y = 84 + $yPositionOffset;
+
+            $pdf->SetXY($x, $y);
+            $pdf->SetFont($pdf->getFontFamily(), '', 9);
+            $pdf->MultiCell(60, 4, 'Pozn.: ' . $package->getNote(), '', 'L');
+        }
+
         return $pdf;
+    }
+
+    /**
+     * @return array
+     */
+    protected static function parcelContact()
+    {
+        return [
+            'logo' => __DIR__ . '/../assets/logo.png',
+            'phone' => 'Modrá linka: 844 775 775',
+            'email' => 'E-mail: info@ppl.cz',
+            'web' => 'https:// www.ppl.cz'
+        ];
+    }
+
+    /**
+     * @param Package $package
+     * @return array
+     */
+    private static function packageServicesToArray(Package $package)
+    {
+        $return = [];
+        foreach ($package->getPackageServices() AS $packageService) {
+            $return[] = $packageService->getSvcCode();
+        }
+
+        return $return;
     }
 }
