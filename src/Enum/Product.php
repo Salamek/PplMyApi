@@ -21,6 +21,8 @@ class Product
     const COMPANY_PALETTE_COD = 16;
     const PRIVATE_PALETTE = 19;
     const PRIVATE_PALETTE_COD = 20;
+    const PPL_PARCEL_CONNECT = 36;
+    const PPL_PARCEL_CONNECT_COD = 37;
 
     /** @var array */
     public static $list = [
@@ -35,7 +37,9 @@ class Product
         self::COMPANY_PALETTE,
         self::COMPANY_PALETTE_COD,
         self::PRIVATE_PALETTE,
-        self::PRIVATE_PALETTE_COD
+        self::PRIVATE_PALETTE_COD,
+        self::PPL_PARCEL_CONNECT,
+        self::PPL_PARCEL_CONNECT_COD
     ];
 
     public static $cashOnDelivery = [
@@ -44,6 +48,18 @@ class Product
         self::EXPORT_PACKAGE_COD,
         self::PPL_PARCEL_CZ_PRIVATE_COD,
         self::COMPANY_PALETTE_COD,
-        self::PRIVATE_PALETTE_COD
+        self::PRIVATE_PALETTE_COD,
+        self::PPL_PARCEL_CONNECT_COD
+    ];
+
+    public static $deliverySaturday = [
+        self::PPL_PARCEL_CZ_BUSINESS,
+        self::PPL_PARCEL_CZ_BUSINESS_COD,
+        self::PPL_PARCEL_CZ_PRIVATE,
+        self::PPL_PARCEL_CZ_PRIVATE_COD,
+        self::PPL_PARCEL_CZ_AFTERNOON_PACKAGE,
+        self::PPL_PARCEL_CZ_AFTERNOON_PACKAGE_COD,
+        self::EXPORT_PACKAGE,
+        self::EXPORT_PACKAGE_COD
     ];
 }

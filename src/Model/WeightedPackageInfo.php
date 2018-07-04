@@ -8,7 +8,7 @@ namespace Salamek\PplMyApi\Model;
 
 use Salamek\PplMyApi\Exception\WrongDataException;
 
-class WeightedPackageInfo
+class WeightedPackageInfo implements IWeightedPackageInfo
 {
     /** @var float */
     protected $weight;
@@ -29,8 +29,7 @@ class WeightedPackageInfo
 
 
     /**
-     * @param float $weight
-     * @throws WrongDataException
+     * @inheritdoc
      */
     public function setWeight($weight)
     {
@@ -41,7 +40,7 @@ class WeightedPackageInfo
     }
 
     /**
-     * @param Route[] $routes
+     * @inheritdoc
      */
     public function setRoutes(array $routes)
     {
@@ -49,7 +48,7 @@ class WeightedPackageInfo
     }
 
     /**
-     * @return float
+     * @inheritdoc
      */
     public function getWeight()
     {
@@ -57,7 +56,7 @@ class WeightedPackageInfo
     }
 
     /**
-     * @return Route[]
+     * @inheritdoc
      */
     public function getRoutes()
     {

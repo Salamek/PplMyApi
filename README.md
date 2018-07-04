@@ -8,7 +8,7 @@ Professional Parcel Logistic MyApi client in PHP
 
 ## Requirements
 
-- PHP 5.4 or higher
+- PHP 5.6 or higher
 
 ## Installation
 
@@ -38,7 +38,7 @@ Check if PPL MyApi is in working shape
 $pplMyApi = new Salamek\PplMyApi\Api();
 if ($pplMyApi->isHealthy())
 {
-    echo 'Healthly :)' . PHP_EOL;
+    echo 'Healthy :)' . PHP_EOL;
 }
 else
 {
@@ -87,12 +87,16 @@ $customerId = 'my_api_customer_id';
 
 $pplMyApi = new Salamek\PplMyApi\Api($username, $password, $customerId);
 
-$sender = new Salamek\PplMyApi\Model\Sender('Olomouc', 'My Compamy s.r.o.', 'My Address', '77900', 'info@example.com', '+420123456789', 'http://www.example.cz', Country::CZ);
 $recipient = new Salamek\PplMyApi\Model\Recipient('Olomouc', 'Adam Schubert', 'My Address', '77900', 'adam@example.com', '+420123456789', 'http://www.salamek.cz', Country::CZ, 'My Compamy a.s.');
 
-$myPackageIdFromNumberSeries = 115;
+$packageNumber = '40950000114';
+/* Or you can use Tools::generatePackageNumber to get this number only from $packageSeriesNumberId like 114
+$packageSeriesNumberId = 114;
+$packageNumberInfo = new PackageNumberInfo($packageSeriesNumberId, Product::PPL_PARCEL_CZ_PRIVATE, Depo::CODE_09);
+$packageNumber = Tools::generatePackageNumber($packageNumberInfo); //40950000114
+*/
 $weight = 3.15;
-$package = new Salamek\PplMyApi\Model\Package($myPackageIdFromNumberSeries, Product::PPL_PARCEL_CZ_PRIVATE, $weight, 'Testpvaci balik', Depo::CODE_09, $sender, $recipient);
+$package = new Salamek\PplMyApi\Model\Package($packageNumber, Product::PPL_PARCEL_CZ_PRIVATE, $weight, 'Testovaci balik', Depo::CODE_09, $recipient);
 
 try
 {
@@ -102,8 +106,14 @@ catch (\Exception $e)
 {
     echo $e->getMessage() . PHP_EOL;
 }
-
 ```
+
+#### Empty Sender
+
+It may happen that PPL support staff requires you to ommit the *ISender* while you send the **package** (not pallet) data. In that
+case you just use null:
+
+While sending **pallet** data, *Sender* is **required**.
 
 ### Create Orders
 
@@ -186,19 +196,43 @@ print_r($result);
 
 ### Get Labels
 
+#### PdfLabel
+
 Returns PDF with label/s for print on paper, two decompositions are supported, LabelDecomposition::FULL (one A4 Label per page) or LabelDecomposition::QUARTER (one label per 1/4 of A4 page)
 
+#### ZplLabel
+
+Returns ZPL (Zebra printer format) label/s for print on paper
+
 ```php
-$pplMyApi = new Salamek\PplMyApi\Api();
 
 $sender = new Salamek\PplMyApi\Model\Sender('Olomouc', 'My Compamy s.r.o.', 'My Address', '77900', 'info@example.com', '+420123456789', 'http://www.example.cz', Country::CZ);
 $recipient = new Salamek\PplMyApi\Model\Recipient('Olomouc', 'Adam Schubert', 'My Address', '77900', 'adam@example.com', '+420123456789', 'http://www.salamek.cz', Country::CZ, 'My Compamy a.s.');
 
-$myPackageIdFromNumberSeries = 115;
+$packageNumber = 40950000114;
+/* Or you can use Tools::generatePackageNumber to get this number only from $packageSeriesNumberId like 114
+$packageSeriesNumberId = 114;
+$packageNumberInfo = new PackageNumberInfo($packageSeriesNumberId, Product::PPL_PARCEL_CZ_PRIVATE, Depo::CODE_09);
+$packageNumber = Tools::generatePackageNumber($packageNumberInfo); //40950000114
+*/
 $weight = 3.15;
-$package = new Salamek\PplMyApi\Model\Package($myPackageIdFromNumberSeries, Product::PPL_PARCEL_CZ_PRIVATE, $weight, 'Testpvaci balik', Depo::CODE_09, $sender, $recipient);
+$package = new Salamek\PplMyApi\Model\Package($packageNumber, Product::PPL_PARCEL_CZ_PRIVATE, $weight, 'Testovaci balik', Depo::CODE_09, $sender, $recipient);
 
-
-$rawPdf = $pplMyApi->getLabels([$package]);
+// PDF Label
+$rawPdf = PdfLabel::generateLabels([$package]);
 file_put_contents($package->getPackageNumber() . '.pdf', $rawPdf);
+
+// ZPL Label
+$rawZpl = ZplLabel::generateLabels([$package]);
+file_put_contents($package->getPackageNumber() . '.zpl', $rawZpl);
 ```
+
+# PPL Package number format
+```AsciiDoc
+40990019352
+│├┘│└─────┴──── [0019352] SeriesNumber
+││ └─────────── [9] IsCashOnDelivery 9==CoD 5== NonCoD
+│└───────────── [09] DepoCode
+└────────────── [4] ProductType
+```
+

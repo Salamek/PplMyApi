@@ -9,7 +9,7 @@ namespace Salamek\PplMyApi\Model;
 use Salamek\PplMyApi\Enum\Currency;
 use Salamek\PplMyApi\Exception\WrongDataException;
 
-class PaymentInfo
+class PaymentInfo implements IPaymentInfo
 {
     /** @var null|string */
     protected $bankAccount = null;
@@ -248,6 +248,4 @@ class PaymentInfo
     {
         return $this->swift;
     }
-
-
 }

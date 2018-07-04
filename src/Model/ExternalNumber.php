@@ -9,7 +9,7 @@ namespace Salamek\PplMyApi\Model;
 use Salamek\PplMyApi\Enum\ExternalNumber as ExternalNumberEnum;
 use Salamek\PplMyApi\Exception\WrongDataException;
 
-class ExternalNumber
+class ExternalNumber implements IExternalNumber
 {
     /** @var string */
     protected $code;
@@ -30,22 +30,21 @@ class ExternalNumber
 
     /**
      * @param string $code
+     * @throws WrongDataException
      */
     public function setCode($code)
     {
+        if (!in_array($code, ExternalNumberEnum::$list)) {
+            throw new WrongDataException(sprintf('$code has wrong value, only %s are allowed', implode(', ', ExternalNumberEnum::$list)));
+        }
         $this->code = $code;
     }
 
     /**
      * @param string $externalNumber
-     * @throws WrongDataException
      */
     public function setExternalNumber($externalNumber)
     {
-        if (!in_array($externalNumber, ExternalNumberEnum::$list)) {
-            throw new WrongDataException(sprintf('$externalNumber has wrong value, only %s are allowed', implode(', ', ExternalNumberEnum::$list)));
-        }
-
         $this->externalNumber = $externalNumber;
     }
 

@@ -10,12 +10,10 @@ use Salamek\PplMyApi\Enum\Depo;
 use Salamek\PplMyApi\Enum\Product;
 use Salamek\PplMyApi\Exception\WrongDataException;
 use Salamek\PplMyApi\Tools;
+use Salamek\PplMyApi\Validators\MaxLengthValidator;
 
-class Package
+class Package implements IPackage
 {
-    /** @var integer */
-    protected $seriesNumberId;
-
     /** @var string */
     protected $packageNumber;
 
@@ -31,31 +29,31 @@ class Package
     /** @var string */
     protected $depoCode;
 
-    /** @var Sender */
+    /** @var ISender */
     protected $sender;
 
-    /** @var Recipient */
+    /** @var IRecipient */
     protected $recipient;
 
-    /** @var null|SpecialDelivery */
+    /** @var null|ISpecialDelivery */
     protected $specialDelivery = null;
 
-    /** @var null|PaymentInfo */
+    /** @var null|IPaymentInfo */
     protected $paymentInfo = null;
 
-    /** @var null|ExternalNumber */
+    /** @var null|IExternalNumber[] */
     protected $externalNumbers = [];
 
-    /** @var PackageService[] */
+    /** @var IPackageService[] */
     protected $packageServices = [];
 
-    /** @var Flag[] */
+    /** @var IFlag[] */
     protected $flags = [];
 
-    /** @var null|PalletInfo */
+    /** @var null|IPalletInfo */
     protected $palletInfo = null;
 
-    /** @var null|WeightedPackageInfo */
+    /** @var null|IWeightedPackageInfo */
     protected $weightedPackageInfo = null;
 
     /** @var int */
@@ -66,52 +64,103 @@ class Package
 
     /**
      * Package constructor.
-     * @param null|integer $seriesNumberId
-     * @param int $packageProductType
-     * @param float $weight
-     * @param string $note
-     * @param string $depoCode
-     * @param Sender $sender
-     * @param Recipient $recipient
-     * @param null|SpecialDelivery $specialDelivery
-     * @param null|PaymentInfo $paymentInfo
-     * @param ExternalNumber[] $externalNumbers
-     * @param PackageService[] $packageServices
-     * @param Flag[] $flags
-     * @param null|PalletInfo $palletInfo
-     * @param null|WeightedPackageInfo $weightedPackageInfo
+     * @param string $packageNumber Package number (40990019352)
+     * @param int $packageProductType Product type
+     * @param float $weight weight
+     * @param string $note note
+     * @param string $depoCode code of depo, see Enum\Depo.php
+     * @param ISender $sender
+     * @param IRecipient $recipient
+     * @param null|ISpecialDelivery $specialDelivery
+     * @param null|IPaymentInfo $paymentInfo
+     * @param IExternalNumber[] $externalNumbers
+     * @param IPackageService[] $packageServices
+     * @param IFlag[] $flags
+     * @param null|IPalletInfo $palletInfo
+     * @param null|IWeightedPackageInfo $weightedPackageInfo
      * @param integer $packageCount
      * @param integer $packagePosition
+     * @param bool $forceOwnPackageNumber
      * @throws WrongDataException
      */
     public function __construct(
-        $seriesNumberId,
+        $packageNumber,
         $packageProductType,
         $weight,
         $note,
         $depoCode,
-        Sender $sender,
-        Recipient $recipient,
-        SpecialDelivery $specialDelivery = null,
-        PaymentInfo $paymentInfo = null,
+        $recipient,
+        $sender = null,
+        ISpecialDelivery $specialDelivery = null,
+        IPaymentInfo $paymentInfo = null,
         array $externalNumbers = [],
         array $packageServices = [],
         array $flags = [],
-        PalletInfo $palletInfo = null,
-        WeightedPackageInfo $weightedPackageInfo = null,
+        IPalletInfo $palletInfo = null,
+        IWeightedPackageInfo $weightedPackageInfo = null,
         $packageCount = 1,
-        $packagePosition = 1
+        $packagePosition = 1,
+        $forceOwnPackageNumber = false
     ) {
         if ($this->isCashOnDelivery($packageProductType) && is_null($paymentInfo)) {
             throw new WrongDataException('$paymentInfo must be set if product type is CoD');
+        }
+
+        //!FIXME
+        if ($recipient instanceof ISender)
+        {
+            user_error('Passing ISender as 6th parameter  of Package::__constructor is deprecated! ISender is now on 7th place of Package::__constructor, this compatibility layer will be removed in future.', E_USER_DEPRECATED);
+            if ($recipient instanceof EmptySender)
+            {
+                $this->setSender(null);
+                user_error('Using EmptySender is deprecated, please pass null instead, EmptySender will be removed in future.', E_USER_DEPRECATED);
+            }
+            else
+            {
+                $this->setSender($recipient);
+            }
+        }
+        else if ($recipient instanceof IRecipient)
+        {
+            $this->setRecipient($recipient);
+        }
+
+        //!FIXME
+        if ($sender instanceof IRecipient)
+        {
+            user_error('Passing IRecipient as 7th parameter of Package::__constructor is deprecated! IRecipient is now on 6th place of Package::__constructor, this compatibility layer will be removed in future.', E_USER_DEPRECATED);
+            $this->setRecipient($sender);
+        }
+        else if ($sender instanceof ISender)
+        {
+            if ($sender instanceof EmptySender)
+            {
+                $this->setSender(null);
+                user_error('Using EmptySender is deprecated, please pass null instead, EmptySender will be removed in future.', E_USER_DEPRECATED);
+            }
+            else
+            {
+                $this->setSender($sender);
+            }
+        }
+
+        //!FIXME compabilty when someone is passing only seriesNumberId
+        $packageNumberInfo = Tools::parsePackageNumber($packageNumber);
+        if (is_null($packageNumberInfo) && is_numeric($packageNumber) && !$forceOwnPackageNumber)
+        {
+            $packageNumberInfo = new PackageNumberInfo($packageNumber, $packageProductType, $depoCode);
+            $this->setPackageNumber(Tools::generatePackageNumber($packageNumberInfo));
+            user_error('Passing only seriesNumberId is deprecated, please pass packageNumber directly, you can use Tools::generatePackageNumber to generate it from seriesNumberId', E_USER_DEPRECATED);
+        }
+        else
+        {
+            $this->setPackageNumber($packageNumber);
         }
 
         $this->setPackageProductType($packageProductType);
         $this->setWeight($weight);
         $this->setNote($note);
         $this->setDepoCode($depoCode);
-        $this->setSender($sender);
-        $this->setRecipient($recipient);
         $this->setSpecialDelivery($specialDelivery);
         $this->setPaymentInfo($paymentInfo);
         $this->setExternalNumbers($externalNumbers);
@@ -122,24 +171,9 @@ class Package
         $this->setPackageCount($packageCount);
         $this->setPackagePosition($packagePosition);
 
-
-        if (!is_null($seriesNumberId)) {
-            $this->setSeriesNumberId($seriesNumberId);
+        if (in_array($flags, Product::$deliverySaturday) && is_null($palletInfo)) {
+            throw new WrongDataException('Package requires Salamek\PplMyApi\Enum\Flag::SATURDAY_DELIVERY to be true or false');
         }
-    }
-
-    /**
-     * @param $seriesNumberId
-     * @throws WrongDataException
-     */
-    public function setSeriesNumberId($seriesNumberId)
-    {
-        if (!is_numeric($seriesNumberId)) {
-            throw new WrongDataException('$seriesNumberId has wrong format');
-        }
-
-        $this->seriesNumberId = $seriesNumberId;
-        $this->setPackageNumber(Tools::generatePackageNumber($this));
     }
 
     /**
@@ -148,10 +182,7 @@ class Package
      */
     public function setNote($note = null)
     {
-        $noteLen = mb_strlen($note);
-        if ($noteLen > 300) {
-            throw new WrongDataException(sprintf('$note is longer than 300 characters (%s)', $noteLen));
-        }
+        MaxLengthValidator::validate($note, 300);
 
         $this->note = $note;
     }
@@ -197,39 +228,39 @@ class Package
     }
 
     /**
-     * @param Sender $sender
+     * @param ISender $sender
      */
-    public function setSender(Sender $sender)
+    public function setSender(ISender $sender = null)
     {
         $this->sender = $sender;
     }
 
     /**
-     * @param Recipient $recipient
+     * @param IRecipient $recipient
      */
-    public function setRecipient(Recipient $recipient)
+    public function setRecipient(IRecipient $recipient)
     {
         $this->recipient = $recipient;
     }
 
     /**
-     * @param null|SpecialDelivery $specialDelivery
+     * @param null|ISpecialDelivery $specialDelivery
      */
-    public function setSpecialDelivery(SpecialDelivery $specialDelivery = null)
+    public function setSpecialDelivery(ISpecialDelivery $specialDelivery = null)
     {
         $this->specialDelivery = $specialDelivery;
     }
 
     /**
-     * @param null|PaymentInfo $paymentInfo
+     * @param null|IPaymentInfo $paymentInfo
      */
-    public function setPaymentInfo($paymentInfo)
+    public function setPaymentInfo(IPaymentInfo $paymentInfo = null)
     {
         $this->paymentInfo = $paymentInfo;
     }
 
     /**
-     * @param ExternalNumber[] $externalNumbers
+     * @param IExternalNumber[] $externalNumbers
      */
     public function setExternalNumbers(array $externalNumbers)
     {
@@ -237,7 +268,7 @@ class Package
     }
 
     /**
-     * @param PackageService[] $packageServices
+     * @param IPackageService[] $packageServices
      */
     public function setPackageServices(array $packageServices)
     {
@@ -245,7 +276,7 @@ class Package
     }
 
     /**
-     * @param Flag[] $flags
+     * @param IFlag[] $flags
      */
     public function setFlags(array $flags)
     {
@@ -253,17 +284,17 @@ class Package
     }
 
     /**
-     * @param null|PalletInfo $palletInfo
+     * @param null|IPalletInfo $palletInfo
      */
-    public function setPalletInfo(PalletInfo $palletInfo = null)
+    public function setPalletInfo(IPalletInfo $palletInfo = null)
     {
         $this->palletInfo = $palletInfo;
     }
 
     /**
-     * @param null|WeightedPackageInfo $weightedPackageInfo
+     * @param null|IWeightedPackageInfo $weightedPackageInfo
      */
-    public function setWeightedPackageInfo($weightedPackageInfo)
+    public function setWeightedPackageInfo(IWeightedPackageInfo $weightedPackageInfo = null)
     {
         $this->weightedPackageInfo = $weightedPackageInfo;
     }
@@ -290,6 +321,30 @@ class Package
     public function getPackageNumber()
     {
         return $this->packageNumber;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPackageNumberChecksum()
+    {
+        $checksum = null;
+        $odd = 0;
+        $even = 0;
+        for ($i = 0; $i < strlen($this->packageNumber); $i++) {
+            $n = substr($this->packageNumber, $i, 1);
+            if (!($i % 2)) {
+                $odd += $n;
+            } else {
+                $even += $n;
+            }
+        }
+        $odd *= 3;
+        $odd += $even;
+        $checksum = 10 - substr($odd, -1);
+        if ($checksum == 10) $checksum = 0;
+        return $checksum;
+
     }
 
     /**
@@ -325,7 +380,7 @@ class Package
     }
 
     /**
-     * @return Sender
+     * @return ISender
      */
     public function getSender()
     {
@@ -333,7 +388,7 @@ class Package
     }
 
     /**
-     * @return Recipient
+     * @return IRecipient
      */
     public function getRecipient()
     {
@@ -341,7 +396,7 @@ class Package
     }
 
     /**
-     * @return null|SpecialDelivery
+     * @return null|ISpecialDelivery
      */
     public function getSpecialDelivery()
     {
@@ -349,7 +404,7 @@ class Package
     }
 
     /**
-     * @return null|PaymentInfo
+     * @return null|IPaymentInfo
      */
     public function getPaymentInfo()
     {
@@ -357,7 +412,7 @@ class Package
     }
 
     /**
-     * @return ExternalNumber[]
+     * @return IExternalNumber[]
      */
     public function getExternalNumbers()
     {
@@ -365,7 +420,7 @@ class Package
     }
 
     /**
-     * @return PackageService[]
+     * @return IPackageService[]
      */
     public function getPackageServices()
     {
@@ -373,7 +428,7 @@ class Package
     }
 
     /**
-     * @return Flag[]
+     * @return IFlag[]
      */
     public function getFlags()
     {
@@ -381,7 +436,7 @@ class Package
     }
 
     /**
-     * @return PalletInfo
+     * @return IPalletInfo
      */
     public function getPalletInfo()
     {
@@ -389,20 +444,13 @@ class Package
     }
 
     /**
-     * @return null|WeightedPackageInfo
+     * @return null|IWeightedPackageInfo
      */
     public function getWeightedPackageInfo()
     {
         return $this->weightedPackageInfo;
     }
 
-    /**
-     * @return int
-     */
-    public function getSeriesNumberId()
-    {
-        return $this->seriesNumberId;
-    }
 
     /**
      * @return int
