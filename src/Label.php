@@ -15,5 +15,4 @@ namespace Salamek\PplMyApi;
  */
 class Label extends PdfLabel
 {
-
 }
