@@ -82,10 +82,10 @@ class PdfLabel implements ILabel
 
     /**
      * @param \TCPDF $pdf
-     * @param Package $package
+     * @param IPackage $package
      * @return \TCPDF
      */
-    public static function generateLabelFull(\TCPDF $pdf, Package $package)
+    public static function generateLabelFull(\TCPDF $pdf, IPackage $package)
     {
         $contact = static::parcelContact();
 
@@ -200,12 +200,12 @@ class PdfLabel implements ILabel
 
     /**
      * @param \TCPDF $pdf
-     * @param Package $package
+     * @param IPackage $package
      * @param int $position
      * @return \TCPDF
      * @throws \Exception
      */
-    public static function generateLabelQuarter(\TCPDF $pdf, Package $package, $position = LabelPosition::TOP_LEFT)
+    public static function generateLabelQuarter(\TCPDF $pdf, IPackage $package, $position = LabelPosition::TOP_LEFT)
     {
         if (!in_array($position, [1, 2, 3, 4])) {
             throw new \Exception('Unknow position');
