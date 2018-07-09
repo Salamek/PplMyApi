@@ -10,6 +10,10 @@ use Salamek\PplMyApi\Enum\LabelDecomposition;
 use Salamek\PplMyApi\Exception\OfflineException;
 use Salamek\PplMyApi\Exception\SecurityException;
 use Salamek\PplMyApi\Exception\WrongDataException;
+use Salamek\PplMyApi\Model\EmptySender;
+use Salamek\PplMyApi\Model\IOrder;
+use Salamek\PplMyApi\Model\IPackage;
+use Salamek\PplMyApi\Model\IPickUpOrder;
 use Salamek\PplMyApi\Model\Order;
 use Salamek\PplMyApi\Model\Package;
 use Salamek\PplMyApi\Model\PickUpOrder;
@@ -18,9 +22,8 @@ use Salamek\PplMyApi\Model\PickUpOrder;
  * Class Client
  * @package Salamek
  * ######## BUGS ###########
- * 1) SSL IS NOT VALID
- * 2) API SHOULD GENERATE ID
- * 3) API SHOULD GENERATE LABELS
+ * 1) API SHOULD GENERATE ID
+ * 2) API SHOULD GENERATE LABELS
  *
  * ######### BUGS IN DOC #######
  * isHealtly:
@@ -102,11 +105,12 @@ class Api
      * @param null|string $username
      * @param null|string $password
      * @param null|integer $customerId
+     * @param null|string
      * @throws \Exception
      * @throws OfflineException
      * @throws SecurityException
      */
-    public function __construct($username = null, $password = null, $customerId = null)
+    public function __construct($username = null, $password = null, $customerId = null, $storage = null)
     {
         if (mb_strlen($username) > 32) {
             throw new SecurityException('$username is longer than 32 characters');
@@ -120,8 +124,11 @@ class Api
         $this->password = $password;
         $this->customerId = $customerId;
 
-        $this->securedStorage = sys_get_temp_dir() . '/PplApi';
-
+        if ($storage === null) {
+            $this->securedStorage = sys_get_temp_dir() . '/' . __CLASS__;
+        } else {
+            $this->securedStorage = $storage . '/Api';
+        }
         try {
             $this->soap = new \SoapClient($this->wsdl);
         } catch (\Exception $e) {
@@ -191,7 +198,9 @@ class Api
             ]
         ]);
 
-        return $result->GetParcelShopsResult->ResultData->MyApiParcelShop;
+        return isset($result->GetParcelShopsResult->ResultData->MyApiParcelShop)
+            ? $result->GetParcelShopsResult->ResultData->MyApiParcelShop
+            : [];
     }
 
     /**
@@ -219,7 +228,9 @@ class Api
             ]
         ]);
 
-        return $result->GetCitiesRoutingResult->ResultData->MyApiCityRouting;
+        return isset($result->GetCitiesRoutingResult->ResultData->MyApiCityRouting)
+            ? $result->GetCitiesRoutingResult->ResultData->MyApiCityRouting
+            : [];
     }
 
     /**
@@ -249,7 +260,9 @@ class Api
             ]
         ]);
 
-        return $result->GetPackagesResult->ResultData->MyApiPackageOut;
+        return isset($result->GetPackagesResult->ResultData->MyApiPackageOut)
+            ? $result->GetPackagesResult->ResultData->MyApiPackageOut
+            : [];
     }
 
     /**
@@ -263,8 +276,8 @@ class Api
 
         /** @var Order $order */
         foreach ($orders AS $order) {
-            if (!$order instanceof Order) {
-                throw new \Exception('$orders must contain only instances of Order class');
+            if (!$order instanceof IOrder) {
+                throw new \Exception('$orders must contain only instances of IOrder class');
             }
 
             $ordersProcessed[] = [
@@ -324,15 +337,14 @@ class Api
     {
         $packagesProcessed = [];
 
-        if (empty($packages))
-        {
+        if (empty($packages)) {
             throw new \Exception('$packages cannot be empty');
         }
 
         /** @var Order $order */
         foreach ($packages AS $package) {
-            if (!$package instanceof Package) {
-                throw new \Exception('$packages must contain only instances of Package class');
+            if (!$package instanceof IPackage) {
+                throw new \Exception('$packages must contain only instances of IPackage class');
             }
 
             $packagesExtNums = [];
@@ -351,13 +363,15 @@ class Api
             }
 
 
-            $flags = [];
+            $flagList = [];
             foreach ($package->getFlags() AS $flag) {
-                $flags[]['MyApiFlag'] = [
+                $flagList[] = [
                     'Code' => $flag->getCode(),
                     'Value' => $flag->isValue()
                 ];
             }
+
+            $flags = empty($flagList) ? false : ['MyApiFlag' => $flagList];
 
             $palletInfo = null;
             if ($package->getPalletInfo()) {
@@ -385,18 +399,31 @@ class Api
 
             $weightedPackageInfo = null;
             if ($package->getWeightedPackageInfo()) {
-                $routes = [];
+                $routeList = [];
                 foreach ($package->getWeightedPackageInfo()->getRoutes() AS $route) {
-                    $routes[]['Route'] = [
+                    $routeList[] = [
                         'RouteType' => $route->getRouteType(),
                         'RouteCode' => $route->getRouteCode()
                     ];
                 }
 
+                $routes = ['Route' => $routeList];
+
                 $weightedPackageInfo = [];
                 $weightedPackageInfo['Weight'] = $package->getWeightedPackageInfo()->getWeight();
                 $weightedPackageInfo['Routes'] = $routes;
             }
+
+            $specialDelivery = $package->getSpecialDelivery();
+            $specDelivery = $specialDelivery ? [
+                'ParcelShopCode' => $specialDelivery->getParcelShopCode(),
+                'SpecDelivDate' => $specialDelivery->getDeliveryDate() ? $specialDelivery->getDeliveryDate()->format('Y-m-d') : null,
+                'SpecDelivTimeFrom' => $specialDelivery->getDeliveryTimeFrom() ? $specialDelivery->getDeliveryTimeFrom()->format('H:i:s') : null,
+                'SpecDelivTimeTo' => $specialDelivery->getDeliveryTimeTo() ? $specialDelivery->getDeliveryTimeTo()->format('H:i:s') : null,
+                'SpecTakeDate' => $specialDelivery->getTakeDate() ? $specialDelivery->getTakeDate()->format('Y-m-d') : null,
+                'SpecTakeTimeFrom' => $specialDelivery->getTakeTimeFrom() ? $specialDelivery->getTakeTimeFrom()->format('H:i:s') : null,
+                'SpecTakeTimeTo' => $specialDelivery->getTakeTimeTo() ? $specialDelivery->getTakeTimeTo()->format('H:i:s') : null
+            ] : null;
 
             $packagesProcessed[] = [
                 'PackNumber' => $package->getPackageNumber(),
@@ -404,7 +431,7 @@ class Api
                 'Weight' => $package->getWeight(),
                 'Note' => $package->getNote(),
                 'DepoCode' => $package->getDepoCode(),
-                'Sender' => [
+                'Sender' => ($package->getSender() ? [
                     'City' => $package->getSender()->getCity(),
                     'Contact' => $package->getSender()->getContact(),
                     'Country' => $package->getSender()->getCountry(),
@@ -414,7 +441,7 @@ class Api
                     'Phone' => $package->getSender()->getPhone(),
                     'Street' => $package->getSender()->getStreet(),
                     'ZipCode' => $package->getSender()->getZipCode()
-                ],
+                ] : null),
                 'Recipient' => [
                     'City' => $package->getRecipient()->getCity(),
                     'Contact' => $package->getRecipient()->getContact(),
@@ -426,15 +453,7 @@ class Api
                     'Street' => $package->getRecipient()->getStreet(),
                     'ZipCode' => $package->getRecipient()->getZipCode()
                 ],
-                'SpecDelivery' => ($package->getSpecialDelivery() ? [
-                    'ParcelShopCode' => $package->getSpecialDelivery()->getParcelShopCode(),
-                    'SpecDelivDate' => $package->getSpecialDelivery()->getDeliveryDate()->format('Y-m-d'),
-                    'SpecDelivTimeFrom' => $package->getSpecialDelivery()->getDeliveryTimeFrom()->format('H:i:s'),
-                    'SpecDelivTimeTo' => $package->getSpecialDelivery()->getDeliveryTimeTo()->format('H:i:s'),
-                    'SpecTakeDate' => $package->getSpecialDelivery()->getTakeDate()->format('Y-m-d'),
-                    'SpecTakeTimeFrom' => $package->getSpecialDelivery()->getTakeTimeFrom()->format('H:i:s'),
-                    'SpecTakeTimeTo' => $package->getSpecialDelivery()->getTakeTimeTo()->format('H:i:s')
-                ] : null),
+                'SpecDelivery' => $specDelivery,
                 'PaymentInfo' => ($package->getPaymentInfo() ? [
                     'BankAccount' => $package->getPaymentInfo()->getBankAccount(),
                     'BankCode' => $package->getPaymentInfo()->getBankCode(),
@@ -465,12 +484,9 @@ class Api
             ]
         ]);
 
-        if (isset($result->CreatePackagesResult->ResultData->ItemResult))
-        {
-            return $result->CreatePackagesResult->ResultData->ItemResult;
-        }
-
-        return [];
+        return isset($result->CreatePackagesResult->ResultData->ItemResult)
+            ? $result->CreatePackagesResult->ResultData->ItemResult
+            : [];
     }
 
     /**
@@ -483,8 +499,8 @@ class Api
         $pickupOrdersProcessed = [];
         /** @var Order $order */
         foreach ($pickupOrders AS $pickupOrder) {
-            if (!$pickupOrder instanceof PickUpOrder) {
-                throw new \Exception('$pickupOrders must contain only instances of PickUpOrder class');
+            if (!$pickupOrder instanceof IPickUpOrder) {
+                throw new \Exception('$pickupOrders must contain only instances of IPickUpOrder class');
             }
 
             $pickupOrdersProcessed[] = [
@@ -519,7 +535,9 @@ class Api
             ]
         ]);
 
-        return $result;
+        return isset($result->CreatePickupOrdersResult->ResultData->ItemResult)
+            ? $result->CreatePickupOrdersResult->ResultData->ItemResult
+            : [];
     }
 
     /**
@@ -549,19 +567,35 @@ class Api
         } catch (\Exception $e) {
             throw new SecurityException($e->getMessage());
         }
-
-
     }
 
     /**
-     * @param array $packages
-     * @param int $decomposition
-     * @return string
-     * @throws \Exception
+     * @param int $product
+     * @param int $quantity
+     * @return array
+     * @throws WrongDataException
      */
-    public function getLabels(array $packages, $decomposition = LabelDecomposition::QUARTER)
+    public function getNumberRange($product, $quantity)
     {
-        user_error("getLabels is deprecated, use Label::generateLabels instead.", E_USER_DEPRECATED);
-        return Label::generateLabels($packages, $decomposition);
+        if ($quantity <= 0) {
+            throw new WrongDataException(sprintf('Quantity must be more than %s', 0));
+        }
+
+        $result = $this->soap->GetNumberRange([
+            'Auth' => [
+                'AuthToken' => $this->getAuthToken(),
+            ],
+            'NumberRanges' => [
+                'NumberRangeRequest' => [
+                    'PackProductType' => $product,
+                    'Quantity' => $quantity
+                ]
+            ]
+        ]);
+
+        return isset($result->GetNumberRangeResult->ResultData->NumberRange)
+            ? $result->GetNumberRangeResult->ResultData->NumberRange
+            : [];
     }
+
 }

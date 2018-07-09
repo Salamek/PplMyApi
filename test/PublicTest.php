@@ -7,7 +7,8 @@
 use Salamek\PplMyApi\Enum\LabelDecomposition;
 use Salamek\PplMyApi\Model\Package;
 use Salamek\PplMyApi\Tools;
-use Salamek\PplMyApi\Label;
+use Salamek\PplMyApi\PdfLabel;
+use Salamek\PplMyApi\ZplLabel;
 
 final class PublicTest extends BaseTest
 {
@@ -38,10 +39,35 @@ final class PublicTest extends BaseTest
     /**
      * @test
      */
+    public function testPackageNumberChecksum()
+    {
+        $this->assertEquals('7', $this->package->getPackageNumberChecksum());
+    }
+
+    /**
+     * @test
+     */
     public function testGeneratePackageNumber()
     {
-        $this->package->setSeriesNumberId(114);
-        $this->assertEquals('40950000114', Tools::generatePackageNumber($this->package));
+        $packageNumberInfo = new \Salamek\PplMyApi\Model\PackageNumberInfo(
+            114,
+            \Salamek\PplMyApi\Enum\Product::PPL_PARCEL_CZ_PRIVATE,
+            \Salamek\PplMyApi\Enum\Depo::CODE_09
+        );
+        $this->assertEquals('40950000114', Tools::generatePackageNumber($packageNumberInfo));
+    }
+
+    /**
+     * @test
+     */
+    public function testParsePackageNumber()
+    {
+        $packageNumberInfo = Tools::parsePackageNumber('40950000114');
+        
+        $this->assertEquals('4', $packageNumberInfo->getProductType());
+        $this->assertEquals('000114', $packageNumberInfo->getSeriesNumberId());
+        $this->assertEquals('09', $packageNumberInfo->getDepoCode());
+        $this->assertFalse($packageNumberInfo->isCod());
     }
 
     /**
@@ -66,7 +92,7 @@ final class PublicTest extends BaseTest
      */
     public function testGeneratePdfFullSinglePackage()
     {
-        $raw = Label::generateLabels([$this->package], LabelDecomposition::FULL);
+        $raw = PdfLabel::generateLabels([$this->package], LabelDecomposition::FULL);
 
         $this->assertNotEmpty($raw);
 
@@ -82,7 +108,7 @@ final class PublicTest extends BaseTest
      */
     public function testGeneratePdfFullMultiplePackages()
     {
-        $raw = Label::generateLabels($this->packages, LabelDecomposition::FULL);
+        $raw = PdfLabel::generateLabels($this->packages, LabelDecomposition::FULL);
 
         $this->assertNotEmpty($raw);
 
@@ -105,7 +131,7 @@ final class PublicTest extends BaseTest
      */
     public function testGeneratePdfQuarterSinglePackage()
     {
-        $raw = Label::generateLabels([$this->package], LabelDecomposition::QUARTER);
+        $raw = PdfLabel::generateLabels([$this->package], LabelDecomposition::QUARTER);
 
         $this->assertNotEmpty($raw);
 
@@ -121,7 +147,7 @@ final class PublicTest extends BaseTest
      */
     public function testGeneratePdfQuarterMultiplePackages()
     {
-        $raw = Label::generateLabels($this->packages, LabelDecomposition::QUARTER);
+        $raw = PdfLabel::generateLabels($this->packages, LabelDecomposition::QUARTER);
 
         $this->assertNotEmpty($raw);
 
@@ -137,5 +163,24 @@ final class PublicTest extends BaseTest
         file_put_contents($filePath, $raw);
 
         $this->assertFileExists($filePath);
+    }
+
+    /**
+     * @test
+     */
+    public function testGenerateZplLabel()
+    {
+        $filePathExpected = __DIR__ . '/'. $this->package->getPackageNumber() . '-expected.zpl';
+
+        $zplString = ZplLabel::generateLabels([$this->package]);
+        $this->assertNotEmpty($zplString);
+
+        $filePath = __DIR__ . '/../tmp/'. $this->package->getPackageNumber() . '.zpl';
+        file_put_contents($filePath, $zplString);
+
+        $this->assertFileEquals(
+            $filePathExpected,
+            $filePath
+        );
     }
 }

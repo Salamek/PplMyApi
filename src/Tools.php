@@ -5,25 +5,22 @@
 
 namespace Salamek\PplMyApi;
 
+use Salamek\PplMyApi\Enum\Depo;
 use Salamek\PplMyApi\Enum\Product;
-use Salamek\PplMyApi\Exception\WrongDataException;
-use Salamek\PplMyApi\Model\Package;
+use Salamek\PplMyApi\Model\IPackageNumberInfo;
+use Salamek\PplMyApi\Model\PackageNumberInfo;
 
 
 class Tools
 {
     /**
-     * @param Package $package
-     * @return mixed
+     * @param IPackageNumberInfo $packageNumberInfo
+     * @return string
      * @throws \Exception
      */
-    public static function generatePackageNumber(Package $package)
+    public static function generatePackageNumber(IPackageNumberInfo $packageNumberInfo)
     {
-        if (!$package->getSeriesNumberId()) {
-            throw new WrongDataException('Package has no Series number ID!');
-        }
-
-        switch ($package->getPackageProductType()) {
+        switch ($packageNumberInfo->getProductType()) {
             case Product::PRIVATE_PALETTE:
             case Product::PRIVATE_PALETTE_COD:
                 $packageIdentifierPackageProductType = 5;
@@ -55,16 +52,15 @@ class Tools
                 break;
 
             default:
-                throw new \Exception(sprintf('Unknown packageProductType "%s"', $package->getPackageProductType()));
+                throw new \Exception(sprintf('Unknown packageProductType "%s"', $packageNumberInfo->getProductType()));
                 break;
         }
 
         $list = [
             $packageIdentifierPackageProductType,
-            $package->getDepoCode(),
-            ($package->isCashOnDelivery() ? '9' : '5'),
-            0,
-            str_pad($package->getSeriesNumberId(), 6, '0', STR_PAD_LEFT)
+            $packageNumberInfo->getDepoCode(),
+            ($packageNumberInfo->isCod() ? '9' : '5'),
+            str_pad($packageNumberInfo->getSeriesNumberId(), 7, '0', STR_PAD_LEFT)
         ];
 
         $identifier = implode('', $list);
@@ -74,5 +70,22 @@ class Tools
         }
 
         return $identifier;
+    }
+
+    /**
+     * @param $packageNumber
+     * @return null|PackageNumberInfo
+     */
+    public static function parsePackageNumber($packageNumber)
+    {
+        $packageProductTypes = [5, 4, 9, 8, 2, 3];
+        $regex = '/^('.implode('|', $packageProductTypes).')('.implode('|', Depo::$list).')(\d{1})(\d{7})$/i';
+        $matches = [];
+        if (preg_match($regex, $packageNumber, $matches))
+        {
+            return new PackageNumberInfo($matches[4], $matches[1], $matches[2], $matches[3] == '9');
+        }
+
+        return null;
     }
 }

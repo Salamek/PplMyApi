@@ -7,12 +7,13 @@ namespace Salamek\PplMyApi\Model;
 
 use Salamek\PplMyApi\Enum\Country;
 use Salamek\PplMyApi\Exception\WrongDataException;
+use Salamek\PplMyApi\Validators\MaxLengthValidator;
 
 /**
  * Class Sender
  * @package Salamek\MyApi
  */
-class Sender
+class Sender implements ISender
 {
     /** @var string */
     protected $city;
@@ -67,35 +68,28 @@ class Sender
     }
 
     /**
-     * @param $city string
-     * @throws WrongDataException
+     * @inheritdoc
      */
     public function setCity($city)
     {
-        if (mb_strlen($city) > 50) {
-            throw new WrongDataException('$city is longer than 50 characters');
-        }
+        MaxLengthValidator::validate($city, 50);
         $this->city = $city;
     }
 
     /**
-     * @param $contact string
-     * @throws WrongDataException
+     * @inheritdoc
      */
     public function setContact($contact)
     {
         if (!is_null($contact)) {
-            if (mb_strlen($contact) > 30) {
-                throw new WrongDataException('$contact is longer than 30 characters');
-            }
+            MaxLengthValidator::validate($contact, 30);
         }
 
         $this->contact = $contact;
     }
 
     /**
-     * @param $country string
-     * @throws WrongDataException
+     * @inheritdoc
      */
     public function setCountry($country)
     {
@@ -106,15 +100,12 @@ class Sender
     }
 
     /**
-     * @param $email string
-     * @throws WrongDataException
+     * @inheritdoc
      */
     public function setEmail($email)
     {
         if (!is_null($email)) {
-            if (mb_strlen($email) > 100) {
-                throw new WrongDataException('$email is longer than 100 characters');
-            }
+            MaxLengthValidator::validate($email, 100);
 
             if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
                 throw new WrongDataException('$email have invalid value');
@@ -126,68 +117,53 @@ class Sender
     }
 
     /**
-     * @param $name string
-     * @throws WrongDataException
+     * @inheritdoc
      */
     public function setName($name)
     {
-        if (mb_strlen($name) > 250) {
-            throw new WrongDataException('$name is longer than 250 characters');
-        }
+        MaxLengthValidator::validate($name, 250);
         $this->name = $name;
     }
 
     /**
-     * @param $name2 string
-     * @throws WrongDataException
+     * @inheritdoc
      */
     public function setName2($name2)
     {
         if (!is_null($name2)) {
-            if (mb_strlen($name2) > 250) {
-                throw new WrongDataException('$name2 is longer than 250 characters');
-            }
+            MaxLengthValidator::validate($name2, 250);
         }
 
         $this->name2 = $name2;
     }
 
     /**
-     * @param $phone string
-     * @throws WrongDataException
+     * @inheritdoc
      */
     public function setPhone($phone)
     {
         if (!is_null($phone)) {
-            if (mb_strlen($phone) > 30) {
-                throw new WrongDataException('$phone is longer than 30 characters');
-            }
+            MaxLengthValidator::validate($phone, 30);
         }
 
         $this->phone = $phone;
     }
 
     /**
-     * @param $street string
-     * @throws WrongDataException
+     * @inheritdoc
      */
     public function setStreet($street)
     {
-        if (mb_strlen($street) > 30) {
-            throw new WrongDataException('$street is longer than 30 characters');
-        }
+        MaxLengthValidator::validate($street, 30);
         $this->street = $street;
     }
 
     /**
-     * @param $zipCode string
-     * @throws WrongDataException
+     * @inheritdoc
      */
     public function setZipCode($zipCode)
     {
-        if (mb_strlen($zipCode) > 10) {
-            throw new WrongDataException('$zipCode is longer than 10 characters');
-        }
+        MaxLengthValidator::validate($zipCode, 10);
         $this->zipCode = $zipCode;
     }
 

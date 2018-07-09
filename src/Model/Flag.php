@@ -9,7 +9,7 @@ namespace Salamek\PplMyApi\Model;
 use Salamek\PplMyApi\Enum\Flag as FlagEnum;
 use Salamek\PplMyApi\Exception\WrongDataException;
 
-class Flag
+class Flag implements IFlag
 {
     /** @var string */
     public $code;

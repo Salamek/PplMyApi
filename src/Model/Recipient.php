@@ -7,12 +7,13 @@ namespace Salamek\PplMyApi\Model;
 
 use Salamek\PplMyApi\Enum\Country;
 use Salamek\PplMyApi\Exception\WrongDataException;
+use Salamek\PplMyApi\Validators\MaxLengthValidator;
 
 /**
  * Class Recipient
  * @package Salamek\MyApi
  */
-class Recipient
+class Recipient implements IRecipient
 {
     /** @var string */
     protected $city;
@@ -67,35 +68,28 @@ class Recipient
     }
 
     /**
-     * @param $city string
-     * @throws WrongDataException
+     * @inheritdoc
      */
     public function setCity($city)
     {
-        if (mb_strlen($city) > 50) {
-            throw new WrongDataException('$city is longer than 50 characters');
-        }
+        MaxLengthValidator::validate($city, 50);
         $this->city = $city;
     }
 
     /**
-     * @param $contact string
-     * @throws WrongDataException
+     * @inheritdoc
      */
     public function setContact($contact)
     {
         if (!is_null($contact)) {
-            if (mb_strlen($contact) > 300) {
-                throw new WrongDataException('$contact is longer than 300 characters');
-            }
+            MaxLengthValidator::validate($contact, 300);
         }
 
         $this->contact = $contact;
     }
 
     /**
-     * @param $country string
-     * @throws WrongDataException
+     * @inheritdoc
      */
     public function setCountry($country)
     {
@@ -106,15 +100,12 @@ class Recipient
     }
 
     /**
-     * @param $email string
-     * @throws WrongDataException
+     * @inheritdoc
      */
     public function setEmail($email)
     {
         if (!is_null($email)) {
-            if (mb_strlen($email) > 50) {
-                throw new WrongDataException('$email is longer than 50 characters');
-            }
+            MaxLengthValidator::validate($email, 50);
 
             if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
                 throw new WrongDataException('$email have invalid value');
@@ -125,72 +116,57 @@ class Recipient
     }
 
     /**
-     * @param $name string
-     * @throws WrongDataException
+     * @inheritdoc
      */
     public function setName($name)
     {
-        if (mb_strlen($name) > 50) {
-            throw new WrongDataException('$name is longer than 50 characters');
-        }
+        MaxLengthValidator::validate($name, 50);
         $this->name = $name;
     }
 
     /**
-     * @param $name2 string
-     * @throws WrongDataException
+     * @inheritdoc
      */
     public function setName2($name2)
     {
         if (!is_null($name2)) {
-            if (mb_strlen($name2) > 50) {
-                throw new WrongDataException('$name2 is longer than 50 characters');
-            }
+            MaxLengthValidator::validate($name2, 50);
         }
         $this->name2 = $name2;
     }
 
     /**
-     * @param $phone string
-     * @throws WrongDataException
+     * @inheritdoc
      */
     public function setPhone($phone)
     {
         if (!is_null($phone)) {
-            if (mb_strlen($phone) > 30) {
-                throw new WrongDataException('$phone is longer than 30 characters');
-            }
+            MaxLengthValidator::validate($phone, 30);
         }
 
         $this->phone = $phone;
     }
 
     /**
-     * @param $street string
-     * @throws WrongDataException
+     * @inheritdoc
      */
     public function setStreet($street)
     {
-        if (mb_strlen($street) > 50) {
-            throw new WrongDataException('$street is longer than 50 characters');
-        }
+        MaxLengthValidator::validate($street, 50);
         $this->street = $street;
     }
 
     /**
-     * @param $zipCode string
-     * @throws WrongDataException
+     * @inheritdoc
      */
     public function setZipCode($zipCode)
     {
-        if (mb_strlen($zipCode) > 10) {
-            throw new WrongDataException('$zipCode is longer than 10 characters');
-        }
+        MaxLengthValidator::validate($zipCode, 10);
         $this->zipCode = $zipCode;
     }
 
     /**
-     * @return string
+     * @inheritdoc
      */
     public function getCity()
     {
@@ -198,7 +174,7 @@ class Recipient
     }
 
     /**
-     * @return null|string
+     * @inheritdoc
      */
     public function getContact()
     {
@@ -206,7 +182,7 @@ class Recipient
     }
 
     /**
-     * @return null|string
+     * @inheritdoc
      */
     public function getCountry()
     {
@@ -214,7 +190,7 @@ class Recipient
     }
 
     /**
-     * @return null|string
+     * @inheritdoc
      */
     public function getEmail()
     {
@@ -222,7 +198,7 @@ class Recipient
     }
 
     /**
-     * @return string
+     * @inheritdoc
      */
     public function getName()
     {
@@ -230,7 +206,7 @@ class Recipient
     }
 
     /**
-     * @return null|string
+     * @inheritdoc
      */
     public function getName2()
     {
@@ -238,7 +214,7 @@ class Recipient
     }
 
     /**
-     * @return null|string
+     * @inheritdoc
      */
     public function getPhone()
     {
@@ -246,7 +222,7 @@ class Recipient
     }
 
     /**
-     * @return string
+     * @inheritdoc
      */
     public function getStreet()
     {
@@ -254,7 +230,7 @@ class Recipient
     }
 
     /**
-     * @return string
+     * @inheritdoc
      */
     public function getZipCode()
     {

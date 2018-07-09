@@ -7,8 +7,9 @@ namespace Salamek\PplMyApi\Model;
 
 
 use Salamek\PplMyApi\Exception\WrongDataException;
+use Salamek\PplMyApi\Validators\MaxLengthValidator;
 
-class PickUpOrder
+class PickUpOrder implements IPickUpOrder
 {
     /** @var string */
     protected $orderReferenceId;
@@ -34,7 +35,7 @@ class PickUpOrder
     /** @var null|\DateTimeInterface */
     protected $sendTimeTo = null;
 
-    /** @var Sender */
+    /** @var ISender */
     protected $sender;
 
     /**
@@ -47,9 +48,9 @@ class PickUpOrder
      * @param \DateTimeInterface $sendDate
      * @param \DateTimeInterface|null $sendTimeFrom
      * @param \DateTimeInterface|null $sendTimeTo
-     * @param Sender $sender
+     * @param ISender $sender
      */
-    public function __construct($orderReferenceId, $customerReference, $countPackages, $note, $email, \DateTimeInterface $sendDate, $sendTimeFrom, $sendTimeTo, Sender $sender)
+    public function __construct($orderReferenceId, $customerReference, $countPackages, $note, $email, \DateTimeInterface $sendDate, \DateTimeInterface $sendTimeFrom, \DateTimeInterface $sendTimeTo, ISender $sender)
     {
         $this->setOrderReferenceId($orderReferenceId);
         $this->setCustomerReference($customerReference);
@@ -69,10 +70,7 @@ class PickUpOrder
      */
     public function setOrderReferenceId($orderReferenceId)
     {
-        if (mb_strlen($orderReferenceId) > 100) {
-            throw new WrongDataException('$orderReferenceId is longer than 100 characters');
-        }
-
+        MaxLengthValidator::validate($orderReferenceId, 100);
         $this->orderReferenceId = $orderReferenceId;
     }
 
@@ -82,10 +80,7 @@ class PickUpOrder
      */
     public function setCustomerReference($customerReference)
     {
-        if (mb_strlen($customerReference) > 40) {
-            throw new WrongDataException('$customerReference is longer than 40 characters');
-        }
-
+        MaxLengthValidator::validate($customerReference, 40);
         $this->customerReference = $customerReference;
     }
 
@@ -103,10 +98,7 @@ class PickUpOrder
      */
     public function setNote($note)
     {
-        if (mb_strlen($note) > 300) {
-            throw new WrongDataException('$note is longer than 300 characters');
-        }
-
+        MaxLengthValidator::validate($note, 300);
         $this->note = $note;
     }
 
@@ -116,9 +108,7 @@ class PickUpOrder
      */
     public function setEmail($email)
     {
-        if (mb_strlen($email) > 100) {
-            throw new WrongDataException('$email is longer than 100 characters');
-        }
+        MaxLengthValidator::validate($email, 100);
 
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             throw new WrongDataException('$email have invalid value');
@@ -152,9 +142,9 @@ class PickUpOrder
     }
 
     /**
-     * @param Sender $sender
+     * @param ISender $sender
      */
-    public function setSender(Sender $sender)
+    public function setSender(ISender $sender)
     {
         $this->sender = $sender;
     }
@@ -224,7 +214,7 @@ class PickUpOrder
     }
 
     /**
-     * @return Sender
+     * @return ISender
      */
     public function getSender()
     {

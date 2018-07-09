@@ -8,8 +8,9 @@ namespace Salamek\PplMyApi\Model;
 
 use Salamek\PplMyApi\Enum\Product;
 use Salamek\PplMyApi\Exception\WrongDataException;
+use Salamek\PplMyApi\Validators\MaxLengthValidator;
 
-class Order
+class Order implements IOrder
 {
     /** @var integer */
     protected $countPackages;
@@ -38,10 +39,10 @@ class Order
     /** @var null|\DateTimeInterface */
     protected $sendTimeTo = null;
 
-    /** @var Sender */
+    /** @var ISender */
     protected $sender;
 
-    /** @var Recipient */
+    /** @var IRecipient */
     protected $recipient;
 
     /**
@@ -50,8 +51,8 @@ class Order
      * @param $orderReferenceId
      * @param $packProductType
      * @param \DateTimeInterface $sendDate
-     * @param Sender $sender
-     * @param Recipient $recipient
+     * @param ISender $sender
+     * @param IRecipient $recipient
      * @param null $customerReference
      * @param null $email
      * @param null $note
@@ -63,8 +64,8 @@ class Order
         $orderReferenceId,
         $packProductType,
         \DateTimeInterface $sendDate,
-        Sender $sender,
-        Recipient $recipient,
+        ISender $sender,
+        IRecipient $recipient,
         $customerReference = null,
         $email = null,
         $note = null,
@@ -103,10 +104,7 @@ class Order
      */
     public function setCustomerReference($customerReference = null)
     {
-        if (mb_strlen($customerReference) > 40) {
-            throw new WrongDataException('$customerReference is longer than 40 characters');
-        }
-
+    	MaxLengthValidator::validate($customerReference, 40);
         $this->customerReference = $customerReference;
     }
 
@@ -116,9 +114,7 @@ class Order
      */
     public function setEmail($email = null)
     {
-        if (mb_strlen($email) > 100) {
-            throw new WrongDataException('$email is longer than 100 characters');
-        }
+        MaxLengthValidator::validate($email, 100);
 
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             throw new WrongDataException('$email have invalid value');
@@ -133,10 +129,7 @@ class Order
      */
     public function setNote($note = null)
     {
-        if (mb_strlen($note) > 100) {
-            throw new WrongDataException('$note is longer than 100 characters');
-        }
-
+    	MaxLengthValidator::validate($note, 300);
         $this->note = $note;
     }
 
@@ -146,10 +139,7 @@ class Order
      */
     public function setOrderReferenceId($orderReferenceId)
     {
-        if (mb_strlen($orderReferenceId) > 100) {
-            throw new WrongDataException('$orderReferenceId is longer than 100 characters');
-        }
-
+        MaxLengthValidator::validate($orderReferenceId, 100);
         $this->orderReferenceId = $orderReferenceId;
     }
 
@@ -190,17 +180,17 @@ class Order
     }
 
     /**
-     * @param Sender $sender
+     * @param ISender $sender
      */
-    public function setSender(Sender $sender)
+    public function setSender(ISender $sender)
     {
         $this->sender = $sender;
     }
 
     /**
-     * @param Recipient $recipient
+     * @param IRecipient $recipient
      */
-    public function setRecipient(Recipient $recipient)
+    public function setRecipient(IRecipient $recipient)
     {
         $this->recipient = $recipient;
     }
@@ -278,7 +268,7 @@ class Order
     }
 
     /**
-     * @return Sender
+     * @return ISender
      */
     public function getSender()
     {
@@ -286,7 +276,7 @@ class Order
     }
 
     /**
-     * @return Recipient
+     * @return IRecipient
      */
     public function getRecipient()
     {
