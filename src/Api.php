@@ -17,7 +17,6 @@ use Salamek\PplMyApi\Model\IPickUpOrder;
 use Salamek\PplMyApi\Model\Order;
 use Salamek\PplMyApi\Model\Package;
 use Salamek\PplMyApi\Model\PickUpOrder;
-use Salamek\PplMyApi\Enum\Product;
 
 /**
  * Class Client
