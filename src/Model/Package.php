@@ -144,19 +144,9 @@ class Package implements IPackage
             }
         }
 
-        //!FIXME compabilty when someone is passing only seriesNumberId
-        $packageNumberInfo = Tools::parsePackageNumber($packageNumber);
-        if (is_null($packageNumberInfo) && is_numeric($packageNumber) && !$forceOwnPackageNumber)
-        {
-            $packageNumberInfo = new PackageNumberInfo($packageNumber, $packageProductType, $depoCode);
-            $this->setPackageNumber(Tools::generatePackageNumber($packageNumberInfo));
-            user_error('Passing only seriesNumberId is deprecated, please pass packageNumber directly, you can use Tools::generatePackageNumber to generate it from seriesNumberId', E_USER_DEPRECATED);
-        }
-        else
-        {
-            $this->setPackageNumber($packageNumber);
-        }
+        $packageNumberInfo = new PackageNumberInfo(null, $packageProductType, $depoCode, $this->isCashOnDelivery($packageProductType));
 
+        $this->setPackageNumber($packageNumber);
         $this->setPackageProductType($packageProductType);
         $this->setWeight($weight);
         $this->setNote($note);
