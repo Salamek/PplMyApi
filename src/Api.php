@@ -578,10 +578,6 @@ class Api
      */
     public function getNumberRange($product, $quantity)
     {
-        if (!in_array($product, Product::$list)) {
-            throw new WrongDataException(sprintf('Product Code %s is not supported, use one of %s', $product, implode(', ', Product::$list)));
-        }
-
         if ($quantity <= 0) {
             throw new WrongDataException(sprintf('Quantity must be more than %s', 0));
         }
