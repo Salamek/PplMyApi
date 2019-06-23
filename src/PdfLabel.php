@@ -19,13 +19,18 @@ class PdfLabel implements ILabel
     /**
      * @param IPackage[] $packages
      * @param int $decomposition
+     * @param int $quarterPosition
      * @return string
      * @throws \Exception
      */
-    public static function generateLabels(array $packages, $decomposition = LabelDecomposition::FULL)
+    public static function generateLabels(array $packages, $decomposition = LabelDecomposition::FULL, $quarterPosition = LabelPosition::TOP_LEFT)
     {
         if (!in_array($decomposition, LabelDecomposition::$list)) {
             throw new WrongDataException(sprintf('unknown $decomposition only %s are allowed', implode(', ', LabelDecomposition::$list)));
+        }
+
+        if (!in_array($quarterPosition, LabelPosition::$list)) {
+            throw new WrongDataException(sprintf('unknown $quarterPosition only %s are allowed', implode(', ', LabelPosition::$list)));
         }
 
         $packageNumbers = [];
@@ -46,8 +51,6 @@ class PdfLabel implements ILabel
         $pdf->setPrintHeader(false);
         $pdf->setPrintFooter(false);
 
-
-        $quarterPosition = LabelPosition::TOP_LEFT;
         /** @var Package $package */
         foreach ($packages AS $package) {
             switch ($decomposition) {
@@ -152,15 +155,19 @@ class PdfLabel implements ILabel
         $pdf->Text($x, $y + 63, sprintf('Tel.: %s', $package->getRecipient()->getPhone()));
 
         $pdf->MultiCell(173, 80, '', ['LTRB' => ['width' => 1]], 'L', 0, 0, 112, 21, true, 0, false, true, 0);
-        $pdf->SetFont($pdf->getFontFamily(), 'B', 60);
-        $pdf->SetTextColor(255, 255, 255);
-        $pdf->SetFillColor(0, 0, 0);
-        $pdf->MultiCell(60, 15, (in_array(PackageService::EVENING_DELIVERY, \Salamek\PplMyApi\Model\PackageService::packageServicesToArray($package)) ? 'Večer' : 'Den'), ['LTRB' => ['width' => 1]], 'C', true, 0, 224, 73, true, 0,
-            false, true, 0);
-        $pdf->SetTextColor(0, 0, 0);
-        $pdf->SetFillColor(255, 255, 255);
+
+        // Evening / Day delivery label should be added only for private packages
+        if (in_array($package->getPackageProductType(), Product::$privateProducts)) {
+            $pdf->SetFont($pdf->getFontFamily(), 'B', 60);
+            $pdf->SetTextColor(255, 255, 255);
+            $pdf->SetFillColor(0, 0, 0);
+            $pdf->MultiCell(60, 15, (in_array(PackageService::EVENING_DELIVERY, \Salamek\PplMyApi\Model\PackageService::packageServicesToArray($package)) ? 'Večer' : 'Den'), ['LTRB' => ['width' => 1]], 'C', true, 0, 224, 73, true, 0,
+                false, true, 0);
+        }
 
         //Sender
+        $pdf->SetTextColor(0, 0, 0);
+        $pdf->SetFillColor(255, 255, 255);
         $pdf->SetFont($pdf->getFontFamily(), '', 25);
         $pdf->Text(112, 105, 'Odesílatel:');
 
@@ -284,15 +291,19 @@ class PdfLabel implements ILabel
         $pdf->Text($x, $y + 33, sprintf('Tel.: %s', $package->getRecipient()->getPhone()));
 
         $pdf->MultiCell(85, 40, '', ['LTRB' => ['width' => 0.7]], 'L', 0, 0, 51 + $xPositionOffset, 9 + $yPositionOffset, true, 0, false, true, 0);
-        $pdf->SetFont($pdf->getFontFamily(), 'B', 30);
-        $pdf->SetTextColor(255, 255, 255);
-        $pdf->SetFillColor(0, 0, 0);
-        $pdf->MultiCell(30, 15, (in_array(PackageService::EVENING_DELIVERY, \Salamek\PplMyApi\Model\PackageService::packageServicesToArray($package)) ? 'Večer' : 'Den'), ['LTRB' => ['width' => 0.7]], 'C', true, 0,
-            106 + $xPositionOffset, 34 + $yPositionOffset, true, 0, false, true, 0);
-        $pdf->SetTextColor(0, 0, 0);
-        $pdf->SetFillColor(255, 255, 255);
+
+        // Evening / Day delivery label should be added only for private packages
+        if (in_array($package->getPackageProductType(), Product::$privateProducts)) {
+            $pdf->SetFont($pdf->getFontFamily(), 'B', 30);
+            $pdf->SetTextColor(255, 255, 255);
+            $pdf->SetFillColor(0, 0, 0);
+            $pdf->MultiCell(30, 15, (in_array(PackageService::EVENING_DELIVERY, \Salamek\PplMyApi\Model\PackageService::packageServicesToArray($package)) ? 'Večer' : 'Den'), ['LTRB' => ['width' => 0.7]], 'C', true, 0,
+                106 + $xPositionOffset, 34 + $yPositionOffset, true, 0, false, true, 0);
+        }
 
         //Sender
+        $pdf->SetTextColor(0, 0, 0);
+        $pdf->SetFillColor(255, 255, 255);
         $pdf->SetFont($pdf->getFontFamily(), '', 12);
         $pdf->Text(50 + $xPositionOffset, 51 + $yPositionOffset, 'Odesílatel:');
 

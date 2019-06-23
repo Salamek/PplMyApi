@@ -62,4 +62,11 @@ class Product
         self::EXPORT_PACKAGE,
         self::EXPORT_PACKAGE_COD
     ];
+
+    public static $privateProducts = [
+        self::PPL_PARCEL_CZ_PRIVATE,
+        self::PPL_PARCEL_CZ_PRIVATE_COD,
+        self::PPL_PARCEL_CZ_AFTERNOON_PACKAGE,
+        self::PPL_PARCEL_CZ_AFTERNOON_PACKAGE_COD
+    ];
 }
