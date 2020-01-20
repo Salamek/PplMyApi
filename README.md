@@ -35,7 +35,13 @@ You must request MyAPI credentials from PPL IT, it is not same as klient.ppl.cz 
 Check if PPL MyApi is in working shape
 
 ```php
-$pplMyApi = new Salamek\PplMyApi\Api();
+<?php
+
+require __DIR__.'/vendor/autoload.php';
+
+use Salamek\PplMyApi\Api;
+
+$pplMyApi = new Api();
 if ($pplMyApi->isHealthy())
 {
     echo 'Healthy :)' . PHP_EOL;
@@ -51,7 +57,14 @@ else
 Returns version of PPL MyApi
 
 ```php
-$pplMyApi = new Salamek\PplMyApi\Api();
+<?php
+
+require __DIR__.'/vendor/autoload.php';
+
+use Salamek\PplMyApi\Api;
+
+
+$pplMyApi = new Api();
 echo $pplMyApi->getVersion() . PHP_EOL;
 ```
 
@@ -60,7 +73,15 @@ echo $pplMyApi->getVersion() . PHP_EOL;
 Returns array of parcel shops filtered by `$code` and `$countryCode`
 
 ```php
-$pplMyApi = new Salamek\PplMyApi\Api();
+<?php
+
+require __DIR__.'/vendor/autoload.php';
+
+use Salamek\PplMyApi\Api;
+use Salamek\PplMyApi\Enum\Country;
+
+
+$pplMyApi = new Api();
 $result = $pplMyApi->getParcelShops($code = null, $countryCode = Country::CZ);
 print_r($result);
 ```
@@ -70,7 +91,13 @@ print_r($result);
 Returns array of sprint routes
 
 ```php
-$pplMyApi = new Salamek\PplMyApi\Api();
+<?php
+
+require __DIR__.'/vendor/autoload.php';
+
+use Salamek\PplMyApi\Api;
+
+$pplMyApi = new Api();
 $result = $pplMyApi->getSprintRoutes();
 print_r($result);
 ```
@@ -80,14 +107,27 @@ print_r($result);
 Creates package/s on PPL MyApi (sends Package object to PPL)
 
 ```php
+<?php
+
+require __DIR__.'/vendor/autoload.php';
+
+use Salamek\PplMyApi\Api;
+use Salamek\PplMyApi\Tools;
+use Salamek\PplMyApi\Model\Package;
+use Salamek\PplMyApi\Model\PackageNumberInfo;
+use Salamek\PplMyApi\Model\Recipient;
+use Salamek\PplMyApi\Enum\Country;
+use Salamek\PplMyApi\Enum\Depo;
+use Salamek\PplMyApi\Enum\Product;
+
 
 $username = 'my_api_username';
 $password = 'my_api_password';
 $customerId = 'my_api_customer_id';
 
-$pplMyApi = new Salamek\PplMyApi\Api($username, $password, $customerId);
+$pplMyApi = new Api($username, $password, $customerId);
 
-$recipient = new Salamek\PplMyApi\Model\Recipient('Olomouc', 'Adam Schubert', 'My Address', '77900', 'adam@example.com', '+420123456789', 'http://www.salamek.cz', Country::CZ, 'My Compamy a.s.');
+$recipient = new Recipient('Olomouc', 'Adam Schubert', 'My Address', '77900', 'adam@example.com', '+420123456789', 'http://www.salamek.cz', Country::CZ, 'My Compamy a.s.');
 
 $packageNumber = '40950000114';
 /* Or you can use Tools::generatePackageNumber to get this number only from $packageSeriesNumberId like 114
@@ -96,7 +136,7 @@ $packageNumberInfo = new PackageNumberInfo($packageSeriesNumberId, Product::PPL_
 $packageNumber = Tools::generatePackageNumber($packageNumberInfo); //40950000114
 */
 $weight = 3.15;
-$package = new Salamek\PplMyApi\Model\Package($packageNumber, Product::PPL_PARCEL_CZ_PRIVATE, $weight, 'Testovaci balik', Depo::CODE_09, $recipient);
+$package = new Package($packageNumber, Product::PPL_PARCEL_CZ_PRIVATE, $weight, 'Testovaci balik', Depo::CODE_09, $recipient);
 
 try
 {
@@ -120,15 +160,21 @@ While sending **pallet** data, *Sender* is **required**.
 Creates order/s on PPL MyApi (send Order object to PPL)
 
 ```php
+<?php
+
+require __DIR__.'/vendor/autoload.php';
+
+use Salamek\PplMyApi\Api;
+use Salamek\PplMyApi\Model\Order;
 
 $username = 'my_api_username';
 $password = 'my_api_password';
 $customerId = 'my_api_customer_id';
 
-$pplMyApi = new Salamek\PplMyApi\Api($username, $password, $customerId);
+$pplMyApi = new Api($username, $password, $customerId);
 
 
-$order = new Salamek\PplMyApi\Model\Order($countPack, $orderReferenceId, $packProductType, \DateTimeInterface $sendDate, Sender $sender, Recipient $recipient, $customerReference = null, $email = null, $note = null, \DateTimeInterface $sendTimeFrom = null, \DateTimeInterface $sendTimeTo = null);
+$order = new Order($countPack, $orderReferenceId, $packProductType, \DateTimeInterface $sendDate, Sender $sender, Recipient $recipient, $customerReference = null, $email = null, $note = null, \DateTimeInterface $sendTimeFrom = null, \DateTimeInterface $sendTimeTo = null);
 
 try
 {
@@ -146,14 +192,20 @@ catch (\Exception $e)
 Creates pickup order/s on PPL MyApi (send PickupOrder object to PPL)
 
 ```php
+<?php
+
+require __DIR__.'/vendor/autoload.php';
+
+use Salamek\PplMyApi\Api;
+use Salamek\PplMyApi\Model\PickUpOrder;
 
 $username = 'my_api_username';
 $password = 'my_api_password';
 $customerId = 'my_api_customer_id';
 
-$pplMyApi = new Salamek\PplMyApi\Api($username, $password, $customerId);
+$pplMyApi = new Api($username, $password, $customerId);
 
-$order = new Salamek\PplMyApi\Model\PickUpOrder($orderReferenceId, $customerReference, $countPackages, $note, $email, \DateTimeInterface $sendDate, $sendTimeFrom, $sendTimeTo, Sender $sender);
+$order = new PickUpOrder($orderReferenceId, $customerReference, $countPackages, $note, $email, \DateTimeInterface $sendDate, $sendTimeFrom, $sendTimeTo, Sender $sender);
 
 try
 {
@@ -171,11 +223,19 @@ catch (\Exception $e)
 Returns cities routing filtered by `$countryCode`, `$dateFrom`, `$zipCode`
 
 ```php
+<?php
+
+require __DIR__.'/vendor/autoload.php';
+
+use Salamek\PplMyApi\Api;
+use Salamek\PplMyApi\Model\PickUpOrder;
+use Salamek\PplMyApi\Enum\Country;
+
 $username = 'my_api_username';
 $password = 'my_api_password';
 $customerId = 'my_api_customer_id';
 
-$pplMyApi = new Salamek\PplMyApi\Api($username, $password, $customerId);
+$pplMyApi = new Api($username, $password, $customerId);
 $result = $pplMyApi->getCitiesRouting($countryCode = Country::CZ, \DateTimeInterface $dateFrom = null, $zipCode = null);
 print_r($result);
 ```
@@ -185,11 +245,17 @@ print_r($result);
 Returns package/s info from ppl filtered by `$customRefs`, `$dateFrom`, `$dateTo`, `$packageNumbers` useful for tracking and checking status of package/s
 
 ```php
+<?php
+
+require __DIR__.'/vendor/autoload.php';
+
+use Salamek\PplMyApi\Api;
+
 $username = 'my_api_username';
 $password = 'my_api_password';
 $customerId = 'my_api_customer_id';
 
-$pplMyApi = new Salamek\PplMyApi\Api($username, $password, $customerId);
+$pplMyApi = new Api($username, $password, $customerId);
 $result = $pplMyApi->getPackages($customRefs = null, \DateTimeInterface $dateFrom = null, \DateTimeInterface $dateTo = null, array $packageNumbers = []);
 print_r($result);
 ```
@@ -205,9 +271,24 @@ Returns PDF with label/s for print on paper, two decompositions are supported, L
 Returns ZPL (Zebra printer format) label/s for print on paper
 
 ```php
+<?php
 
-$sender = new Salamek\PplMyApi\Model\Sender('Olomouc', 'My Compamy s.r.o.', 'My Address', '77900', 'info@example.com', '+420123456789', 'http://www.example.cz', Country::CZ);
-$recipient = new Salamek\PplMyApi\Model\Recipient('Olomouc', 'Adam Schubert', 'My Address', '77900', 'adam@example.com', '+420123456789', 'http://www.salamek.cz', Country::CZ, 'My Compamy a.s.');
+require __DIR__.'/vendor/autoload.php';
+
+use Salamek\PplMyApi\Tools;
+use Salamek\PplMyApi\Model\PackageNumberInfo;
+use Salamek\PplMyApi\Model\Package;
+use Salamek\PplMyApi\Model\Recipient;
+use Salamek\PplMyApi\Model\Sender;
+use Salamek\PplMyApi\Enum\Country;
+use Salamek\PplMyApi\Enum\Product;
+use Salamek\PplMyApi\Enum\Depo;
+use Salamek\PplMyApi\PdfLabel;
+use Salamek\PplMyApi\ZplLabel;
+
+
+$sender = new Sender('Olomouc', 'My Compamy s.r.o.', 'My Address', '77900', 'info@example.com', '+420123456789', 'http://www.example.cz', Country::CZ);
+$recipient = new Recipient('Olomouc', 'Adam Schubert', 'My Address', '77900', 'adam@example.com', '+420123456789', 'http://www.salamek.cz', Country::CZ, 'My Compamy a.s.');
 
 $packageNumber = 40950000114;
 /* Or you can use Tools::generatePackageNumber to get this number only from $packageSeriesNumberId like 114
@@ -216,7 +297,7 @@ $packageNumberInfo = new PackageNumberInfo($packageSeriesNumberId, Product::PPL_
 $packageNumber = Tools::generatePackageNumber($packageNumberInfo); //40950000114
 */
 $weight = 3.15;
-$package = new Salamek\PplMyApi\Model\Package($packageNumber, Product::PPL_PARCEL_CZ_PRIVATE, $weight, 'Testovaci balik', Depo::CODE_09, $sender, $recipient);
+$package = new Package($packageNumber, Product::PPL_PARCEL_CZ_PRIVATE, $weight, 'Testovaci balik', Depo::CODE_09, $sender, $recipient);
 
 // PDF Label
 $rawPdf = PdfLabel::generateLabels([$package]);
