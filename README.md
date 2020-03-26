@@ -127,7 +127,7 @@ $customerId = 'my_api_customer_id';
 
 $pplMyApi = new Api($username, $password, $customerId);
 
-$recipient = new Recipient('Olomouc', 'Adam Schubert', 'My Address', '77900', 'adam@example.com', '+420123456789', 'http://www.salamek.cz', Country::CZ, 'My Compamy a.s.');
+$recipient = new Recipient('Olomouc', 'Adam Schubert', 'My Address', '77900', 'adam@example.com', '+420123456789', 'https://www.salamek.cz', Country::CZ, 'My Compamy a.s.');
 
 $packageNumber = '40950000114';
 /* Or you can use Tools::generatePackageNumber to get this number only from $packageSeriesNumberId like 114
@@ -287,8 +287,8 @@ use Salamek\PplMyApi\PdfLabel;
 use Salamek\PplMyApi\ZplLabel;
 
 
-$sender = new Sender('Olomouc', 'My Compamy s.r.o.', 'My Address', '77900', 'info@example.com', '+420123456789', 'http://www.example.cz', Country::CZ);
-$recipient = new Recipient('Olomouc', 'Adam Schubert', 'My Address', '77900', 'adam@example.com', '+420123456789', 'http://www.salamek.cz', Country::CZ, 'My Compamy a.s.');
+$sender = new Sender('Olomouc', 'My Compamy s.r.o.', 'My Address', '77900', 'info@example.com', '+420123456789', 'https://www.example.cz', Country::CZ);
+$recipient = new Recipient('Olomouc', 'Adam Schubert', 'My Address', '77900', 'adam@example.com', '+420123456789', 'https://www.salamek.cz', Country::CZ, 'My Compamy a.s.');
 
 $packageNumber = 40950000114;
 /* Or you can use Tools::generatePackageNumber to get this number only from $packageSeriesNumberId like 114
