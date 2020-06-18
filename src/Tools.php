@@ -40,9 +40,11 @@ class Tools
             case Product::PPL_PARCEL_CZ_BUSINESS_COD:
                 $packageIdentifierPackageProductType = 8;
                 break;
-
+            
             case Product::EXPORT_PACKAGE:
             case Product::EXPORT_PACKAGE_COD:
+            case Product::PPL_PARCEL_CONNECT:
+            case Product::PPL_PARCEL_CONNECT_COD:
                 $packageIdentifierPackageProductType = 2;
                 break;
 
