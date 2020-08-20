@@ -16,26 +16,16 @@ interface ILabel
 
     /**
      * @param IPackage[] $packages
-     * @param int $decomposition
      * @return string
      * @throws \Exception
      */
-    public static function generateLabels(array $packages, $decomposition = LabelDecomposition::FULL);
+    public static function generateLabels(array $packages);
 
     /**
      * @param \TCPDF $pdf
      * @param IPackage $package
      * @return \TCPDF
      */
-    public static function generateLabelFull(\TCPDF $pdf, IPackage $package);
-
-    /**
-     * @param \TCPDF $pdf
-     * @param IPackage $package
-     * @param int $position
-     * @return \TCPDF
-     * @throws \Exception
-     */
-    public static function generateLabelQuarter(\TCPDF $pdf, IPackage $package, $position = LabelPosition::TOP_LEFT);
+    public static function generateLabel(\TCPDF $pdf, IPackage $package);
 
 }
