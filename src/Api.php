@@ -212,7 +212,7 @@ class Api
      * @throws \Exception
      * @throws WrongDataException
      */
-    public function getCitiesRouting($countryCode = Country::CZ, \DateTimeInterface $dateFrom = null, $zipCode = null)
+    public function getCitiesRouting($countryCode = Country::CZ, \DateTimeInterface $dateFrom = null, $zipCode = null, $street = null)
     {
         if (!in_array($countryCode, Country::$list)) {
             throw new WrongDataException(sprintf('Country Code %s is not supported, use one of %s', $countryCode, implode(', ', Country::$list)));
@@ -225,7 +225,8 @@ class Api
             'Filter' => [
                 'CountryCode' => $countryCode,
                 'DateFrom' => ($dateFrom ? $dateFrom->format('Y-m-d') : null),
-                'ZipCode' => $zipCode
+                'ZipCode' => $zipCode,
+                'Street' => $street
             ]
         ]);
 
