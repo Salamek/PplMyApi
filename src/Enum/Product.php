@@ -42,6 +42,19 @@ class Product
         self::PPL_PARCEL_CONNECT_COD
     ];
 
+    public static $names = [
+        self::PPL_PARCEL_CZ_BUSINESS => 'PPL Parcel CZ Business',
+        self::PPL_PARCEL_CZ_BUSINESS_COD => 'PPL Parcel CZ Business - dobírka',
+        self::PPL_PARCEL_CZ_AFTERNOON_PACKAGE => 'PPL Parcel CZ Dopolední balík',
+        self::PPL_PARCEL_CZ_AFTERNOON_PACKAGE_COD => 'PPL Parcel CZ Dopolední balík - dobírka',
+        self::EXPORT_PACKAGE => 'Exportní balík',
+        self::EXPORT_PACKAGE_COD => 'Exportní balík - dobírka',
+        self::PPL_PARCEL_CZ_PRIVATE => 'PPL Parcel CZ Private',
+        self::PPL_PARCEL_CZ_PRIVATE_COD => 'PPL Parcel CZ Private - dobírka',
+        self::PPL_PARCEL_CONNECT => 'PPL Parcel Connect',
+        self::PPL_PARCEL_CONNECT_COD=> 'PPL Parcel Connect – dobírka'
+    ];
+
     public static $cashOnDelivery = [
         self::PPL_PARCEL_CZ_BUSINESS_COD,
         self::PPL_PARCEL_CZ_AFTERNOON_PACKAGE_COD,
@@ -69,4 +82,8 @@ class Product
         self::PPL_PARCEL_CZ_AFTERNOON_PACKAGE,
         self::PPL_PARCEL_CZ_AFTERNOON_PACKAGE_COD
     ];
+
+    public static function getName($product) {
+        return self::$names[$product];
+    }
 }
