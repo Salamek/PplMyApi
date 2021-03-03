@@ -148,6 +148,66 @@ catch (\Exception $e)
 }
 ```
 
+### Create Packages using RoutedPackage
+
+Creates routed package/s on PPL MyApi (sends RoutedPackage object to PPL)
+
+```php
+<?php
+
+require __DIR__.'/vendor/autoload.php';
+
+use Salamek\PplMyApi\Api;
+use Salamek\PplMyApi\Tools;
+use Salamek\PplMyApi\Model\Package;
+use Salamek\PplMyApi\Model\PackageNumberInfo;
+use Salamek\PplMyApi\Model\Recipient;
+use Salamek\PplMyApi\Enum\Country;
+use Salamek\PplMyApi\Enum\Depo;
+use Salamek\PplMyApi\Enum\Product;
+
+
+$username = 'my_api_username';
+$password = 'my_api_password';
+$customerId = 'my_api_customer_id';
+
+$pplMyApi = new Api($username, $password, $customerId);
+
+$recipient = new Recipient('Olomouc', 'Adam Schubert', 'My Address', '77900', 'adam@example.com', '+420123456789', 'https://www.salamek.cz', Country::CZ, 'My Compamy a.s.');
+
+$packageNumber = '40950000114';
+/* Or you can use Tools::generatePackageNumber to get this number only from $packageSeriesNumberId like 114
+$packageSeriesNumberId = 114;
+$packageNumberInfo = new PackageNumberInfo($packageSeriesNumberId, Product::PPL_PARCEL_CZ_PRIVATE, Depo::CODE_09);
+$packageNumber = Tools::generatePackageNumber($packageNumberInfo); //40950000114
+*/
+$weight = 3.15;
+
+$routing = $this->pplMyApi->getCitiesRouting($country, null, $zipCode, $street);
+
+//Get first routing from the response and test (response can contain more records, not 100% sure how this works...)
+if (is_array($routing)) {
+  $routing = $routing[0];
+}
+if (!isset($routing->RouteCode) || !isset($routing->DepoCode) || !isset($routing->Highlighted)) {
+  throw new Exception('Štítek PPL se nepodařilo vytisknout, chybí Routing, pravděpodobně neplatná adresa!');
+}
+
+//Generate SmartLabel with the help of RoutedPackage
+
+$package = new RoutedPackage($packageNumber, Product::PPL_PARCEL_CZ_PRIVATE, $weight, 'Testovaci balik', Depo::CODE_09, $recipient, $sender, null, $paymentInfo, [], [], [], null, null, 1, 1, false, $routing->RouteCode, $routing->DepoCode, $routing->Highlighted);
+
+try
+{
+    $pplMyApi->createPackages([$package]);
+}
+catch (\Exception $e)
+{
+    echo $e->getMessage() . PHP_EOL;
+}
+```
+
+
 #### Empty Sender
 
 It may happen that PPL support staff requires you to ommit the *ISender* while you send the **package** (not pallet) data. In that
