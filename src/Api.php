@@ -533,7 +533,7 @@ class Api
                 'AuthToken' => $this->getAuthToken(),
             ],
             'Orders' => [
-                'MyApiPickUpOrderIn' => $pickupOrdersProcessed
+                'MyApiPickupOrderIn' => $pickupOrdersProcessed
             ]
         ]);
 
