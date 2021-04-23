@@ -50,7 +50,7 @@ class PickUpOrder implements IPickUpOrder
      * @param \DateTimeInterface|null $sendTimeTo
      * @param ISender $sender
      */
-    public function __construct($orderReferenceId, $customerReference, $countPackages, $note, $email, \DateTimeInterface $sendDate, \DateTimeInterface $sendTimeFrom, \DateTimeInterface $sendTimeTo, ISender $sender)
+    public function __construct($orderReferenceId, $customerReference, $countPackages, $note, $email, \DateTimeInterface $sendDate, \DateTimeInterface $sendTimeFrom = null, \DateTimeInterface $sendTimeTo = null, ISender $sender)
     {
         $this->setOrderReferenceId($orderReferenceId);
         $this->setCustomerReference($customerReference);
@@ -128,7 +128,7 @@ class PickUpOrder implements IPickUpOrder
     /**
      * @param \DateTimeInterface|null $sendTimeFrom
      */
-    public function setSendTimeFrom(\DateTimeInterface $sendTimeFrom)
+    public function setSendTimeFrom(\DateTimeInterface $sendTimeFrom = null)
     {
         $this->sendTimeFrom = $sendTimeFrom;
     }
@@ -136,7 +136,7 @@ class PickUpOrder implements IPickUpOrder
     /**
      * @param \DateTimeInterface|null $sendTimeTo
      */
-    public function setSendTimeTo(\DateTimeInterface $sendTimeTo)
+    public function setSendTimeTo(\DateTimeInterface $sendTimeTo = null)
     {
         $this->sendTimeTo = $sendTimeTo;
     }

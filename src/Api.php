@@ -505,6 +505,9 @@ class Api
                 throw new \Exception('$pickupOrders must contain only instances of IPickUpOrder class');
             }
 
+            $sendTimeFrom = $pickupOrder->getSendTimeFrom();
+            $sendTimeTo = $pickupOrder->getSendTimeTo();
+
             $pickupOrdersProcessed[] = [
                 'OrdRefId' => $pickupOrder->getOrderReferenceId(),
                 'CustRef' => $pickupOrder->getCustomerReference(),
@@ -512,8 +515,8 @@ class Api
                 'Note' => $pickupOrder->getNote(),
                 'Email' => $pickupOrder->getEmail(),
                 'SendDate' => $pickupOrder->getSendDate()->format('Y-m-d'),
-                'SendTimeFrom' => $pickupOrder->getSendTimeFrom()->format(\DateTime::ATOM),
-                'SendTimeTo' => $pickupOrder->getSendTimeTo()->format(\DateTime::ATOM),
+                'SendTimeFrom' => $sendTimeFrom ? $sendTimeFrom->format(\DateTime::ATOM) : null,
+                'SendTimeTo' => $sendTimeTo ? $sendTimeTo->format(\DateTime::ATOM) : null,
                 'Sender' => [
                     'City' => $pickupOrder->getSender()->getCity(),
                     'Contact' => $pickupOrder->getSender()->getContact(),
