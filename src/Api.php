@@ -471,6 +471,10 @@ class Api
                 ] : null),
                 'PackagesExtNums' => $packagesExtNums,
                 'PackageServices' => $packageServices,
+                'PackageSet' => [
+                    'PackageInSetNr' => 1,
+                    'PackagesInSet' => $package->getPackageCount()
+                ],
                 'Flags' => $flags,
                 'PalletInfo' => $palletInfo,
                 'WeightedPackageInfoIn' => $weightedPackageInfo
