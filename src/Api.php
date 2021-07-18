@@ -472,7 +472,7 @@ class Api
                 'PackagesExtNums' => $packagesExtNums,
                 'PackageServices' => $packageServices,
                 'PackageSet' => [
-                    'PackageInSetNr' => 1,
+                    'PackageInSetNr' => $package->getPackagePosition(),
                     'PackagesInSet' => $package->getPackageCount()
                 ],
                 'Flags' => $flags,
