@@ -433,7 +433,6 @@ class Api
                 'PackProductType' => $package->getPackageProductType(),
                 'Weight' => $package->getWeight(),
                 'Note' => $package->getNote(),
-                'DepoCode' => $package->getDepoCode(),
                 'Sender' => ($package->getSender() ? [
                     'City' => $package->getSender()->getCity(),
                     'Contact' => $package->getSender()->getContact(),
@@ -479,6 +478,10 @@ class Api
                 'PalletInfo' => $palletInfo,
                 'WeightedPackageInfoIn' => $weightedPackageInfo
             ];
+
+            if ($package->getDepoCode() !== null) {
+                $packagesProcessed[count($packagesProcessed) - 1]['DepoCode'] = $package->getDepoCode();
+            }
         }
 
         $result = $this->soap->CreatePackages([
