@@ -136,7 +136,7 @@ $packageNumberInfo = new PackageNumberInfo($packageSeriesNumberId, Product::PPL_
 $packageNumber = Tools::generatePackageNumber($packageNumberInfo); //40950000114
 */
 $weight = 3.15;
-$package = new Package($packageNumber, Product::PPL_PARCEL_CZ_PRIVATE, $weight, 'Testovaci balik', Depo::CODE_09, $recipient);
+$package = new Package($packageNumber, Product::PPL_PARCEL_CZ_PRIVATE, $weight, 'Testovaci balik', $recipient);
 
 try
 {
@@ -195,7 +195,7 @@ if (!isset($routing->RouteCode) || !isset($routing->DepoCode) || !isset($routing
 
 //Generate SmartLabel with the help of RoutedPackage
 
-$package = new RoutedPackage($packageNumber, Product::PPL_PARCEL_CZ_PRIVATE, $weight, 'Testovaci balik', Depo::CODE_09, $recipient, $sender, null, $paymentInfo, [], [], [], null, null, 1, 1, false, $routing->RouteCode, $routing->DepoCode, $routing->Highlighted);
+$package = new RoutedPackage($packageNumber, Product::PPL_PARCEL_CZ_PRIVATE, $weight, 'Testovaci balik', $recipient, $routing->RouteCode, $routing->DepoCode, $routing->Highlighted);
 
 try
 {
@@ -357,7 +357,7 @@ $packageNumberInfo = new PackageNumberInfo($packageSeriesNumberId, Product::PPL_
 $packageNumber = Tools::generatePackageNumber($packageNumberInfo); //40950000114
 */
 $weight = 3.15;
-$package = new Package($packageNumber, Product::PPL_PARCEL_CZ_PRIVATE, $weight, 'Testovaci balik', Depo::CODE_09, $sender, $recipient);
+$package = new Package($packageNumber, Product::PPL_PARCEL_CZ_PRIVATE, $weight, 'Testovaci balik', $sender, $recipient);
 
 // PDF Label
 $rawPdf = PdfLabel::generateLabels([$package]);

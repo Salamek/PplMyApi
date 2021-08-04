@@ -5,6 +5,8 @@
 
 namespace Salamek\PplMyApi\Model;
 
+use Salamek\PplMyApi\Exception\WrongDataException;
+
 class RoutedPackage extends Package
 {
     /** @var string */
@@ -22,9 +24,12 @@ class RoutedPackage extends Package
      * @param int $packageProductType Product type
      * @param float $weight weight
      * @param string $note note
-     * @param string $depoCode code of depo, see Enum\Depo.php
-     * @param ISender $sender
      * @param IRecipient $recipient
+     * @param string $routeCode
+     * @param string $routeDepoCode
+     * @param bool $routeDepoHighlighted
+     * @param ISender $sender
+     * @param string $depoCode code of depo, see Enum\Depo.php
      * @param null|ISpecialDelivery $specialDelivery
      * @param null|IPaymentInfo $paymentInfo
      * @param IExternalNumber[] $externalNumbers
@@ -35,9 +40,6 @@ class RoutedPackage extends Package
      * @param integer $packageCount
      * @param integer $packagePosition
      * @param bool $forceOwnPackageNumber
-     * @param string $routeCode
-     * @param string $routeDepoCode
-     * @param bool $routeDepoHighlighted
      * @throws WrongDataException
      */
     public function __construct(
@@ -45,9 +47,12 @@ class RoutedPackage extends Package
         $packageProductType,
         $weight,
         $note,
-        $depoCode,
         $recipient,
+        $routeCode,
+        $routeDepoCode,
+        $routeDepoHighlighted,
         $sender = null,
+        $depoCode = null,
         ISpecialDelivery $specialDelivery = null,
         IPaymentInfo $paymentInfo = null,
         array $externalNumbers = [],
@@ -57,15 +62,12 @@ class RoutedPackage extends Package
         IWeightedPackageInfo $weightedPackageInfo = null,
         $packageCount = 1,
         $packagePosition = 1,
-        $forceOwnPackageNumber = false,
-        $routeCode,
-        $routeDepoCode,
-        $routeDepoHighlighted
+        $forceOwnPackageNumber = false
     ) {
-        parent::__construct($packageNumber, $packageProductType, $weight, $note, $depoCode, $recipient, $sender, $specialDelivery, $paymentInfo, $externalNumbers,$packageServices,$flags,$palletInfo,$weightedPackageInfo,$packageCount,$packagePosition,$forceOwnPackageNumber);
-        $this->routeCode=$routeCode;
-        $this->routeDepoCode=$routeDepoCode;
-        $this->routeDepoHighlighted=$routeDepoHighlighted;
+        parent::__construct($packageNumber, $packageProductType, $weight, $note, $recipient, $sender, $depoCode, $specialDelivery, $paymentInfo, $externalNumbers,$packageServices,$flags,$palletInfo,$weightedPackageInfo,$packageCount,$packagePosition,$forceOwnPackageNumber);
+        $this->routeCode = $routeCode;
+        $this->routeDepoCode = $routeDepoCode;
+        $this->routeDepoHighlighted = $routeDepoHighlighted;
     }
     
     function getRouteCode() {

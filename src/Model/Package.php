@@ -68,9 +68,9 @@ class Package implements IPackage
      * @param int $packageProductType Product type
      * @param float $weight weight
      * @param string $note note
-     * @param string $depoCode code of depo, see Enum\Depo.php
-     * @param ISender $sender
      * @param IRecipient $recipient
+     * @param ISender $sender
+     * @param string $depoCode code of depo, see Enum\Depo.php
      * @param null|ISpecialDelivery $specialDelivery
      * @param null|IPaymentInfo $paymentInfo
      * @param IExternalNumber[] $externalNumbers
@@ -88,9 +88,9 @@ class Package implements IPackage
         $packageProductType,
         $weight,
         $note,
-        $depoCode = null,
         $recipient,
         $sender = null,
+        $depoCode = null,
         ISpecialDelivery $specialDelivery = null,
         IPaymentInfo $paymentInfo = null,
         array $externalNumbers = [],
