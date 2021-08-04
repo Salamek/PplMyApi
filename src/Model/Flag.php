@@ -42,13 +42,9 @@ class Flag implements IFlag
 
     /**
      * @param boolean $value
-     * @throws WrongDataException
      */
     public function setValue($value)
     {
-        if (!is_bool($value)) {
-            throw new WrongDataException('$value has wrong value');
-        }
         $this->value = $value;
     }
 

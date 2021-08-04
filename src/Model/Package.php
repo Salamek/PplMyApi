@@ -26,7 +26,7 @@ class Package implements IPackage
     /** @var string */
     private $note;
 
-    /** @var string */
+    /** @var string|null */
     private $depoCode;
 
     /** @var ISender */
@@ -88,7 +88,7 @@ class Package implements IPackage
         $packageProductType,
         $weight,
         $note,
-        $depoCode,
+        $depoCode = null,
         $recipient,
         $sender = null,
         ISpecialDelivery $specialDelivery = null,
@@ -221,7 +221,7 @@ class Package implements IPackage
      */
     public function setDepoCode($depoCode)
     {
-        if (!in_array($depoCode, Depo::$list)) {
+        if ($depoCode !== null && ! in_array($depoCode, Depo::$list)) {
             throw new WrongDataException(sprintf('$depoCode has wrong value, only %s are allowed', implode(', ', Depo::$list)));
         }
         $this->depoCode = $depoCode;
@@ -372,7 +372,7 @@ class Package implements IPackage
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getDepoCode()
     {

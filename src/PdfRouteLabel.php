@@ -156,7 +156,7 @@ class PdfRouteLabel implements ILabel
         $x = 28*$scale;
         $y = 96*$scale;
         $pdf->Rotate(90, $x, $y);
-        $pdf->write1DBarcode($package->getPackageNumber().'-'.$package->getRouteCOde(), 'C128B', $x, $y, 85*$scale, 27*$scale, 0.3*$scale, ['stretch' => true]);
+        $pdf->write1DBarcode($package->getPackageNumber().'-'.$package->getRouteCode(), 'C128B', $x, $y, 85*$scale, 27*$scale, 0.3*$scale, ['stretch' => true]);
         $pdf->StopTransform();
 
         //Barcode-depocode text
@@ -165,7 +165,7 @@ class PdfRouteLabel implements ILabel
         $y = 72*$scale;
         $pdf->Rotate(90, $x, $y);
         $pdf->SetFont(self::$fontFamily, 'B', 7*$scale);
-        $pdf->Text($x, $y, $package->getPackageNumber().'-'.$package->getRouteCOde());
+        $pdf->Text($x, $y, $package->getPackageNumber().'-'.$package->getRouteCode());
         $pdf->StopTransform();
 
         // Evening / Day delivery label should be added only for private packages
@@ -194,7 +194,7 @@ class PdfRouteLabel implements ILabel
         $pdf->StartTransform();
         $pdf->Rotate(90, $x, $y);
         $pdf->SetFont(self::$fontFamily, '', 25*$scale);
-        $pdf->Text($x, $y, $package->getRouteCOde());
+        $pdf->Text($x, $y, $package->getRouteCode());
         $pdf->StopTransform();
 
         //ZIP code
@@ -353,7 +353,7 @@ class PdfRouteLabel implements ILabel
         $x = 28 + $xPositionOffset;
         $y = 96 + $yPositionOffset;
         $pdf->Rotate(90, $x, $y);
-        $pdf->write1DBarcode($package->getPackageNumber().'-'.$package->getRouteCOde(), 'C128B', $x, $y, 85, 27, 0.3, ['stretch' => true]);
+        $pdf->write1DBarcode($package->getPackageNumber().'-'.$package->getRouteCode(), 'C128B', $x, $y, 85, 27, 0.3, ['stretch' => true]);
         $pdf->StopTransform();
 
         //Barcode-depocode text
@@ -362,7 +362,7 @@ class PdfRouteLabel implements ILabel
         $y = 72 + $yPositionOffset;
         $pdf->Rotate(90, $x, $y);
         $pdf->SetFont(self::$fontFamily, 'B', 7);
-        $pdf->Text($x, $y, $package->getPackageNumber().'-'.$package->getRouteCOde());
+        $pdf->Text($x, $y, $package->getPackageNumber().'-'.$package->getRouteCode());
         $pdf->StopTransform();
 
         // Evening / Day delivery label should be added only for private packages
@@ -391,7 +391,7 @@ class PdfRouteLabel implements ILabel
         $pdf->StartTransform();
         $pdf->Rotate(90, $x, $y);
         $pdf->SetFont(self::$fontFamily, '', 25);
-        $pdf->Text($x, $y, $package->getRouteCOde());
+        $pdf->Text($x, $y, $package->getRouteCode());
         $pdf->StopTransform();
 
         //ZIP code

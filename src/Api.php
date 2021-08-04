@@ -106,12 +106,13 @@ class Api
      * @param null|string $username
      * @param null|string $password
      * @param null|integer $customerId
-     * @param null|string
+     * @param null|string $storage
+     * @param bool $trace Set trace of SoapClient to this value
      * @throws \Exception
      * @throws OfflineException
      * @throws SecurityException
      */
-    public function __construct($username = null, $password = null, $customerId = null, $storage = null)
+    public function __construct($username = null, $password = null, $customerId = null, $storage = null, $trace = true)
     {
         if (mb_strlen($username) > 32) {
             throw new SecurityException('$username is longer than 32 characters');
@@ -131,7 +132,7 @@ class Api
             $this->securedStorage = $storage . '/Api';
         }
         try {
-            $this->soap = new \SoapClient($this->wsdl);
+            $this->soap = new \SoapClient($this->wsdl, array('trace' => $trace));
         } catch (\Exception $e) {
             throw new \Exception('Failed to build soap client');
         }
@@ -432,7 +433,6 @@ class Api
                 'PackProductType' => $package->getPackageProductType(),
                 'Weight' => $package->getWeight(),
                 'Note' => $package->getNote(),
-                'DepoCode' => $package->getDepoCode(),
                 'Sender' => ($package->getSender() ? [
                     'City' => $package->getSender()->getCity(),
                     'Contact' => $package->getSender()->getContact(),
@@ -470,10 +470,18 @@ class Api
                 ] : null),
                 'PackagesExtNums' => $packagesExtNums,
                 'PackageServices' => $packageServices,
+                'PackageSet' => [
+                    'PackageInSetNr' => $package->getPackagePosition(),
+                    'PackagesInSet' => $package->getPackageCount()
+                ],
                 'Flags' => $flags,
                 'PalletInfo' => $palletInfo,
                 'WeightedPackageInfoIn' => $weightedPackageInfo
             ];
+
+            if ($package->getDepoCode() !== null) {
+                $packagesProcessed[count($packagesProcessed) - 1]['DepoCode'] = $package->getDepoCode();
+            }
         }
 
         $result = $this->soap->CreatePackages([
@@ -605,6 +613,42 @@ class Api
         return isset($result->GetNumberRangeResult->ResultData->NumberRange)
             ? $result->GetNumberRangeResult->ResultData->NumberRange
             : [];
+    }
+
+    /**
+     * Get the last request of the SOAP client.
+     * 
+     * @return string|null XML string
+     */
+    public function getLastRequest() {
+        return $this->soap->__getLastRequest();
+    }
+
+    /**
+     * Get headers of the last request of the SOAP client.
+     * 
+     * @return string|null XML string
+     */
+    public function getLastRequestHeaders() {
+        return $this->soap->__getLastRequestHeaders();
+    }
+
+    /**
+     * Get the last response of the SOAP client.
+     * 
+     * @return string|null XML string
+     */
+    public function getLastResponse() {
+        return $this->soap->__getLastResponse();
+    }
+
+    /**
+     * Get headers of the last response of the SOAP client.
+     * 
+     * @return string|null XML string
+     */
+    public function getLastResponseHeaders() {
+        return $this->soap->__getLastResponseHeaders();
     }
 
 }
