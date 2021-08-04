@@ -112,12 +112,9 @@ Creates package/s on PPL MyApi (sends Package object to PPL)
 require __DIR__.'/vendor/autoload.php';
 
 use Salamek\PplMyApi\Api;
-use Salamek\PplMyApi\Tools;
 use Salamek\PplMyApi\Model\Package;
-use Salamek\PplMyApi\Model\PackageNumberInfo;
 use Salamek\PplMyApi\Model\Recipient;
 use Salamek\PplMyApi\Enum\Country;
-use Salamek\PplMyApi\Enum\Depo;
 use Salamek\PplMyApi\Enum\Product;
 
 
@@ -158,12 +155,10 @@ Creates routed package/s on PPL MyApi (sends RoutedPackage object to PPL)
 require __DIR__.'/vendor/autoload.php';
 
 use Salamek\PplMyApi\Api;
-use Salamek\PplMyApi\Tools;
 use Salamek\PplMyApi\Model\Package;
-use Salamek\PplMyApi\Model\PackageNumberInfo;
 use Salamek\PplMyApi\Model\Recipient;
 use Salamek\PplMyApi\Enum\Country;
-use Salamek\PplMyApi\Enum\Depo;
+use Salamek\PplMyApi\Model\CityRouting;
 use Salamek\PplMyApi\Enum\Product;
 
 
@@ -183,19 +178,25 @@ $packageNumber = Tools::generatePackageNumber($packageNumberInfo); //40950000114
 */
 $weight = 3.15;
 
-$routing = $this->pplMyApi->getCitiesRouting($country, null, $zipCode, $street);
+$cityRoutingResponse = $this->pplMyApi->getCitiesRouting($country, null, $zipCode, $street);
 
 //Get first routing from the response and test (response can contain more records, not 100% sure how this works...)
-if (is_array($routing)) {
-  $routing = $routing[0];
+if (is_array($cityRoutingResponse)) {
+  $cityRoutingResponse = $cityRoutingResponse[0];
 }
-if (!isset($routing->RouteCode) || !isset($routing->DepoCode) || !isset($routing->Highlighted)) {
+if (!isset($cityRoutingResponse->RouteCode) || !isset($cityRoutingResponse->DepoCode) || !isset($cityRoutingResponse->Highlighted)) {
   throw new Exception('Štítek PPL se nepodařilo vytisknout, chybí Routing, pravděpodobně neplatná adresa!');
 }
 
+$cityRouting = new CityRouting(
+    $cityRoutingResponse->RouteCode, 
+    $cityRoutingResponse->DepoCode, 
+    $cityRoutingResponse->Highlighted
+);
+
 //Generate SmartLabel with the help of RoutedPackage
 
-$package = new RoutedPackage($packageNumber, Product::PPL_PARCEL_CZ_PRIVATE, $weight, 'Testovaci balik', $recipient, $routing->RouteCode, $routing->DepoCode, $routing->Highlighted);
+$package = new Package($packageNumber, Product::PPL_PARCEL_CZ_PRIVATE, $weight, 'Testovaci balik', $recipient, $cityRouting);
 
 try
 {
@@ -210,7 +211,7 @@ catch (\Exception $e)
 
 #### Empty Sender
 
-It may happen that PPL support staff requires you to ommit the *ISender* while you send the **package** (not pallet) data. In that
+It may happen that PPL support staff requires you to omit the *ISender* while you send the **package** (not pallet) data. In that
 case you just use null:
 
 While sending **pallet** data, *Sender* is **required**.

@@ -71,8 +71,8 @@ class ZplLabel {
         }
 
         //package number and barcodes
-        $zpl .= sprintf('^FO5,20^BY0.4,3,32^BCN,28,N,N^FD%s-%s^FS', $package->getPackageNumber(), $package->getRouteCode());
-        $zpl .= sprintf('^FO36,49^A0N,3^FD%s-%s^FS', $package->getPackageNumber(), $package->getRouteCode());
+        $zpl .= sprintf('^FO5,20^BY0.4,3,32^BCN,28,N,N^FD%s-%s^FS', $package->getPackageNumber(), $package->getCityRouting()->getRouteCode());
+        $zpl .= sprintf('^FO36,49^A0N,3^FD%s-%s^FS', $package->getPackageNumber(), $package->getCityRouting()->getRouteCode());
         $zpl .= sprintf('^FO16,95^BY0.4,2,10^B2R,9,N,N,Y^FD%s^FS', $package->getPackageNumber());
         $zpl .= sprintf('^FO9,100^A0R,5^FD%s^FS', $package->getPackageNumber());
 
@@ -102,13 +102,13 @@ class ZplLabel {
         $zpl .= sprintf('^FO35,3^A0N,7^FD%s^FS', $package->getRecipient()->getZipCode());
 
         //package routing route code
-        $zpl .= sprintf('^FO65,3^A0N,10^FD%s^FS', $package->getRouteCode());
+        $zpl .= sprintf('^FO65,3^A0N,10^FD%s^FS', $package->getCityRouting()->getRouteCode());
 
         //package routing depo
-        if ($package->getRouteDepoHighlighted()) {
+        if ($package->getCityRouting()->getHighlighted()) {
             $zpl .= sprintf('^FO5,2^GB18,17,1,B,0^FS');
         }
-        $zpl .= sprintf('^FO7,6^A0N,13^FD%s^FS', $package->getRouteDepoCode());
+        $zpl .= sprintf('^FO7,6^A0N,13^FD%s^FS', $package->getCityRouting()->getDepoCode());
 
         //package routing country
         if ($package->getRecipient()->getCountry() <> Country::CZ) {

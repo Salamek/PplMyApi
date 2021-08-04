@@ -62,6 +62,9 @@ class Package implements IPackage
     /** @var int */
     private $packagePosition = 1;
 
+    /** @var ICityRouting */
+    private $cityRouting;
+
     /**
      * Package constructor.
      * @param string $packageNumber Package number (40990019352)
@@ -69,6 +72,7 @@ class Package implements IPackage
      * @param float $weight weight
      * @param string $note note
      * @param IRecipient $recipient
+     * @param ICityRouting $cityRouting
      * @param ISender $sender
      * @param string $depoCode code of depo, see Enum\Depo.php
      * @param null|ISpecialDelivery $specialDelivery
@@ -89,6 +93,7 @@ class Package implements IPackage
         $weight,
         $note,
         $recipient,
+        ICityRouting $cityRouting,
         $sender = null,
         $depoCode = null,
         ISpecialDelivery $specialDelivery = null,
@@ -281,6 +286,15 @@ class Package implements IPackage
     }
 
     /**
+     * @param ICityRouting $cityRouting
+     */
+    public function setCityRouting(ICityRouting $cityRouting)
+    {
+        $this->cityRouting = $cityRouting;
+    }
+
+
+    /**
      * @return string
      */
     public function getPackageNumber()
@@ -431,5 +445,13 @@ class Package implements IPackage
     public function getPackagePosition()
     {
         return $this->packagePosition;
+    }
+
+    /**
+     * @return ICityRouting
+     */
+    public function getCityRouting()
+    {
+        return $this->cityRouting;
     }
 }
