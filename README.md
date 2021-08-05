@@ -1,6 +1,6 @@
 # Professional Parcel Logistic MyApi client in PHP
 
-[![Build Status](https://travis-ci.org/Salamek/PplMyApi.svg?branch=master)](https://travis-ci.org/Salamek/PplMyApi)
+[![Test status](https://github.com/Salamek/PplMyApi/actions/workflows/php.yml/badge.svg)](https://github.com/Salamek/PplMyApi/actions/workflows/php.yml)
 [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.me/salamek)
 
 Professional Parcel Logistic MyApi client in PHP
