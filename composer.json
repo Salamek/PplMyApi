@@ -29,6 +29,7 @@
     "phpunit/phpunit": "^9.5"
   },
   "scripts": {
+    "test": "vendor/bin/phpunit",
     "post-install-cmd": [
       "mkdir ./tmp",
       "chmod -R 777 ./tmp"
