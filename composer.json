@@ -12,7 +12,7 @@
   ],
   "authors": [
     {
-      "name": "Adam Schubet",
+      "name": "Adam Schubert",
       "homepage": "http://www.salamek.cz"
     }
   ],
@@ -22,11 +22,11 @@
     ]
   },
   "require": {
-    "php": ">=5.6.0",
+    "php": ">=7.1.0",
     "tecnickcom/tcpdf": "^6.2"
   },
   "require-dev": {
-    "phpunit/phpunit": "^5.0"
+    "phpunit/phpunit": "^9.5"
   },
   "scripts": {
     "post-install-cmd": [

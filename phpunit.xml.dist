@@ -7,14 +7,11 @@
          convertWarningsToExceptions="true"
          processIsolation="false"
          stopOnFailure="false"
-         syntaxCheck="true"
          verbose="false"
          bootstrap="test/bootstrap.php"
 >
     <logging>
-      <log type="coverage-html" target="test/phpunit_report/report" charset="UTF-8"
-           yui="true" highlight="false"
-           lowUpperBound="35" highLowerBound="70"/>
+        <junit outputFile="build/unit_report.xml"/>
     </logging>
     <php>
       <ini name="display_errors" value="on"/>
@@ -25,11 +22,18 @@
             <directory>test</directory>
         </testsuite>
     </testsuites>
-    <filter>
-      <whitelist>
-          <directory>src</directory>
-      </whitelist>
-    </filter>
+    <coverage includeUncoveredFiles="true"
+              processUncoveredFiles="true"
+              ignoreDeprecatedCodeUnits="true"
+              disableCodeCoverageIgnore="true">
+        <include>
+            <directory suffix=".php">src</directory>
+        </include>
+
+        <report>
+            <html outputDirectory="html-coverage" lowUpperBound="50" highLowerBound="90"/>
+        </report>
+    </coverage>
 
 </phpunit>
 

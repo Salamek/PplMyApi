@@ -17,7 +17,7 @@ final class PublicTest extends BaseTest
      */
     public function testIsHealthy()
     {
-        $this->assertInternalType('boolean', $this->pplMyApi->isHealthy());
+        $this->assertIsBool($this->pplMyApi->isHealthy());
     }
 
     /**
@@ -25,7 +25,7 @@ final class PublicTest extends BaseTest
      */
     public function testGetVersion()
     {
-        $this->assertRegExp('/^\d{1,2}\.\d{1,2}\.\d+\.\d+$/', $this->pplMyApi->getVersion());
+        $this->assertMatchesRegularExpression('/^\d{1,2}\.\d{1,2}\.\d+\.\d+$/', $this->pplMyApi->getVersion());
     }
 
     /**
@@ -65,7 +65,7 @@ final class PublicTest extends BaseTest
         $packageNumberInfo = Tools::parsePackageNumber('40950000114');
         
         $this->assertEquals('4', $packageNumberInfo->getProductType());
-        $this->assertEquals('000114', $packageNumberInfo->getSeriesNumberId());
+        $this->assertEquals('0000114', $packageNumberInfo->getSeriesNumberId());
         $this->assertEquals('09', $packageNumberInfo->getDepoCode());
         $this->assertFalse($packageNumberInfo->isCod());
     }

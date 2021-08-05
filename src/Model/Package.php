@@ -111,6 +111,8 @@ class Package implements IPackage
             throw new WrongDataException('$paymentInfo must be set if product type is CoD');
         }
 
+        $this->setCityRouting($cityRouting);
+
         $this->setRecipient($recipient);
         $this->setSender($sender);
 
