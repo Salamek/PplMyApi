@@ -555,9 +555,11 @@ class Api
 
     /**
      * @return mixed
+     * @deprecated 
      */
     public function getSprintRoutes()
     {
+        user_error('getSprintRoutes is deprecated and does not return any data', E_USER_DEPRECATED);
         $result = $this->soap->GetSprintRoutes();
         return $result->GetSprintRoutesResult->ResultData->MyApiSprintRoutes;
     }

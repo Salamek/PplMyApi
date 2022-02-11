@@ -82,14 +82,6 @@ final class PublicTest extends BaseTest
     /**
      * @test
      */
-    public function testGetSprintRoutes()
-    {
-        $this->assertNotEmpty($this->pplMyApi->getSprintRoutes());
-    }
-
-    /**
-     * @test
-     */
     public function testGeneratePdfFullSinglePackage()
     {
         $raw = PdfLabel::generateLabels([$this->package], LabelDecomposition::FULL);
