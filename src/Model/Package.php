@@ -99,8 +99,7 @@ class Package implements IPackage
         IPalletInfo $palletInfo = null,
         IWeightedPackageInfo $weightedPackageInfo = null,
         $packageCount = 1,
-        $packagePosition = 1,
-        $forceOwnPackageNumber = false
+        $packagePosition = 1
     ) {
         if (in_array($packageProductType, Product::$cashOnDelivery) && is_null($paymentInfo)) {
             throw new WrongDataException('$paymentInfo must be set if product type is CoD');
@@ -110,20 +109,7 @@ class Package implements IPackage
 
         $this->setRecipient($recipient);
         $this->setSender($sender);
-
-        //!FIXME compabilty when someone is passing only seriesNumberId
-        $packageNumberInfo = Tools::parsePackageNumber($packageNumber);
-        if (is_null($packageNumberInfo) && is_numeric($packageNumber) && !$forceOwnPackageNumber)
-        {
-            $packageNumberInfo = new PackageNumberInfo($packageNumber, $packageProductType, $depoCode);
-            $this->setPackageNumber(Tools::generatePackageNumber($packageNumberInfo));
-            user_error('Passing only seriesNumberId is deprecated, please pass packageNumber directly, you can use Tools::generatePackageNumber to generate it from seriesNumberId', E_USER_DEPRECATED);
-        }
-        else
-        {
-            $this->setPackageNumber($packageNumber);
-        }
-        
+        $this->setPackageNumber($packageNumber);
         $this->setPackageProductType($packageProductType);
         $this->setNote($note);
         $this->setDepoCode($depoCode);
