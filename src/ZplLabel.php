@@ -14,17 +14,23 @@ use Salamek\PplMyApi\Exception\NotImplementedException;
 use Salamek\PplMyApi\Model\IPackage;
 use Salamek\PplMyApi\Model\Package;
 
-class ZplLabel {
+class ZplLabel implements ILabel {
 
     /**
-     * @param IPackage[] $packages
-     * @param null $decomposition
-     * @return string
-     * @throws \Exception
+     * @param array $packages
+     * @param type $decomposition
+     * @param type $quarterPosition
+     * @param \DateTime $printDate
+     * @return type
+     * @throws \InvalidArgumentException
      */
-    public static function generateLabels(array $packages, $decomposition = null) {
+    public static function generateLabels(array $packages, $decomposition = null, $quarterPosition = null, \DateTime $printDate = null) {
         if (!is_null($decomposition)) {
             throw new \InvalidArgumentException('ZplLabel::generateLabels does not support $decomposition');
+        }
+        
+        if (!is_null($quarterPosition)) {
+            throw new \InvalidArgumentException('ZplLabel::generateLabels does not support $quarterPosition');
         }
 
         $packageNumbers = [];
@@ -36,7 +42,7 @@ class ZplLabel {
          * @var Package $package
          */
         foreach ($packages AS $package) {
-            $zplString .= self::generateLabel($package);
+            $zplString .= self::generateLabel($package, $printDate);
         }
 
         return $zplString;
@@ -46,7 +52,11 @@ class ZplLabel {
      * @param IPackage $package
      * @return string
      */
-    public static function generateLabel(IPackage $package) {
+    public static function generateLabel(IPackage $package, \DateTime $printDate = null) {
+        if ($printDate === null) {
+            $printDate = new \DateTime();
+        }
+        
         //page setup
         $zpl = '^XA^MUM^LH2,2^LS0^PON';
 
@@ -62,7 +72,7 @@ class ZplLabel {
         $zpl .= '^FO0,118^GB9,17,0.3,B,0^FS';
         $zpl .= '^FO89,55^A0R,2^FDConsignee / Příjemce^FS';
         $zpl .= '^FO42,55^A0R,2^FDConsignor / Odesílatel^FS';
-        $zpl .= '^FO42,108^A0R,2^FDDatum tisku etikety: ' . date_create()->format('j.n.Y') . '^FS';
+        $zpl .= '^FO42,108^A0R,2^FDDatum tisku etikety: ' . $printDate->format('j.n.Y') . '^FS';
         $zpl .= '^FO89,85^A0R,2^FDhttp://www.ppl.cz^FS';
 
         //COD
@@ -141,7 +151,7 @@ class ZplLabel {
      * @param $package
      * @throws \Exception
      */
-    public static function generateLabelFull($pdf, $package) {
+    public static function generateLabelFull($pdf, $package, \DateTime $printDate = null) {
         throw new NotImplementedException();
     }
 
@@ -151,7 +161,7 @@ class ZplLabel {
      * @param $position
      * @throws \Exception
      */
-    public static function generateLabelQuarter($pdf, $package, $position = null) {
+    public static function generateLabelQuarter($pdf, $package, $position = null, \DateTime $printDate = null) {
         throw new NotImplementedException();
     }
 

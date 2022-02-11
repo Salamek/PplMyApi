@@ -172,7 +172,7 @@ final class PublicTest extends BaseTest
     {
         $filePathExpected = __DIR__ . '/'. $this->package->getPackageNumber() . '-expected.zpl';
 
-        $zplString = ZplLabel::generateLabels([$this->package]);
+        $zplString = ZplLabel::generateLabels([$this->package], null, null, \DateTime::createFromFormat('Y-m-d', '2021-08-05'));
         $this->assertNotEmpty($zplString);
 
         $filePath = __DIR__ . '/../tmp/'. $this->package->getPackageNumber() . '.zpl';

@@ -27,7 +27,7 @@ class PdfLabel implements ILabel
      * @return string
      * @throws \Exception
      */
-    public static function generateLabels(array $packages, $decomposition = LabelDecomposition::FULL, $quarterPosition = LabelPosition::TOP_LEFT)
+    public static function generateLabels(array $packages, $decomposition = LabelDecomposition::FULL, $quarterPosition = LabelPosition::TOP_LEFT, \DateTime $printDate = null)
     {
         if (!in_array($decomposition, LabelDecomposition::$list)) {
             throw new WrongDataException(sprintf('unknown $decomposition only %s are allowed', implode(', ', LabelDecomposition::$list)));
@@ -74,7 +74,7 @@ class PdfLabel implements ILabel
                         $pdf->AddPage();
                     }
 
-                    $pdf = self::generateLabelQuarter($pdf, $package, $quarterPosition);
+                    $pdf = self::generateLabelQuarter($pdf, $package, $quarterPosition, $printDate);
                     $quarterPosition++;
                     break;
             }
@@ -88,8 +88,12 @@ class PdfLabel implements ILabel
      * @param IPackage $package
      * @return \TCPDF
      */
-    public static function generateLabelFull(\TCPDF $pdf, IPackage $package)
+    public static function generateLabelFull(\TCPDF $pdf, IPackage $package, \DateTime $printDate = null)
     {
+        if ($printDate === null) {
+            $printDate = new \DateTime();
+        }
+        
         $scale = 2;
 
         //Logo
@@ -130,7 +134,7 @@ class PdfLabel implements ILabel
         //Sender
         $pdf->SetFont(self::$fontFamily, '', 6*$scale);
         $pdf->Text(58*$scale, 55.5*$scale, 'Sender / Odesílatel');
-        $pdf->Text(99*$scale, 55.5*$scale, 'Datum tisku etikety: '.date('d-m-Y'));
+        $pdf->Text(99*$scale, 55.5*$scale, 'Datum tisku etikety: '.$printDate->format('d-m-Y'));
 
         $x = 58.5*$scale;
         $y = 59.5*$scale;
@@ -260,8 +264,12 @@ class PdfLabel implements ILabel
      * @return \TCPDF
      * @throws \Exception
      */
-    public static function generateLabelQuarter(\TCPDF $pdf, IPackage $package, $position = LabelPosition::TOP_LEFT)
+    public static function generateLabelQuarter(\TCPDF $pdf, IPackage $package, $position = LabelPosition::TOP_LEFT, \DateTime $printDate = null)
     {
+        if ($printDate === null) {
+            $printDate = new \DateTime();
+        }
+        
         if (!in_array($position, [1, 2, 3, 4])) {
             throw new \Exception('Unknow position');
         }
@@ -327,7 +335,7 @@ class PdfLabel implements ILabel
         //Sender
         $pdf->SetFont(self::$fontFamily, '', 6);
         $pdf->Text(58 + $xPositionOffset, 55.5 + $yPositionOffset, 'Sender / Odesílatel');
-        $pdf->Text(99 + $xPositionOffset, 55.5 + $yPositionOffset, 'Datum tisku etikety: '.date('d-m-Y'));
+        $pdf->Text(99 + $xPositionOffset, 55.5 + $yPositionOffset, 'Datum tisku etikety: '.$printDate->format('d-m-Y'));
 
         $x = 58.5 + $xPositionOffset;
         $y = 59.5 + $yPositionOffset;

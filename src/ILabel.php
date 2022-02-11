@@ -20,14 +20,14 @@ interface ILabel
      * @return string
      * @throws \Exception
      */
-    public static function generateLabels(array $packages, $decomposition = LabelDecomposition::FULL);
+    public static function generateLabels(array $packages, $decomposition = LabelDecomposition::FULL, $quarterPosition = LabelPosition::TOP_LEFT, \DateTime $printDate = null);
 
     /**
      * @param \TCPDF $pdf
      * @param IPackage $package
      * @return \TCPDF
      */
-    public static function generateLabelFull(\TCPDF $pdf, IPackage $package);
+    public static function generateLabelFull(\TCPDF $pdf, IPackage $package, \DateTime $printDate = null);
 
     /**
      * @param \TCPDF $pdf
@@ -36,6 +36,6 @@ interface ILabel
      * @return \TCPDF
      * @throws \Exception
      */
-    public static function generateLabelQuarter(\TCPDF $pdf, IPackage $package, $position = LabelPosition::TOP_LEFT);
+    public static function generateLabelQuarter(\TCPDF $pdf, IPackage $package, $position = LabelPosition::TOP_LEFT, \DateTime $printDate = null);
 
 }
