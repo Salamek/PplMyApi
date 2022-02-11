@@ -23,7 +23,7 @@ use Salamek\PplMyApi\Enum\Product;
  * Class Client
  * @package Salamek
  * ######## BUGS ###########
- * 1) API SHOULD GENERATE ID
+ * 1) API SHOULD GENERATE ID (Not really fixed, they added API to get/request ID range, kinda half way there)
  * 2) API SHOULD GENERATE LABELS
  *
  * ######### BUGS IN DOC #######
@@ -37,16 +37,8 @@ use Salamek\PplMyApi\Enum\Product;
  * * Username delka je napsana jako 32 znaku, spravne by melo byt "maximalni delka"
  * * Password delka je napsana jako 32 znaku, spravne by melo byt "maximalni delka"
  * Login example XML obsahuje:
- * * UserName ale v tabulce parameteru je Username, co je spravne ? Username nefunguje UserName funguje
  * GetParcelShops tabulka parametru obsahuje:
  * * Code delka je napsana jako 50 znaku, spravne by melo byt "maximalni delka"
- * * AuthToken chybi v tabulce parametru, pravdepodobne je ale potreba ?
- * GetParcelShops vraci objekt: a ne chybu kdyz neni AuthToken
- * * [GetParcelShopsResult] => stdClass Object
- * * (
- * * [AuthToken] =>
- * * [ResultData] =>
- * * )
  * GetPackages:
  * * PackNumbers: Vypada jako array a ne string, dle nazvu a obsahu XML
  *
@@ -60,22 +52,14 @@ use Salamek\PplMyApi\Enum\Product;
  * V CreateOrder je SendTimeFrom/SendTimeTo ve formatu YYYY-MM-DDThh:MM:SS a v CreatePackages je SpecDelivTimeFrom/SpecDelivTimeTo/SpecTakeTimeFrom/SpecTakeTimeTo ve formatu hh:mm:ss
  * V CreateOrder je SendDate ve formatu YYYY-MM-DDThh:MM:SS v CreatePackages je SpecDelivDate/SpecTakeDate ve formatu YYYY-MM-DD
  *
- * V CreatePackages tabulce parametru je rozbite odsazeni, nelze poznat do jake skupiny spada ktery parametr
  * PRODUCT_TYPE_PRIVATE_PALETTE_COD neodpovida identifikatoru na stitku, na nem je jiny identifikator a zvlast COD bool... takze stejny LEN jen jine cisla... blbost
- * Neni zadne testovaci api na kterem by se dala otestovat spravna implementace, musi se testovat na ostrych datech!!!
+ * Neni zadne testovaci api na kterem by se dala otestovat spravna implementace, musi se testovat na ostrych datech!
  * Identifikator CoD v kodu zasilky je bud 9 pro CoD a 5 pro NonCoD proc to neni 1 pro CoD a 0 pro NonCoD ??? V doc uplne chybi ze 5 je NonCoD, musel jsem to vykoukat ze systemem generovanych identifiaktoru
  * Bylo by dobre kdyby mel kazdy Package neco jako volitelny OrderId... omrknout jestli tam neco takoveho neni schovaneho ???
- * V CreatePackages je duplicitni info Weight a WeightedPackageInfoIn->Weight !!!
- *
- * Ciselna rada, rozsahy, jejich vycerpani, nutnost implementovat do API
- *
  * createPackages nekontroluje duplicitu PackNumber, co se stane kdyz poslu vicekrat se stejnym PackNumber ? prepisou se data ? Nemelo by toto byt nejak uvedeno v DOC ?
  * WrapCode PLASTIC_BOX = 50 VS BOX
  * Z dokumentace neni jasne co je pole vice polozek a co je pole v poli
- * Chybi ciselnik smeru Route.$routeCode
- *
- * V dokumentaci mi zaslane chybi validni ukazky predavacich protokolu
- *
+
  * V dokumentaci chybi podminky, jake je nutne splnit k uspesnemu zprovozneni MyAPI a povoleni na strane PPL
  */
 class Api
@@ -431,7 +415,6 @@ class Api
             $packagesProcessed[] = [
                 'PackNumber' => $package->getPackageNumber(),
                 'PackProductType' => $package->getPackageProductType(),
-                'Weight' => $package->getWeight(),
                 'Note' => $package->getNote(),
                 'Sender' => ($package->getSender() ? [
                     'City' => $package->getSender()->getCity(),

@@ -32,11 +32,6 @@ interface IPackage
     public function setPackageNumber($packageNumber);
 
     /**
-     * @param float $weight
-     */
-    public function setWeight($weight);
-
-    /**
      * @param string $depoCode
      * @throws WrongDataException
      */
@@ -111,11 +106,6 @@ interface IPackage
      * @return int
      */
     public function getPackageProductType();
-
-    /**
-     * @return float
-     */
-    public function getWeight();
 
     /**
      * @return string

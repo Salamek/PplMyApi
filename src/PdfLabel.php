@@ -222,13 +222,13 @@ class PdfLabel implements ILabel
         }
 
         //Weight
-        if($package->getWeight()>0){
+        if($package->getWeightedPackageInfo()){
             $x = 16*$scale;
             $y = 50*$scale;
             $pdf->StartTransform();
             $pdf->Rotate(90, $x, $y);
             $pdf->SetFont(self::$fontFamily, '', 8*$scale);
-            $pdf->Text($x, $y, $package->getWeight().' kg');
+            $pdf->Text($x, $y, $package->getWeightedPackageInfo()->getWeight().' kg');
             $pdf->StopTransform();
         }
 
@@ -423,13 +423,13 @@ class PdfLabel implements ILabel
         }
 
         //Weight
-        if($package->getWeight()>0){
+        if($package->getWeightedPackageInfo()){
             $x = 16 + $xPositionOffset;
             $y = 50 + $yPositionOffset;
             $pdf->StartTransform();
             $pdf->Rotate(90, $x, $y);
             $pdf->SetFont(self::$fontFamily, '', 8);
-            $pdf->Text($x, $y, $package->getWeight().' kg');
+            $pdf->Text($x, $y, $package->getWeightedPackageInfo()->getWeight().' kg');
             $pdf->StopTransform();
         }
 

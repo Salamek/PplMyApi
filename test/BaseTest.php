@@ -46,19 +46,19 @@ abstract class BaseTest extends TestCase
 
         $cityRouting = new CityRouting('123', Depo::CODE_02, true);
 
-        $this->package = new Package('40950000115', Product::PPL_PARCEL_CZ_PRIVATE, 10, 'Testpvaci balik',  $recipient, $cityRouting, $sender);
+        $this->package = new Package('40950000115', Product::PPL_PARCEL_CZ_PRIVATE, 'Testpvaci balik',  $recipient, $cityRouting, $sender);
 
-        $this->packages[] = new Package('40950000116', Product::PPL_PARCEL_CZ_PRIVATE, 1, 'Testpvaci balik 1',  $recipient, $cityRouting, $sender);
+        $this->packages[] = new Package('40950000116', Product::PPL_PARCEL_CZ_PRIVATE, 'Testpvaci balik 1',  $recipient, $cityRouting, $sender);
 
 
         //These two are together and first one is with POD
         $paymentInfo = new PaymentInfo(4000, Currency::CZK, '123456');
-        $packageFirst = new Package('40950000117', Product::PPL_PARCEL_CZ_PRIVATE_COD, 2, 'Testpvaci balik 2',  $recipient, $cityRouting, $sender, null, null, $paymentInfo);
+        $packageFirst = new Package('40950000117', Product::PPL_PARCEL_CZ_PRIVATE_COD, 'Testpvaci balik 2',  $recipient, $cityRouting, $sender, null, null, $paymentInfo);
         $packageFirst->setPackageCount(2);
         $packageFirst->setPackagePosition(1);
 
         $paymentInfoNull = new PaymentInfo(0, Currency::CZK, '123456');
-        $packageSecond = new Package('40950000118', Product::PPL_PARCEL_CZ_PRIVATE_COD, 3, 'Testpvaci balik 3',  $recipient, $cityRouting, $sender, null, null, $paymentInfoNull);
+        $packageSecond = new Package('40950000118', Product::PPL_PARCEL_CZ_PRIVATE_COD, 'Testpvaci balik 3',  $recipient, $cityRouting, $sender, null, null, $paymentInfoNull);
         $packageSecond->setPackageCount(2);
         $packageSecond->setPackagePosition(2);
 
@@ -66,8 +66,8 @@ abstract class BaseTest extends TestCase
         $this->packages[] = $packageSecond;
 
 
-        $this->packages[] = new Package('40950000119', Product::PPL_PARCEL_CZ_PRIVATE, 4, 'Testpvaci balik 4',  $recipient, $cityRouting, $sender);
-        $this->packages[] = new Package('40950000120', Product::PPL_PARCEL_CZ_PRIVATE, 5, 'Testpvaci balik 5', $recipient, $cityRouting, $sender);
+        $this->packages[] = new Package('40950000119', Product::PPL_PARCEL_CZ_PRIVATE, 'Testpvaci balik 4',  $recipient, $cityRouting, $sender);
+        $this->packages[] = new Package('40950000120', Product::PPL_PARCEL_CZ_PRIVATE, 'Testpvaci balik 5', $recipient, $cityRouting, $sender);
     }
 
 }

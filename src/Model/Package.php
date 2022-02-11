@@ -20,9 +20,6 @@ class Package implements IPackage
     /** @var integer */
     private $packageProductType;
 
-    /** @var float */
-    private $weight;
-
     /** @var string */
     private $note;
 
@@ -69,7 +66,6 @@ class Package implements IPackage
      * Package constructor.
      * @param string $packageNumber Package number (40990019352)
      * @param int $packageProductType Product type
-     * @param float $weight weight
      * @param string $note note
      * @param IRecipient $recipient
      * @param ICityRouting $cityRouting
@@ -90,7 +86,6 @@ class Package implements IPackage
     public function __construct(
         $packageNumber,
         $packageProductType,
-        $weight,
         $note,
         $recipient,
         ICityRouting $cityRouting,
@@ -128,9 +123,8 @@ class Package implements IPackage
         {
             $this->setPackageNumber($packageNumber);
         }
-
+        
         $this->setPackageProductType($packageProductType);
-        $this->setWeight($weight);
         $this->setNote($note);
         $this->setDepoCode($depoCode);
         $this->setSpecialDelivery($specialDelivery);
@@ -177,14 +171,6 @@ class Package implements IPackage
     public function setPackageNumber($packageNumber)
     {
         $this->packageNumber = $packageNumber;
-    }
-
-    /**
-     * @param float $weight
-     */
-    public function setWeight($weight)
-    {
-        $this->weight = $weight;
     }
 
     /**
@@ -334,14 +320,6 @@ class Package implements IPackage
     public function getPackageProductType()
     {
         return $this->packageProductType;
-    }
-
-    /**
-     * @return float
-     */
-    public function getWeight()
-    {
-        return $this->weight;
     }
 
     /**
