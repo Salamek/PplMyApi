@@ -1,0 +1,13 @@
+GIT:
+    AUTO_COMMIT: true
+    AUTO_TAG: true
+    AUTO_PUSH: true # false=disabled, true=enabled, 'remote_name'=enabled and push to remote_name
+    COMMIT_MESSAGE: 'New version {version}'
+
+REGEXPS:
+    'version': _VERSION\s*:\s*\'(?P<major>\d+)\.(?P<minor>\d+)\.(?P<patch>\d+)\'
+
+VERSION_FILES:
+    '.version.yml': 'version'
+
+_VERSION: '2.0.0'
