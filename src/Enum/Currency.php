@@ -11,12 +11,14 @@ class Currency
     const CZK = 'CZK';
     const EUR = 'EUR';
     const PLN = 'PLN';
+    const HUF = 'HUF';
 
     /** @var array */
     public static $list = [
         self::CZK,
         self::EUR,
-        self::PLN
+        self::PLN,
+        self::HUF
     ];
 
 }
