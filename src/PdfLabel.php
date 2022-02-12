@@ -134,7 +134,7 @@ class PdfLabel implements ILabel
         //Sender
         $pdf->SetFont(self::$fontFamily, '', 6*$scale);
         $pdf->Text(58*$scale, 55.5*$scale, 'Sender / Odesílatel');
-        $pdf->Text(99*$scale, 55.5*$scale, 'Datum tisku etikety: '.$printDate->format('d-m-Y'));
+        $pdf->Text(99*$scale, 55.5*$scale, 'Datum tisku etikety: '.$printDate->format('j.n.Y'));
 
         $x = 58.5*$scale;
         $y = 59.5*$scale;
@@ -335,7 +335,7 @@ class PdfLabel implements ILabel
         //Sender
         $pdf->SetFont(self::$fontFamily, '', 6);
         $pdf->Text(58 + $xPositionOffset, 55.5 + $yPositionOffset, 'Sender / Odesílatel');
-        $pdf->Text(99 + $xPositionOffset, 55.5 + $yPositionOffset, 'Datum tisku etikety: '.$printDate->format('d-m-Y'));
+        $pdf->Text(99 + $xPositionOffset, 55.5 + $yPositionOffset, 'Datum tisku etikety: '.$printDate->format('j.n.Y'));
 
         $x = 58.5 + $xPositionOffset;
         $y = 59.5 + $yPositionOffset;
