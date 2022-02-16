@@ -189,9 +189,11 @@ class PdfLabel implements ILabel
         $pdf->StartTransform();
         $pdf->Rotate(90, $x, $y);
         $pdf->SetFont(self::$fontFamily, '', 37*$scale);
-        $pdf->Text($x, $y, $package->getDepoCode());
+        $pdf->Text($x, $y, $package->getCityRouting()->getDepoCode() ?? $package->getDepoCode());
         $pdf->StopTransform();
-
+        
+        $pdf->MultiCell(24, 21, '', ['LTRB' => ['width' => 1]], 'L', 0, 0, 12*$scale, 81*$scale, true, 0, false, true, 0);
+        
         //Route code
         $x = 9*$scale;
         $y = 40*$scale;
@@ -390,8 +392,11 @@ class PdfLabel implements ILabel
         $pdf->StartTransform();
         $pdf->Rotate(90, $x, $y);
         $pdf->SetFont(self::$fontFamily, '', 37);
-        $pdf->Text($x, $y, $package->getDepoCode());
+        $pdf->Text($x, $y, $package->getCityRouting()->getDepoCode() ?? $package->getDepoCode());
         $pdf->StopTransform();
+        
+        
+        $pdf->MultiCell(12, 12, '', ['LTRB' => ['width' => 0.5]], 'L', 0, 0, 12 + $xPositionOffset, 80.5 + $yPositionOffset, true, 0, false, true, 0);
 
         //Route code
         $x = 9 + $xPositionOffset;

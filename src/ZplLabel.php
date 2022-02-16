@@ -17,7 +17,7 @@ use Salamek\PplMyApi\Model\Package;
 class ZplLabel implements ILabel {
 
     /**
-     * @param array $packages
+     * @param Package[] $packages
      * @param type $decomposition
      * @param type $quarterPosition
      * @param \DateTime $printDate
@@ -118,7 +118,7 @@ class ZplLabel implements ILabel {
         if ($package->getCityRouting()->getHighlighted()) {
             $zpl .= sprintf('^FO5,2^GB18,17,1,B,0^FS');
         }
-        $zpl .= sprintf('^FO7,6^A0N,13^FD%s^FS', $package->getCityRouting()->getDepoCode());
+        $zpl .= sprintf('^FO7,6^A0N,13^FD%s^FS', $package->getCityRouting()->getDepoCode() ?? $package->getDepoCode());
 
         //package routing country
         if ($package->getRecipient()->getCountry() <> Country::CZ) {
