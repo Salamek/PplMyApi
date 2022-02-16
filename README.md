@@ -1,7 +1,8 @@
 # Professional Parcel Logistic MyApi client in PHP
 
 [![Test status](https://github.com/Salamek/PplMyApi/actions/workflows/php.yml/badge.svg)](https://github.com/Salamek/PplMyApi/actions/workflows/php.yml)
-[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.me/salamek)
+[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.me/salamek) 
+> Please consider sponsoring if you using this package comercially, my time is not free :) You can sponsor me by clicking on "Sponsor" button in top button row. Thank You./Prosím pouvažujte nad sponzorováním tohoto projektu pokud používáte tento projekt komerčně, můj čas není zadarmo :) Sponzorovat můžete kliknutím na tlačítko "Sponsor" v horní řadě tlačítkek. Děkuji.
 
 Professional Parcel Logistic MyApi client in PHP
 
