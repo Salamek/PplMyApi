@@ -1,7 +1,8 @@
 # Professional Parcel Logistic MyApi client in PHP
 
 [![Test status](https://github.com/Salamek/PplMyApi/actions/workflows/php.yml/badge.svg)](https://github.com/Salamek/PplMyApi/actions/workflows/php.yml)
-[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.me/salamek)
+[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.me/salamek) 
+> Please consider sponsoring if you using this package comercially, my time is not free :) You can sponsor me by clicking on "Sponsor" button in top button row. Thank You./Prosím pouvažujte nad sponzorováním tohoto projektu pokud používáte tento projekt komerčně, můj čas není zadarmo :) Sponzorovat můžete kliknutím na tlačítko "Sponsor" v horní řadě tlačítkek. Děkuji.
 
 Professional Parcel Logistic MyApi client in PHP
 
@@ -132,8 +133,7 @@ $packageSeriesNumberId = 114;
 $packageNumberInfo = new PackageNumberInfo($packageSeriesNumberId, Product::PPL_PARCEL_CZ_PRIVATE, Depo::CODE_09);
 $packageNumber = Tools::generatePackageNumber($packageNumberInfo); //40950000114
 */
-$weight = 3.15;
-$package = new Package($packageNumber, Product::PPL_PARCEL_CZ_PRIVATE, $weight, 'Testovaci balik', $recipient);
+$package = new Package($packageNumber, Product::PPL_PARCEL_CZ_PRIVATE, 'Testovaci balik', $recipient);
 
 try
 {
@@ -176,7 +176,6 @@ $packageSeriesNumberId = 114;
 $packageNumberInfo = new PackageNumberInfo($packageSeriesNumberId, Product::PPL_PARCEL_CZ_PRIVATE, Depo::CODE_09);
 $packageNumber = Tools::generatePackageNumber($packageNumberInfo); //40950000114
 */
-$weight = 3.15;
 
 $cityRoutingResponse = $this->pplMyApi->getCitiesRouting($country, null, $zipCode, $street);
 
@@ -196,7 +195,7 @@ $cityRouting = new CityRouting(
 
 //Generate SmartLabel with the help of RoutedPackage
 
-$package = new Package($packageNumber, Product::PPL_PARCEL_CZ_PRIVATE, $weight, 'Testovaci balik', $recipient, $cityRouting);
+$package = new Package($packageNumber, Product::PPL_PARCEL_CZ_PRIVATE, 'Testovaci balik', $recipient, $cityRouting);
 
 try
 {
@@ -357,8 +356,23 @@ $packageSeriesNumberId = 114;
 $packageNumberInfo = new PackageNumberInfo($packageSeriesNumberId, Product::PPL_PARCEL_CZ_PRIVATE, Depo::CODE_09);
 $packageNumber = Tools::generatePackageNumber($packageNumberInfo); //40950000114
 */
-$weight = 3.15;
-$package = new Package($packageNumber, Product::PPL_PARCEL_CZ_PRIVATE, $weight, 'Testovaci balik', $sender, $recipient);
+$cityRoutingResponse = $this->pplMyApi->getCitiesRouting($country, null, $zipCode, $street);
+
+//Get first routing from the response and test (response can contain more records, not 100% sure how this works...)
+if (is_array($cityRoutingResponse)) {
+  $cityRoutingResponse = $cityRoutingResponse[0];
+}
+if (!isset($cityRoutingResponse->RouteCode) || !isset($cityRoutingResponse->DepoCode) || !isset($cityRoutingResponse->Highlighted)) {
+  throw new Exception('Štítek PPL se nepodařilo vytisknout, chybí Routing, pravděpodobně neplatná adresa!');
+}
+
+$cityRouting = new CityRouting(
+    $cityRoutingResponse->RouteCode, 
+    $cityRoutingResponse->DepoCode, 
+    $cityRoutingResponse->Highlighted
+);
+
+$package = new Package($packageNumber, Product::PPL_PARCEL_CZ_PRIVATE, 'Testovaci balik', $recipient, $cityRouting, $sender);
 
 // PDF Label
 $rawPdf = PdfLabel::generateLabels([$package]);
