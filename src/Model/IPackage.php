@@ -93,6 +93,13 @@ interface IPackage
     public function setPackagePosition($packagePosition);
 
     /**
+     * Sets master package number when package is in set
+     * required only when package in set
+     * @param string $masterPackageNumber
+     */
+    public function setMasterPackageNumber(string $masterPackageNumber = null);
+    
+    /**
      * @return string
      */
     public function getPackageNumber();
@@ -171,4 +178,9 @@ interface IPackage
      * @return int
      */
     public function getPackagePosition();
+    
+    /**
+     * @return string
+     */
+    public function getMasterPackageNumber(): ?string;
 }

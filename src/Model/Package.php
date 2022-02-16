@@ -59,6 +59,9 @@ class Package implements IPackage
     /** @var int */
     private $packagePosition = 1;
 
+    /** @var string */
+    private $masterPackageNumber = null;
+    
     /** @var ICityRouting */
     private $cityRouting;
 
@@ -80,7 +83,7 @@ class Package implements IPackage
      * @param null|IWeightedPackageInfo $weightedPackageInfo
      * @param integer $packageCount
      * @param integer $packagePosition
-     * @param bool $forceOwnPackageNumber
+     * @param null|string $masterPackageNumber
      * @throws WrongDataException
      */
     public function __construct(
@@ -99,7 +102,8 @@ class Package implements IPackage
         IPalletInfo $palletInfo = null,
         IWeightedPackageInfo $weightedPackageInfo = null,
         $packageCount = 1,
-        $packagePosition = 1
+        $packagePosition = 1,
+        $masterPackageNumber = null
     ) {
         if (in_array($packageProductType, Product::$cashOnDelivery) && is_null($paymentInfo)) {
             throw new WrongDataException('$paymentInfo must be set if product type is CoD');
@@ -122,6 +126,7 @@ class Package implements IPackage
         $this->setWeightedPackageInfo($weightedPackageInfo);
         $this->setPackageCount($packageCount);
         $this->setPackagePosition($packagePosition);
+        $this->setMasterPackageNumber($masterPackageNumber);
 
         if (in_array($flags, Product::$deliverySaturday) && is_null($palletInfo)) {
             throw new WrongDataException('Package requires Salamek\PplMyApi\Enum\Flag::SATURDAY_DELIVERY to be true or false');
@@ -260,6 +265,14 @@ class Package implements IPackage
     }
 
     /**
+     * 
+     * @param string $masterPackageNumber
+     */
+    public function setMasterPackageNumber(string $masterPackageNumber = null) {
+        $this->masterPackageNumber = $masterPackageNumber;;
+    }
+
+        /**
      * @param ICityRouting $cityRouting
      */
     public function setCityRouting(ICityRouting $cityRouting)
@@ -411,6 +424,14 @@ class Package implements IPackage
     public function getPackagePosition()
     {
         return $this->packagePosition;
+    }
+    
+    /**
+     * 
+     * @return string|null
+     */
+    public function getMasterPackageNumber(): ?string {
+        return $this->masterPackageNumber;
     }
 
     /**

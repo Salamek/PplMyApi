@@ -454,6 +454,7 @@ class Api
                 'PackagesExtNums' => $packagesExtNums,
                 'PackageServices' => $packageServices,
                 'PackageSet' => [
+                    'MasterPackNumber' => $package->getMasterPackageNumber(),
                     'PackageInSetNr' => $package->getPackagePosition(),
                     'PackagesInSet' => $package->getPackageCount()
                 ],
