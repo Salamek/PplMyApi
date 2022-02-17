@@ -135,7 +135,7 @@ $packageNumberInfo = new PackageNumberInfo($packageSeriesNumberId, Product::PPL_
 $packageNumber = Tools::generatePackageNumber($packageNumberInfo); //40950000114
 */
 
-$cityRoutingResponse = $this->pplMyApi->getCitiesRouting($country, null, $zipCode, $street);
+$cityRoutingResponse = $pplMyApi->getCitiesRouting($country, null, $zipCode, $street);
 
 //Get first routing from the response and test (response can contain more records, not 100% sure how this works...)
 if (is_array($cityRoutingResponse)) {
