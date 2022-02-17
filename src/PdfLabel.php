@@ -254,7 +254,7 @@ class PdfLabel implements ILabel
 
         // PackagePosition of PackageCount
         $pdf->SetFont(self::$fontFamily, '', 15*$scale);
-        $pdf->MultiCell(15*$scale, 7*$scale, sprintf('%s/%s', $package->getPackagePosition(), $package->getPackageCount()), ['LTRB' => ['width' => 0.2]], 'C', 0, 0, 119.5*$scale, 94*$scale, true, 0, false, true, 0);
+        $pdf->MultiCell(15*$scale, 7*$scale, sprintf('%s/%s', $package->getPackageSet()->getPackagePosition(), $package->getPackageSet()->getPackageCount()), ['LTRB' => ['width' => 0.2]], 'C', 0, 0, 119.5*$scale, 94*$scale, true, 0, false, true, 0);
 
         return $pdf;
     }
@@ -458,7 +458,7 @@ class PdfLabel implements ILabel
 
         // PackagePosition of PackageCount
         $pdf->SetFont(self::$fontFamily, '', 15);
-        $pdf->MultiCell(15, 7, sprintf('%s/%s', $package->getPackagePosition(), $package->getPackageCount()), ['LTRB' => ['width' => 0.2]], 'C', 0, 0, 119.5 + $xPositionOffset, 94 + $yPositionOffset, true, 0, false, true, 0);
+        $pdf->MultiCell(15, 7, sprintf('%s/%s', $package->getPackageSet()->getPackagePosition(), $package->getPackageSet()->getPackageCount()), ['LTRB' => ['width' => 0.2]], 'C', 0, 0, 119.5 + $xPositionOffset, 94 + $yPositionOffset, true, 0, false, true, 0);
 
         return $pdf;
     }

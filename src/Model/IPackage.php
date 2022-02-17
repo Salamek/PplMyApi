@@ -83,22 +83,11 @@ interface IPackage
     public function setWeightedPackageInfo(IWeightedPackageInfo $weightedPackageInfo);
 
     /**
-     * @param int $packageCount
+     * @param IPackageSet $packageSet
+     * @return void
      */
-    public function setPackageCount($packageCount);
+    public function setPackageSet(IPackageSet $packageSet): void;
 
-    /**
-     * @param int $packagePosition
-     */
-    public function setPackagePosition($packagePosition);
-
-    /**
-     * Sets master package number when package is in set
-     * required only when package in set
-     * @param string $masterPackageNumber
-     */
-    public function setMasterPackageNumber(string $masterPackageNumber = null);
-    
     /**
      * @return string
      */
@@ -168,19 +157,9 @@ interface IPackage
      * @return null|IWeightedPackageInfo
      */
     public function getWeightedPackageInfo();
-
-    /**
-     * @return int
-     */
-    public function getPackageCount();
-
-    /**
-     * @return int
-     */
-    public function getPackagePosition();
     
     /**
-     * @return string
+     * @return IPackageSet
      */
-    public function getMasterPackageNumber(): ?string;
+    public function getPackageSet(): IPackageSet;
 }

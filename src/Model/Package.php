@@ -53,8 +53,8 @@ class Package implements IPackage
     /** @var null|IWeightedPackageInfo */
     private $weightedPackageInfo = null;
 
-    /** @var int */
-    private $packageCount = 1;
+    /** @var IPackageSet */
+    private $packageSet;
 
     /** @var int */
     private $packagePosition = 1;
@@ -101,12 +101,17 @@ class Package implements IPackage
         array $flags = [],
         IPalletInfo $palletInfo = null,
         IWeightedPackageInfo $weightedPackageInfo = null,
-        $packageCount = 1,
-        $packagePosition = 1,
-        $masterPackageNumber = null
+        IPackageSet $packageSet = null,
     ) {
         if (in_array($packageProductType, Product::$cashOnDelivery) && is_null($paymentInfo)) {
             throw new WrongDataException('$paymentInfo must be set if product type is CoD');
+        }
+        
+        if ($packageSet === null) {
+            // Set default package set if none is provided
+            $packageSet = new PackageSet(
+                    $packageNumber
+            );
         }
 
         $this->setCityRouting($cityRouting);
@@ -124,9 +129,7 @@ class Package implements IPackage
         $this->setFlags($flags);
         $this->setPalletInfo($palletInfo);
         $this->setWeightedPackageInfo($weightedPackageInfo);
-        $this->setPackageCount($packageCount);
-        $this->setPackagePosition($packagePosition);
-        $this->setMasterPackageNumber($masterPackageNumber);
+        $this->setPackageSet($packageSet);
 
         if (in_array($flags, Product::$deliverySaturday) && is_null($palletInfo)) {
             throw new WrongDataException('Package requires Salamek\PplMyApi\Enum\Flag::SATURDAY_DELIVERY to be true or false');
@@ -249,30 +252,15 @@ class Package implements IPackage
     }
 
     /**
-     * @param int $packageCount
+     * @param null|IPackageSet $packageSet
      */
-    public function setPackageCount($packageCount)
+    public function setPackageSet(IPackageSet $packageSet): void
     {
-        $this->packageCount = $packageCount;
+        $this->packageSet = $packageSet;
     }
+
 
     /**
-     * @param int $packagePosition
-     */
-    public function setPackagePosition($packagePosition)
-    {
-        $this->packagePosition = $packagePosition;
-    }
-
-    /**
-     * 
-     * @param string $masterPackageNumber
-     */
-    public function setMasterPackageNumber(string $masterPackageNumber = null) {
-        $this->masterPackageNumber = $masterPackageNumber;;
-    }
-
-        /**
      * @param ICityRouting $cityRouting
      */
     public function setCityRouting(ICityRouting $cityRouting)
@@ -411,27 +399,11 @@ class Package implements IPackage
 
 
     /**
-     * @return int
+     * @return IPackageSet
      */
-    public function getPackageCount()
+    public function getPackageSet(): IPackageSet
     {
-        return $this->packageCount;
-    }
-
-    /**
-     * @return int
-     */
-    public function getPackagePosition()
-    {
-        return $this->packagePosition;
-    }
-    
-    /**
-     * 
-     * @return string|null
-     */
-    public function getMasterPackageNumber(): ?string {
-        return $this->masterPackageNumber;
+        return $this->packageSet;
     }
 
     /**

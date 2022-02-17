@@ -106,7 +106,7 @@ class ZplLabel implements ILabel {
         $zpl .= sprintf('^FO20,58^A0R,4^FD%s^FS', $package->getSender()->getZipCode());
 
         //package count
-        $zpl .= sprintf('^FO0,122^A0R,7^FD%s/%s^FS', $package->getPackagePosition(), $package->getPackageCount());
+        $zpl .= sprintf('^FO0,122^A0R,7^FD%s/%s^FS', $package->getPackageSet()->getPackagePosition(), $package->getPackageSet()->getPackageCount());
 
         //package routing ZIP
         $zpl .= sprintf('^FO35,3^A0N,7^FD%s^FS', $package->getRecipient()->getZipCode());

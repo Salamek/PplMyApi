@@ -11,6 +11,7 @@ use Salamek\PplMyApi\Model\Recipient;
 use Salamek\PplMyApi\Model\Sender;
 use Salamek\PplMyApi\Model\CityRouting;
 use Salamek\PplMyApi\Enum\Depo;
+use Salamek\PplMyApi\Model\PackageSet;
 
 /**
  * Copyright (C) 2016 Adam Schubert <adam.schubert@sg1-game.net>.
@@ -52,15 +53,14 @@ abstract class BaseTest extends TestCase
 
 
         //These two are together and first one is with POD
+        $packagesCount = 2;
         $paymentInfo = new PaymentInfo(4000, Currency::CZK, '123456');
         $packageFirst = new Package('40950000117', Product::PPL_PARCEL_CZ_PRIVATE_COD, 'Testovaci balik 2',  $recipient, $cityRouting, $sender, null, null, $paymentInfo);
-        $packageFirst->setPackageCount(2);
-        $packageFirst->setPackagePosition(1);
+        $packageFirst->setPackageSet(new PackageSet('40950000117', 1, $packagesCount));
 
         $paymentInfoNull = new PaymentInfo(0, Currency::CZK, '123456');
         $packageSecond = new Package('40950000118', Product::PPL_PARCEL_CZ_PRIVATE_COD, 'Testovaci balik 3',  $recipient, $cityRouting, $sender, null, null, $paymentInfoNull);
-        $packageSecond->setPackageCount(2);
-        $packageSecond->setPackagePosition(2);
+        $packageFirst->setPackageSet(new PackageSet('40950000118', 2, $packagesCount));
 
         $this->packages[] = $packageFirst;
         $this->packages[] = $packageSecond;

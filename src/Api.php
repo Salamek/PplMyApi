@@ -453,11 +453,11 @@ class Api
                 ] : null),
                 'PackagesExtNums' => $packagesExtNums,
                 'PackageServices' => $packageServices,
-                'PackageSet' => [
-                    'MasterPackNumber' => $package->getMasterPackageNumber(),
-                    'PackageInSetNr' => $package->getPackagePosition(),
-                    'PackagesInSet' => $package->getPackageCount()
-                ],
+                'PackageSet' => ($package->getPackageSet() ?[
+                    'MasterPackNumber' => $package->getPackageSet()->getMasterPackageNumber(),
+                    'PackageInSetNr' => $package->getPackageSet()->getPackagePosition(),
+                    'PackagesInSet' => $package->getPackageSet()->getPackageCount()
+                ] : null),
                 'Flags' => $flags,
                 'PalletInfo' => $palletInfo,
                 'WeightedPackageInfoIn' => $weightedPackageInfo
