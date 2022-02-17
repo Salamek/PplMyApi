@@ -95,7 +95,7 @@ class Package implements IPackage
         array $flags = [],
         IPalletInfo $palletInfo = null,
         IWeightedPackageInfo $weightedPackageInfo = null,
-        IPackageSet $packageSet = null,
+        IPackageSet $packageSet = null
     ) {
         if (in_array($packageProductType, Product::$cashOnDelivery) && is_null($paymentInfo)) {
             throw new WrongDataException('$paymentInfo must be set if product type is CoD');
