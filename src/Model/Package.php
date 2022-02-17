@@ -56,12 +56,6 @@ class Package implements IPackage
     /** @var IPackageSet */
     private $packageSet;
 
-    /** @var int */
-    private $packagePosition = 1;
-
-    /** @var string */
-    private $masterPackageNumber = null;
-    
     /** @var ICityRouting */
     private $cityRouting;
 
