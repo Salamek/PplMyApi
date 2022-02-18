@@ -126,7 +126,12 @@ $customerId = 'my_api_customer_id';
 
 $pplMyApi = new Api($username, $password, $customerId);
 
-$recipient = new Recipient('Olomouc', 'Adam Schubert', 'My Address', '77900', 'adam@example.com', '+420123456789', 'https://www.salamek.cz', Country::CZ, 'My Compamy a.s.');
+$country = Country::CZ;
+$city = 'Olomouc';
+$street = 'My Address';
+$zipCode = '77900';
+
+$recipient = new Recipient($city, 'Adam Schubert', $street, $zipCode, 'adam@example.com', '+420123456789', 'https://www.salamek.cz', $country, 'My Compamy a.s.');
 
 $packageNumber = '40950000114';
 /* Or you can use Tools::generatePackageNumber to get this number only from $packageSeriesNumberId like 114
