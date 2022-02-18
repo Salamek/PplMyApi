@@ -30,7 +30,6 @@ class CityRouting implements ICityRouting
         $this->highlighted = $highlighted;
     }
 
-
     public function getRouteCode()
     {
         return $this->routeCode;

@@ -9,7 +9,7 @@ Professional Parcel Logistic MyApi client in PHP
 
 ## Requirements
 
-- PHP 5.6 or higher
+- PHP 7.3 or higher
 
 ## Installation
 
