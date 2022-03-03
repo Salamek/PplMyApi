@@ -54,7 +54,7 @@ final class PublicTest extends BaseTest
             \Salamek\PplMyApi\Enum\Product::PPL_PARCEL_CZ_PRIVATE,
             \Salamek\PplMyApi\Enum\Depo::CODE_09
         );
-        $this->assertEquals('40950000114', Tools::generatePackageNumber($packageNumberInfo));
+        $this->assertEquals('40980000114', Tools::generatePackageNumber($packageNumberInfo));
     }
 
     /**
@@ -62,11 +62,11 @@ final class PublicTest extends BaseTest
      */
     public function testParsePackageNumber()
     {
-        $packageNumberInfo = Tools::parsePackageNumber('40950000114');
+        $packageNumberInfo = Tools::parsePackageNumber('40980000114');
         
-        $this->assertEquals('4', $packageNumberInfo->getProductType());
+        $this->assertEquals(\Salamek\PplMyApi\Enum\Product::PPL_PARCEL_CZ_PRIVATE, $packageNumberInfo->getProductType());
         $this->assertEquals('0000114', $packageNumberInfo->getSeriesNumberId());
-        $this->assertEquals('09', $packageNumberInfo->getDepoCode());
+        $this->assertEquals(\Salamek\PplMyApi\Enum\Depo::CODE_09, $packageNumberInfo->getDepoCode());
         $this->assertFalse($packageNumberInfo->isCod());
     }
 
