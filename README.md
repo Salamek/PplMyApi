@@ -38,6 +38,8 @@ Consult official PPL documentation for methods description
 * [apiCheck.php](examples/apiCheck.php) Simple example to test connection to PPL MyApi
 * [getApiVersion.php](examples/getApiVersion.php) Simple example to show how to get MyApi version
 * [createPackages.php](examples/createPackages.php) Example how to create basic packages
+* [createPackagesWithCod.php](examples/createPackagesWithCod.php) Example how to create packages with COD (Cash On Delivery)
+* [createPackagesWithService.php](examples/createPackagesWithService.php) Example how to create packages with additional services
 * [createPickupOrders.php](examples/createPickupOrders.php) Example how to create Pickup Orders
 * [createOrders.php](examples/createOrders.php) Example how to create Orders
 * [getCitiesRouting.php](examples/getCitiesRouting.php) Example how to get cities routing
