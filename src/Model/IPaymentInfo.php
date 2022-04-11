@@ -32,9 +32,9 @@ interface IPaymentInfo
     public function setCashOnDeliveryCurrency(string $cashOnDeliveryCurrency): void;
 
     /**
-     * @param int $cashOnDeliveryPrice
+     * @param float $cashOnDeliveryPrice
      */
-    public function setCashOnDeliveryPrice(int $cashOnDeliveryPrice): void;
+    public function setCashOnDeliveryPrice(float $cashOnDeliveryPrice): void;
 
     /**
      * @param int $cashOnDeliveryVariableSymbol
