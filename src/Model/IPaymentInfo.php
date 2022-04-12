@@ -83,9 +83,9 @@ interface IPaymentInfo
     public function getCashOnDeliveryCurrency(): string;
 
     /**
-     * @return int
+     * @return float
      */
-    public function getCashOnDeliveryPrice(): int;
+    public function getCashOnDeliveryPrice(): float;
 
     /**
      * @return int
