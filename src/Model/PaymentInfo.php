@@ -20,7 +20,7 @@ class PaymentInfo implements IPaymentInfo
     /** @var null|string */
     private $cashOnDeliveryCurrency = null;
 
-    /** @var null|integer */
+    /** @var null|float */
     private $cashOnDeliveryPrice = null;
 
     /** @var null|integer */
@@ -43,7 +43,7 @@ class PaymentInfo implements IPaymentInfo
 
     /**
      * PaymentInfo constructor.
-     * @param int $cashOnDeliveryPrice
+     * @param float $cashOnDeliveryPrice
      * @param string $cashOnDeliveryCurrency
      * @param int $cashOnDeliveryVariableSymbol
      * @param null|string $insuranceCurrency
@@ -55,7 +55,7 @@ class PaymentInfo implements IPaymentInfo
      * @param null|string $swift
      */
     public function __construct(
-        int $cashOnDeliveryPrice,
+        float $cashOnDeliveryPrice,
         string $cashOnDeliveryCurrency,
         int $cashOnDeliveryVariableSymbol,
         string $insuranceCurrency = null,
@@ -110,9 +110,9 @@ class PaymentInfo implements IPaymentInfo
     }
 
     /**
-     * @param int $cashOnDeliveryPrice
+     * @param float $cashOnDeliveryPrice
      */
-    public function setCashOnDeliveryPrice(int $cashOnDeliveryPrice): void
+    public function setCashOnDeliveryPrice(float $cashOnDeliveryPrice): void
     {
         $this->cashOnDeliveryPrice = $cashOnDeliveryPrice;
     }
@@ -194,9 +194,9 @@ class PaymentInfo implements IPaymentInfo
     }
 
     /**
-     * @return int
+     * @return float
      */
-    public function getCashOnDeliveryPrice(): int
+    public function getCashOnDeliveryPrice(): float
     {
         return $this->cashOnDeliveryPrice;
     }
