@@ -32,7 +32,7 @@ class PaymentInfo implements IPaymentInfo
     /** @var null|string */
     private $insuranceCurrency = null;
 
-    /** @var null|integer */
+    /** @var null|float */
     private $insurancePrice = null;
 
     /** @var null|string */
@@ -47,7 +47,7 @@ class PaymentInfo implements IPaymentInfo
      * @param string $cashOnDeliveryCurrency
      * @param int $cashOnDeliveryVariableSymbol
      * @param null|string $insuranceCurrency
-     * @param int|null $insurancePrice
+     * @param float|null $insurancePrice
      * @param null|string $bankAccount
      * @param null|string $bankCode
      * @param null|string $iban
@@ -59,7 +59,7 @@ class PaymentInfo implements IPaymentInfo
         string $cashOnDeliveryCurrency,
         int $cashOnDeliveryVariableSymbol,
         string $insuranceCurrency = null,
-        int $insurancePrice = null,
+        float $insurancePrice = null,
         string $bankAccount = null,
         string $bankCode = null,
         string $iban = null,
@@ -146,9 +146,9 @@ class PaymentInfo implements IPaymentInfo
     }
 
     /**
-     * @param int|null $insurancePrice
+     * @param float|null $insurancePrice
      */
-    public function setInsurancePrice(int $insurancePrice = null): void
+    public function setInsurancePrice(float $insurancePrice = null): void
     {
         $this->insurancePrice = $insurancePrice;
     }
@@ -226,9 +226,9 @@ class PaymentInfo implements IPaymentInfo
     }
 
     /**
-     * @return int|null
+     * @return float|null
      */
-    public function getInsurancePrice(): ?int
+    public function getInsurancePrice(): ?float
     {
         return $this->insurancePrice;
     }
