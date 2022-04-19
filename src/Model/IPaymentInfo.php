@@ -55,7 +55,7 @@ interface IPaymentInfo
     /**
      * @param int|null $insurancePrice
      */
-    public function setInsurancePrice(int $insurancePrice = null): void;
+    public function setInsurancePrice(float $insurancePrice = null): void;
 
     /**
      * @param null|string $specificSymbol
@@ -103,9 +103,9 @@ interface IPaymentInfo
     public function getInsuranceCurrency(): ?string;
 
     /**
-     * @return int|null
+     * @return float|null
      */
-    public function getInsurancePrice(): ?int;
+    public function getInsurancePrice(): ?float;
 
     /**
      * @return null|string
