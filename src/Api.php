@@ -460,7 +460,7 @@ class Api
                 ] : null),
                 'Flags' => $flags,
                 'PalletInfo' => $palletInfo,
-                'WeightedPackageInfoIn' => $weightedPackageInfo
+                'WeightedPackageInfo' => $weightedPackageInfo
             ];
 
             if ($package->getDepoCode() !== null) {
