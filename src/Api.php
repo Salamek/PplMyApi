@@ -472,7 +472,7 @@ class Api
                 'PackageServices' => $packageServices,
                 'Flags' => $flags,
                 'PalletInfo' => $palletInfo,
-                'WeightedPackageInfoIn' => $weightedPackageInfo
+                'WeightedPackageInfo' => $weightedPackageInfo
             ];
         }
 
