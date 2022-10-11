@@ -32,6 +32,19 @@ class Depo
     const CODE_22 = '22';
     const CODE_23 = '23';
     const CODE_24 = '24';
+    
+    const CODE_41 = '41';
+    const CODE_44 = '44';
+    const CODE_46 = '46';
+    const CODE_48 = '48';
+    const CODE_61 = '61';
+    const CODE_62 = '62';
+    const CODE_65 = '65';
+    const CODE_66 = '66';
+    const CODE_67 = '67';
+    const CODE_96 = '96';
+    const CODE_98 = '98';
+    const CODE_T2 = 'T2';
 
     /** @var array */
     public static $list = [
@@ -58,6 +71,19 @@ class Depo
         self::CODE_21,
         self::CODE_22,
         self::CODE_23,
-        self::CODE_24
+        self::CODE_24,
+        
+        self::CODE_41,
+        self::CODE_44,
+        self::CODE_46,
+        self::CODE_48,
+        self::CODE_61,
+        self::CODE_62,
+        self::CODE_65,
+        self::CODE_66,
+        self::CODE_67,
+        self::CODE_96,
+        self::CODE_98,
+        self::CODE_T2
     ];
 }
