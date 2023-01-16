@@ -336,7 +336,7 @@ class Api
 
             $packagesExtNums = [];
             foreach ($package->getExternalNumbers() AS $externalNumber) {
-                $packagesExtNums[]['MyApiPackageExtNum'] = [
+                $packagesExtNums['MyApiPackageExtNum'][] = [
                     'Code' => $externalNumber->getCode(),
                     'ExtNumber' => $externalNumber->getExternalNumber()
                 ];
@@ -344,7 +344,7 @@ class Api
 
             $packageServices = [];
             foreach ($package->getPackageServices() AS $service) {
-                $packageServices[]['MyApiPackageInServices'] = [
+                $packageServices['MyApiPackageInServices'][] = [
                     'SvcCode' => $service->getSvcCode()
                 ];
             }
