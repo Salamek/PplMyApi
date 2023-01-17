@@ -59,6 +59,9 @@ class Package implements IPackage
     /** @var ICityRouting */
     private $cityRouting;
 
+    /** @var IAddressForService[] */
+    private $addressesForServices;
+
     /**
      * Package constructor.
      * @param string $packageNumber Package number (40990019352)
@@ -66,28 +69,27 @@ class Package implements IPackage
      * @param string $note note
      * @param IRecipient $recipient
      * @param ICityRouting $cityRouting
-     * @param ISender $sender
-     * @param string $depoCode code of depo, see Enum\Depo.php
+     * @param ISender|null $sender
+     * @param string|null $depoCode code of depo, see Enum\Depo.php
      * @param null|ISpecialDelivery $specialDelivery
      * @param null|IPaymentInfo $paymentInfo
-     * @param IExternalNumber[] $externalNumbers
-     * @param IPackageService[] $packageServices
-     * @param IFlag[] $flags
+     * @param IExternalNumber $externalNumbers
+     * @param IPackageService $packageServices
+     * @param IFlag $flags
      * @param null|IPalletInfo $palletInfo
      * @param null|IWeightedPackageInfo $weightedPackageInfo
-     * @param integer $packageCount
-     * @param integer $packagePosition
-     * @param null|string $masterPackageNumber
+     * @param IPackageSet|null $packageSet
+     * @param IAddressForService $addressesForServices
      * @throws WrongDataException
      */
     public function __construct(
-        $packageNumber,
-        $packageProductType,
-        $note,
-        $recipient,
+        string $packageNumber,
+        int $packageProductType,
+        string $note,
+        IRecipient $recipient,
         ICityRouting $cityRouting,
-        $sender = null,
-        $depoCode = null,
+        ISender $sender = null,
+        string $depoCode = null,
         ISpecialDelivery $specialDelivery = null,
         IPaymentInfo $paymentInfo = null,
         array $externalNumbers = [],
@@ -95,7 +97,8 @@ class Package implements IPackage
         array $flags = [],
         IPalletInfo $palletInfo = null,
         IWeightedPackageInfo $weightedPackageInfo = null,
-        IPackageSet $packageSet = null
+        IPackageSet $packageSet = null,
+        array $addressesForServices = []
     ) {
         if (in_array($packageProductType, Product::$cashOnDelivery) && is_null($paymentInfo)) {
             throw new WrongDataException('$paymentInfo must be set if product type is CoD');
@@ -124,6 +127,7 @@ class Package implements IPackage
         $this->setPalletInfo($palletInfo);
         $this->setWeightedPackageInfo($weightedPackageInfo);
         $this->setPackageSet($packageSet);
+        $this->setAddressesForServices($addressesForServices);
 
         if (in_array($flags, Product::$deliverySaturday) && is_null($palletInfo)) {
             throw new WrongDataException('Package requires Salamek\PplMyApi\Enum\Flag::SATURDAY_DELIVERY to be true or false');
@@ -262,6 +266,13 @@ class Package implements IPackage
         $this->cityRouting = $cityRouting;
     }
 
+    /**
+     * @param IAddressForService[] $addressesForServices
+     */
+    public function setAddressesForServices(array $addressesForServices)
+    {
+        $this->addressesForServices = $addressesForServices;
+    }
 
     /**
      * @return string
@@ -406,5 +417,13 @@ class Package implements IPackage
     public function getCityRouting()
     {
         return $this->cityRouting;
+    }
+
+    /**
+     * @return IAddressForService[]
+     */
+    public function getAddressesForServices(): array
+    {
+        return $this->addressesForServices;
     }
 }
