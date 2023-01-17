@@ -637,4 +637,9 @@ class Api
         return $this->soap->__getLastResponseHeaders();
     }
 
+    public function setTokenLifespan(string $tokenLifespan): Api
+    {
+        $this->tokenLifespan = $tokenLifespan;
+        return $this;
+    }
 }
