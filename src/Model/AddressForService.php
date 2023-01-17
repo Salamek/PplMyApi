@@ -94,7 +94,7 @@ class AddressForService implements IAddressForService
     /**
      * @inheritdoc
      */
-    public function setContact($contact)
+    public function setContact(string $contact)
     {
         if (!is_null($contact)) {
             MaxLengthValidator::validate($contact, 30);
@@ -106,7 +106,7 @@ class AddressForService implements IAddressForService
     /**
      * @inheritdoc
      */
-    public function setCountry($country)
+    public function setCountry(string $country)
     {
         if (!in_array($country, Country::$list)) {
             throw new WrongDataException(sprintf('Country Code %s is not supported, use one of %s', $country, implode(', ', Country::$list)));
@@ -117,7 +117,7 @@ class AddressForService implements IAddressForService
     /**
      * @inheritdoc
      */
-    public function setEmail($email)
+    public function setEmail(string $email)
     {
         if (!is_null($email)) {
             MaxLengthValidator::validate($email, 100);
@@ -134,7 +134,7 @@ class AddressForService implements IAddressForService
     /**
      * @inheritdoc
      */
-    public function setName($name)
+    public function setName(string $name)
     {
         MaxLengthValidator::validate($name, 250);
         $this->name = $name;
@@ -143,7 +143,7 @@ class AddressForService implements IAddressForService
     /**
      * @inheritdoc
      */
-    public function setName2($name2)
+    public function setName2(string $name2)
     {
         if (!is_null($name2)) {
             MaxLengthValidator::validate($name2, 250);
@@ -155,7 +155,7 @@ class AddressForService implements IAddressForService
     /**
      * @inheritdoc
      */
-    public function setPhone($phone)
+    public function setPhone(string $phone)
     {
         if (!is_null($phone)) {
             MaxLengthValidator::validate($phone, 30);
@@ -167,7 +167,7 @@ class AddressForService implements IAddressForService
     /**
      * @inheritdoc
      */
-    public function setStreet($street)
+    public function setStreet(string $street)
     {
         MaxLengthValidator::validate($street, 30);
         $this->street = $street;
@@ -176,7 +176,7 @@ class AddressForService implements IAddressForService
     /**
      * @inheritdoc
      */
-    public function setZipCode($zipCode)
+    public function setZipCode(string $zipCode)
     {
         MaxLengthValidator::validate($zipCode, 10);
         $this->zipCode = $zipCode;
@@ -185,7 +185,7 @@ class AddressForService implements IAddressForService
     /**
      * @param IFlag[] $flags
      */
-    public function setFlags($flags)
+    public function setFlags(array $flags)
     {
         $this->flags = $flags;
     }
