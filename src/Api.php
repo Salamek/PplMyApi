@@ -336,7 +336,7 @@ class Api
 
             $packagesExtNums = [];
             foreach ($package->getExternalNumbers() AS $externalNumber) {
-                $packagesExtNums[]['MyApiPackageExtNum'] = [
+                $packagesExtNums['MyApiPackageExtNum'][] = [
                     'Code' => $externalNumber->getCode(),
                     'ExtNumber' => $externalNumber->getExternalNumber()
                 ];
@@ -344,7 +344,7 @@ class Api
 
             $packageServices = [];
             foreach ($package->getPackageServices() AS $service) {
-                $packageServices[]['MyApiPackageInServices'] = [
+                $packageServices['MyApiPackageInServices'][] = [
                     'SvcCode' => $service->getSvcCode()
                 ];
             }
@@ -412,6 +412,35 @@ class Api
                 'SpecTakeTimeTo' => $specialDelivery->getTakeTimeTo() ? $specialDelivery->getTakeTimeTo()->format('H:i:s') : null
             ] : null;
 
+            $addressesForServices = [];
+            foreach ($package->getAddressesForServices() as $addressForService) {
+                $addressFlagsList = [];
+                foreach ($addressForService->getFlags() AS $flag) {
+                    $addressFlagsList[] = [
+                        'Code' => $flag->getCode(),
+                        'Value' => $flag->isValue()
+                    ];
+                }
+
+                $addressFlags = empty($addressFlagsList) ? false : ['MyApiFlag' => $addressFlagsList];
+
+                $addressesForServices['AddressForService'][] = [
+                    'ServiceAddressType' => $addressForService->getServiceAddressType(),
+                    'Recipient' => [
+                        'City' => $addressForService->getCity(),
+                        'Contact' => $addressForService->getContact(),
+                        'Country' => $addressForService->getCountry(),
+                        'Email' => $addressForService->getEmail(),
+                        'Name' => $addressForService->getName(),
+                        'Name2' => $addressForService->getName2(),
+                        'Phone' => $addressForService->getPhone(),
+                        'Street' => $addressForService->getStreet(),
+                        'ZipCode' => $addressForService->getZipCode()
+                    ],
+                    'Flags' => $addressFlags,
+                ];
+            }
+
             $packagesProcessed[] = [
                 'PackNumber' => $package->getPackageNumber(),
                 'PackProductType' => $package->getPackageProductType(),
@@ -460,7 +489,8 @@ class Api
                 ] : null),
                 'Flags' => $flags,
                 'PalletInfo' => $palletInfo,
-                'WeightedPackageInfo' => $weightedPackageInfo
+                'WeightedPackageInfo' => $weightedPackageInfo,
+                'AddressesForServices' => $addressesForServices,
             ];
 
             if ($package->getDepoCode() !== null) {
@@ -637,4 +667,9 @@ class Api
         return $this->soap->__getLastResponseHeaders();
     }
 
+    public function setTokenLifespan(string $tokenLifespan): Api
+    {
+        $this->tokenLifespan = $tokenLifespan;
+        return $this;
+    }
 }
