@@ -6,11 +6,10 @@
 namespace Salamek\PplMyApi;
 
 use Salamek\PplMyApi\Enum\Country;
-use Salamek\PplMyApi\Enum\LabelDecomposition;
+use Salamek\PplMyApi\Enum\AccessPointType;
 use Salamek\PplMyApi\Exception\OfflineException;
 use Salamek\PplMyApi\Exception\SecurityException;
 use Salamek\PplMyApi\Exception\WrongDataException;
-use Salamek\PplMyApi\Model\EmptySender;
 use Salamek\PplMyApi\Model\IOrder;
 use Salamek\PplMyApi\Model\IPackage;
 use Salamek\PplMyApi\Model\IPickUpOrder;
@@ -171,16 +170,27 @@ class Api
      * @throws \Exception
      * @throws WrongDataException
      */
-    public function getParcelShops($code = null, $countryCode = Country::CZ)
+    public function getParcelShops(string $code = null, string $countryCode = Country::CZ, string $accessPointType = null, bool $activeCardPayment = null, string $city = null, float $latitude = null, float $longitude = null, int $radius = null, string $zipCode = null): array
     {
         if (!in_array($countryCode, Country::$list)) {
             throw new WrongDataException(sprintf('Country Code %s is not supported, use one of %s', $countryCode, implode(', ', Country::$list)));
         }
+        
+        if (!is_null($accessPointType) && !in_array($accessPointType, AccessPointType::$list)) {
+            throw new WrongDataException(sprintf('AccessPoint Type %s is not supported, use one of %s', $accessPointType, implode(', ', AccessPointType::$list)));
+        }
 
         $result = $this->soap->GetParcelShops([
             'Filter' => [
+                'AccessPointType' => $accessPointType,
+                'ActiveCardPayment' => $activeCardPayment,
+                'City' => $city,
                 'Code' => $code,
-                'CountryCode' => $countryCode
+                'CountryCode' => $countryCode,
+                'Latitude' => $latitude,
+                'Longitude' => $longitude,
+                'Radius' => $radius,
+                'ZipCode' => $zipCode
             ]
         ]);
 
