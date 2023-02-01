@@ -170,7 +170,7 @@ class Api
      * @throws \Exception
      * @throws WrongDataException
      */
-    public function getParcelShops(string $code = null, string $countryCode = Country::CZ, string $accessPointType = null, bool $activeCardPayment = null, string $city = null, float $latitude = null, float $longitude = null, int $radius = null, string $zipCode = null): array
+    public function getParcelShops(string $code = null, string $countryCode = Country::CZ, string $accessPointType = null, bool $activeCardPayment = null, string $city = null, float $latitude = null, float $longitude = null, int $radius = null, string $zipCode = null)
     {
         if (!in_array($countryCode, Country::$list)) {
             throw new WrongDataException(sprintf('Country Code %s is not supported, use one of %s', $countryCode, implode(', ', Country::$list)));
