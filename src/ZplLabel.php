@@ -139,7 +139,7 @@ class ZplLabel implements ILabel {
         //$zpl .= sprintf('^FO12, 58^A0R, 3^FDPozn.: poznámka^FS');
         //$zpl .= sprintf('^FO9, 58^A0R, 3^FDRef.: externí reference^FS');
         //reset page setup
-        $zpl .= '^LH0,0';
+        $zpl .= '^LH0,0^MUD';
         //end
         $zpl .= '^XZ';
 
