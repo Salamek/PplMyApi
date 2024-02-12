@@ -141,10 +141,10 @@ class PdfLabel implements ILabel
         $pdf->SetFont(self::$fontFamily, 'B', 10*$scale);
 
         $pdf->Text($x, $y, $package->getSender()->getName());
-        $pdf->Text($x, $y + (4.5*$scale), $package->getSender()->getName2());
-        $pdf->Text($x, $y + (9*$scale), $package->getSender()->getStreet());
-        $pdf->Text($x, $y + (13.5*$scale), sprintf('%s %s', $package->getSender()->getCity(), $package->getSender()->getCountry()));
-        $pdf->Text($x, $y + (18*$scale), $package->getSender()->getZipCode());
+        $pdf->Text($x, $y + (3.5*$scale), $package->getSender()->getName2());
+        $pdf->Text($x, $y + (8*$scale), $package->getSender()->getStreet());
+        $pdf->Text($x, $y + (12.5*$scale), sprintf('%s %s', $package->getSender()->getCity(), $package->getSender()->getCountry()));
+        $pdf->Text($x, $y + (17*$scale), $package->getSender()->getZipCode());
 
         $pdf->MultiCell(76*$scale, 27*$scale, '', ['LTRB' => ['width' => 0.2]], 'L', 0, 0, 58.5*$scale, 58.7*$scale, true, 0, false, true, 0);
 
