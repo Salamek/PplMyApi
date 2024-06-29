@@ -97,11 +97,11 @@ class Api
      */
     public function __construct($username = null, $password = null, $customerId = null, $storage = null, $trace = true)
     {
-        if (mb_strlen($username ?? '') > 32) {
+        if ($username !== null && mb_strlen($username) > 32) {
             throw new SecurityException('$username is longer than 32 characters');
         }
 
-        if (mb_strlen($password ?? '') > 32) {
+        if ($password !== null && mb_strlen($password) > 32) {
             throw new SecurityException('$password is longer than 32 characters');
         }
 
