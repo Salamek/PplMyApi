@@ -1,3 +1,7 @@
+> [!WARNING]
+> This project is deprecated and no new features will be implemented due to PPL pushing out new (and better designed) REST based API (MyApi2) so if you are implementing new PPL integration please use MyApi2 for example ~implemented by https://github.com/szymsza/php-ppl-create-package-label-api (this project is not drop-in replacement for PplMyApi and is missing some features but it is good building block to start)
+
+
 # Professional Parcel Logistic MyApi client in PHP with PDF and ZPL label generator
 
 [![Test status](https://github.com/Salamek/PplMyApi/actions/workflows/php.yml/badge.svg)](https://github.com/Salamek/PplMyApi/actions/workflows/php.yml)
